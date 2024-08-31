@@ -2,6 +2,7 @@ import React from "react";
 import '../../assets/styles/tarjetaConfirmEliminarTabla.css';
 import ButtonPequenoNaranja from "../super-administrador/ButtonPequeñoNaranja";
 import ButtonPequenoGris from "../super-administrador/ButtonPequeñoGris";
+import { TablasBdContext } from "../../context/TablasBdContext";
 
 function TarjetaConfirmEliminarTabla({onClick, onClick2}) {
     return(

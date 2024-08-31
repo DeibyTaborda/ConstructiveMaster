@@ -1,11 +1,14 @@
 const db = require('../db/db');
 const dbMysql2 = require('../db/db-mysql2');
 const validations = require('../validations/validations');
+const bcrypt = require('bcryptjs');
+const generadorContrasena = require('password-generator');
 
 exports.subirTable = async(req, res) => {
     const {tabla, ruta }= req.body;
     const rutaImagenTabla = req?.file?.path || null;
     const rol = req.rol;
+    console.log(rol)
 
     if (!rol) return res.status(400).json({ message: 'No autorizado. El rol no ha sido proporcionado.' });
     if (rol === 'admin') return res.status(403).json({ message: 'Acceso denegado. No tienes autorización para realizar esta acción.' });
@@ -64,6 +67,8 @@ exports.eliminarTabla = async(req, res) => {
     const sqleliminarTabla = 'DELETE FROM imagenTabla WHERE id = ?';
     const rol = req.rol;
 
+    console.log(rol);
+
     if (!rol) return res.status(400).json({ message: 'No autorizado. El rol no ha sido proporcionado.' });
     if (rol === 'admin') return res.status(403).json({ message: 'Acceso denegado. No tienes autorización para realizar esta acción.' });
 
@@ -86,12 +91,11 @@ exports.actulizarTabla = async(req, res) => {
     const {id} = req.params;
     const {tabla, ruta} = req.body;
     const imagen = req?.file?.path || null;
-    const rol = req.rol;
+    const rol = req.rol; 
 
     const seleccionarImagenTabla = 'SELECT imagen_tabla FROM imagentabla WHERE id = ?';
     const sqlActulazarTabla = 'UPDATE imagentabla SET nombre_tabla = ?, url_tabla = ?, imagen_tabla = ? WHERE id = ?';
 
-    
     if (!rol) return res.status(400).json({ message: 'No autorizado. El rol no ha sido proporcionado.' });
     if (rol === 'admin') return res.status(403).json({ message: 'Acceso denegado. No tienes autorización para realizar esta acción.' });
 
@@ -284,6 +288,15 @@ exports.actualizarRegistro = async (req, res) => {
         'SELECT correo FROM profesional WHERE correo = ?'
     ];
 
+    //generar una contraseña de manera automática
+    const contrasena = generadorContrasena(12, false);
+    console.log('Contraseña Generada:', contrasena);
+
+    // Encriptar la contraseña
+    const sal = bcrypt.genSaltSync(10);
+    const contrasenaEncriptada = bcrypt.hashSync(contrasena, sal);
+    console.log('Contraseña Encriptada:', contrasenaEncriptada);
+
     try {
         // Verificar si el correo ya existe en alguna tabla
         for (let consulta of consultarCorreoUsuarios) {
@@ -294,8 +307,8 @@ exports.actualizarRegistro = async (req, res) => {
         }
 
         // Insertar nuevo administrador si el correo no está en uso
-        const agregarAdmin = 'INSERT INTO admin(nombre, apellido, correo) VALUES(?, ?, ?)';
-        const [result] = await dbMysql2.query(agregarAdmin, [nombre, apellido, correo]);
+        const agregarAdmin = 'INSERT INTO admin(nombre, apellido, correo, contrasena) VALUES(?, ?, ?, ?)';
+        const [result] = await dbMysql2.query(agregarAdmin, [nombre, apellido, correo, contrasenaEncriptada]);
 
         res.status(201).json({ message: 'Se agregó un nuevo administrador', id: result.id });
     } catch (error) {

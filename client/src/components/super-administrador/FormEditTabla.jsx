@@ -1,19 +1,23 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import '../../assets/styles/formEditTabla.css';
 import { usePutRequest } from "../../services/usePutRequest.js";
 import { CiImageOn } from "react-icons/ci";
 import { IoIosCheckmarkCircleOutline, IoIosCheckmarkCircle } from "react-icons/io";
 import {primeraLetraMayuscula} from '../../utils/utils.js';
+import { TablasBdContext } from "../../context/TablasBdContext.js";
 
-function FormEditTabla({datos, onClick, id}) {
+
+function FormEditTabla({datos, onClick, id, fetchData}) {
     const [nombreImagen, setNombreImagen] = useState(null);
 
-    const tablaEncontrada = datos.find(tabla => tabla.id === id);
+    const tablaEncontrada = Object.values(datos).find( (tabla) => tabla.id === id);
     const [data, setData] = useState({
         tabla: tablaEncontrada?.nombre_tabla,
         ruta: tablaEncontrada?.url_tabla,
         imagen: ''
     });
+
+    const {actulizarTabla} = useContext(TablasBdContext);
 
     const {loading, error, response, sendPutRequest} = usePutRequest();
 
@@ -43,6 +47,7 @@ function FormEditTabla({datos, onClick, id}) {
         formData.append('imagen', data.imagen);
 
         await sendPutRequest(`http://localhost:3001/panel_de_control/${id}`, formData);
+        await fetchData();
     }
 
     useEffect(() => {
@@ -50,6 +55,9 @@ function FormEditTabla({datos, onClick, id}) {
             onClick();
         }
     }, [response, error, sendPutRequest]);
+
+
+
 
     return (
         <>

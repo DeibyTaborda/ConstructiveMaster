@@ -8,12 +8,10 @@ import { TablasBdContext } from "../../context/TablasBdContext";
 import { UsuarioContexto } from "../../context/UsuarioContexto";
 
 function PanelDeControl() {
-const {tablasBD, actualizarTablasBD, limpiarTablasBD} = useContext(TablasBdContext);
+const {tablasBD, actualizarTablasBD} = useContext(TablasBdContext);
 const {usuario} = useContext(UsuarioContexto);
 
-  const { loading, error, data, fetchData } = useAxios(
-    "http://localhost:3001/panel_de_control"
-  );
+  const { loading, error, data, fetchData } = useAxios("http://localhost:3001/panel_de_control");
    
 
   useEffect(() => {
@@ -21,14 +19,6 @@ const {usuario} = useContext(UsuarioContexto);
       actualizarTablasBD(data.data);
     }
   }, [data]);
-  
-  useEffect(() => {
-    if (tablasBD) {
-      console.log(tablasBD);
-    }
-  }, [tablasBD]);
-
-  const rol = localStorage.getItem("rol");
 
   if (error) return <p>No tienes permiso para acceder a esta ruta</p>
   if (!data) return <p>Error 404</p>
@@ -44,21 +34,20 @@ const {usuario} = useContext(UsuarioContexto);
  
       {tablasBD && (
         <div className="container-cards-img-tabla">
-          {data.data.map((tabla) => (
+          {Object.keys(tablasBD).map((key) => (
             <CardTabla
-              key={tabla.id}
-              nombreTabla={tabla.nombre_tabla}
-              urlTabla={tabla.url_tabla}
-              imagenTabla={`http://localhost:3001/${tabla.imagen_tabla}`}
-              rol={rol}
-              id={tabla.id}
+              key={tablasBD[key].id}
+              nombreTabla={tablasBD[key].nombre_tabla}
+              urlTabla={tablasBD[key].url_tabla}
+              imagenTabla={`http://localhost:3001/${tablasBD[key].imagen_tabla}`}
+              id={tablasBD[key].id}
               fetchData={fetchData}
-              datos={data.data}
+              datos={tablasBD}
             />
           ))}
         </div>
       )}
-      <FormAddImgTabla fetchData={fetchData} />
+      {/* <FormAddImgTabla fetchData={fetchData} /> */}
     </>
   );
 }

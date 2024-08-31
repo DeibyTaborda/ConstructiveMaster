@@ -1,45 +1,48 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext, act} from "react";
 import '../../assets/styles/formEditImgTabla.css';
 import usePostRequest from "../../services/usePostRequest";
+import { TablasBdContext } from "../../context/TablasBdContext";
+import useAxios from "../../services/api";
 
 
-function FormAddImgTabla({fetchData}) {
-    const [data, setData] = useState({
+function FormAddImgTabla() {
+    const [datos, setDatos] = useState({
         tabla: '',
         ruta: '',
-        imagen: ''
+        imagen: '' 
     });
 
+    const {tablasBD, actualizarTablasBD} = useContext(TablasBdContext);
     const {loading, error, response, postRequest} = usePostRequest('http://localhost:3001/panel_de_control');
+    const { data, fetchData } = useAxios("http://localhost:3001/panel_de_control");
 
     const handleOnchange = (e) => {
         const {name, value} = e.target;
-        setData({...data, [name] : value});
+        setDatos({...datos, [name] : value});
     }
 
     const handleFileonChange = (e) => {
         const {name, files} = e.target;
-        setData({...data, [name] : files[0]});
+        setDatos({...datos, [name] : files[0]});
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('tabla', data.tabla);
-        formData.append('ruta', data.ruta);
-        formData.append('imagen', data.imagen);
+        formData.append('tabla', datos.tabla);
+        formData.append('ruta', datos.ruta);
+        formData.append('imagen', datos.imagen);
 
         await postRequest(formData);
-        fetchData();
-        console.log(response);
+        await fetchData();
     }
 
     useEffect(() => {
-        if (response) {
-            fetchData();
+        if (data) {
+            actualizarTablasBD(data.data);
         }
-    }, [response]);
+    }, [data]);
 
     return(
         <>
@@ -50,7 +53,7 @@ function FormAddImgTabla({fetchData}) {
                     name="tabla"
                     className="input-form-edit-img-tabla"
                     onChange={handleOnchange}
-
+                    value={datos.tabla}
                 />
                 <label htmlFor="ruta" className="label-form-add-imagen-tabla">Ruta:</label>
                 <input 
@@ -58,6 +61,7 @@ function FormAddImgTabla({fetchData}) {
                     name="ruta"
                     className="input-form-edit-img-tabla"
                     onChange={handleOnchange}
+                    value={datos.ruta}
                 />
                 <label htmlFor="imagen" className="label-form-add-imagen-tabla">Imagen:</label>
                 <input 

@@ -9,24 +9,26 @@ import useDelete from "../../services/delete";
 import FormEditTabla from "../super-administrador/FormEditTabla";
 import TarjetaConfirmEliminarTabla from "../super-administrador/TarjetaConfirmEliminarTabla";
 import { UsuarioContexto } from "../../context/UsuarioContexto";
+import { TablasBdContext } from "../../context/TablasBdContext";
+import useAxios from "../../services/api";
 
-function CardTabla({nombreTabla, urlTabla, imagenTabla, rol, id,fetchData, datos}) {
+function CardTabla({nombreTabla, urlTabla, imagenTabla, id, datos, fetchData}) {
     const [isOpenDelete, setIsOpenDelete] = useState(false);
     const [isOpenEdit, setIsOpenEdit] = useState(false);
+    const {actualizarTablasBD, limpiarTablasBD, tablasBD, } = useContext(TablasBdContext);
 
     const {loading, error, response, eliminar} = useDelete(`http://localhost:3001/panel_de_control/${id}`);
+    // const {data, fetchData } = useAxios("http://localhost:3001/panel_de_control");
+
+
     const {usuario} = useContext(UsuarioContexto);
 
-    const handleSubmit = () => {
-        eliminar();
+    const handleSubmit = async() => {
+        await eliminar();
+        limpiarTablasBD();
+        await fetchData();
         setIsOpenDelete(false);
     }
-
-    useEffect(() => {
-        if (error || response){
-            fetchData();
-        }
-    }, [error, response])
 
     const openDelete = () => {
         setIsOpenDelete(true);
@@ -40,7 +42,6 @@ function CardTabla({nombreTabla, urlTabla, imagenTabla, rol, id,fetchData, datos
     }
 
     const handleSubmit2 = () => {
-        fetchData();
         setIsOpenEdit(false);
     }
 
@@ -64,7 +65,7 @@ function CardTabla({nombreTabla, urlTabla, imagenTabla, rol, id,fetchData, datos
                             )}
                             {isOpenEdit && (
                                 <div className="container-form-edit-tabla">
-                                    <FormEditTabla onClick={handleSubmit2} datos={datos} id={id}/>
+                                    <FormEditTabla onClick={handleSubmit2} datos={datos} id={id} fetchData={fetchData}/>
                                 </div>
                             )}
                         </div>
