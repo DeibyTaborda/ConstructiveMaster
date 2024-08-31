@@ -1,0 +1,17 @@
+.container-menu-table{
+    display: flex;
+}
+
+.container-table-solicitud-profesional{
+    position: relative;
+    left: 60px;
+    width: calc(100% - 80px);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+.hola {
+    width: 100%;
+}

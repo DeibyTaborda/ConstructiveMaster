@@ -1,0 +1,82 @@
+CREATE DATABASE constructivemaster;
+USE constructivemaster;
+
+CREATE TABLE rol(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rol VARCHAR(20) NOT NULL,
+    
+);
+
+CREATE TABLE cliente(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    contrasena VARCHAR(10) NOT NULL,
+    telefono INT(10) NULL,
+    direccion VARCHAR(20) NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE categoria(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    categoria VARCHAR(30) NOT NULL,
+    img_categoria VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE subcategoria(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    subcategoria VARCHAR(30) NOT NULL,
+    img_subcategoria VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE solicitud(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL,
+    apellido VARCHAR(30) NOT NULL,
+    especialidad VARCHAR(20) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    telefono VARCHAR(10) NOT NULL,
+    curriculum VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE super_admin(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(60) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    telefono VARCHAR(10) NULL,
+    contrasena VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE admin(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL,
+    apellido VARCHAR(30) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    telefono VARCHAR(10) NOT NULL,
+    contrasena VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+); 
+
+CREATE TABLE profesional(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(30) NOT NULL,
+    apellido VARCHAR(30) NOT NULL,
+    especialidad VARCHAR(30) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    telefono VARCHAR(10) NOT NULL,
+    curriculum VARCHAR(100) NOT NULL,
+    contrasena VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE imagenTabla(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_tabla VARCHAR(30) NOT NULL,
+    url_tabla VARCHAR(30) NOT NULL,
+    imagen_tabla VARCHAR(100) NULL
+);

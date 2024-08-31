@@ -1,0 +1,53 @@
+.form-edit-category {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:  var(--white);
+}
+
+.edit-title {
+    color: var(--color-principal);
+    margin-top: 20px;
+}
+
+.category-edit {
+    font-weight: 700;
+    margin: 5px 0 20px 0;
+}
+
+.label-category-edit {
+    margin-top: 15px;
+    width: 200px;
+}
+
+.edit-input {
+    margin-top: 5px;
+    width: 200px;
+    border: none;
+    outline: none;
+    padding: 5px 0 5px 7px;
+}
+
+.edit-input:focus {
+    font-size: 16px;
+    /* padding: 5px 0 5px 7px; */
+}
+
+.color-borde-botton {
+    border-bottom: 1px solid var(--color-principal);
+    transition: border-bottom 0.3s e;
+}
+
+/* .color-borde-botton {
+    border-bottom: 1px solid var(--gray);
+} */
+
+.edit-category-edit {
+    width: 70px;
+    color: white;
+    background-color: var(--gray);
+    border: none;
+    margin: 40px 0 40px 0;
+}

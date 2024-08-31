@@ -1,0 +1,29 @@
+.contenedor-botones-acciones-crear {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    z-index: 30;
+    width: 130px;
+    padding: 5px;
+    background-color: white;;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgb(67, 67, 67);
+    border-radius: 10px;
+}
+
+.botones-acciones-crear {
+    width: 100%;
+    height: 30px;
+    font-family: var(--parrafos);
+    background-color: var(--white);
+    border: none;
+}
+
+.botones-acciones-crear:hover{
+    background-color: #f0f0f0;
+}
+
+.contenedor-boton-individual-acciones-crear {
+    position: relative;
+}

@@ -1,0 +1,35 @@
+.container-confirm-delete{
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(231, 231, 231);
+}
+
+.title-delete{
+    color: var(--color-principal);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.category-delete{
+    font-size: 17px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.question-delete{
+    margin-top: 10px;
+}
+
+.icon-confirm-delete{
+    margin-top: 10px;
+}
+
+.botons-confirm{
+    display: flex;
+    margin-top: 10px;
+    gap: 10px;
+}

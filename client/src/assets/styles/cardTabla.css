@@ -1,0 +1,85 @@
+.container-card-tabla {
+    position: relative;
+    margin: 20px;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-tabla-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.imagen-tabla {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+}
+
+.nombre-img-tabla {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para mayor contraste */
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+    z-index: 10; /* Asegura que el texto esté sobre la imagen */
+}
+
+.nombre-img-tabla:hover {
+    filter: brightness(80%) sepia(30%) hue-rotate(180deg);
+}
+
+.container-icon-delete-tabla {
+    position: absolute;
+    top: 0;
+    left: 220px;
+    width: 70px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--white);
+    z-index: 11;
+    font-size: 20px;
+}
+
+.icon-delete-tabla {
+    margin: 5px;
+}
+
+.confirm-delete-tabla {
+    position: absolute;
+    top: 50px;
+    left: -100px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    color: black;
+    font-size: 14px;
+    background-color: var(--white);
+    z-index: 13;
+}
+
+.container-form-edit-tabla {
+    position: absolute;
+    top: 5px;
+    left: -150px;
+}

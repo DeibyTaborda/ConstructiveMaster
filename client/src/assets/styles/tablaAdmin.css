@@ -1,0 +1,68 @@
+/* Tabla.css */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    table-layout: auto; /* Permite que las celdas se ajusten al contenido */
+}
+
+caption.title-table-admin {
+    caption-side: top;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+    color: var(--color-principal);
+}
+
+thead tr {
+    /* background-color: #f2f2f2; */
+    background-color: var(--color-principal);
+    border-bottom: 2px solid #ddd;
+    color: var(--white);
+}
+
+th, td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+td.item-table-admin {
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
+}
+
+#boton-eliminar{
+    position: relative;
+    left: 20px;
+}
+
+
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px 10px;
+    }
+
+    caption.title-table-admin {
+        font-size: 20px;
+    }
+}

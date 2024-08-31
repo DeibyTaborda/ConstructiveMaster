@@ -1,0 +1,9 @@
+.title-footer{
+    color: var(--color-principal);
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.title-footer:hover{
+    color: var(--white);
+}

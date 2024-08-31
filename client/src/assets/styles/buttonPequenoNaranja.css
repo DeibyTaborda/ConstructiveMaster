@@ -1,0 +1,26 @@
+.button-pequeno-naranja {
+    width: 70px;
+    height: 16px;
+    border-radius: 20px;
+    font-size: 9px;
+    border: none;
+    background-color: var(--color-principal);
+    color: white;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.button-pequeno-naranja:hover {
+    background: linear-gradient(45deg, #FF9800, #FF6D00);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button-pequeno-naranja:active {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

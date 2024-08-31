@@ -1,0 +1,9 @@
+.container-menu-table-clientes{
+    display: flex;
+}
+
+.container-table-clientes{
+    width: 90%;
+    position: relative;
+    left: 40px;
+}

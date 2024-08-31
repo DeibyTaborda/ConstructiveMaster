@@ -1,0 +1,14 @@
+.button-editar{
+    width: 70px;
+    height: 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--color-principal);
+    color: var(--white);
+    padding: 1px 0 1px 0;
+    transition: background-color 0.3s ease;
+}
+
+.button-editar:hover{
+    background-color: rgb(170, 168, 168);
+}

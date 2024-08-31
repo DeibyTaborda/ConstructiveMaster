@@ -1,0 +1,8 @@
+.form-agregar-admin {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    background-color: var(--white);
+    z-index: 31;
+}

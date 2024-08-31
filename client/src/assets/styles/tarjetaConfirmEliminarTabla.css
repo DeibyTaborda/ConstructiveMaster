@@ -1,0 +1,13 @@
+.confirm-buttons {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.mensaje-confirmar-eliminar-tabla {
+    color: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 12px;
+    text-align: left;
+}

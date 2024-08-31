@@ -1,0 +1,25 @@
+.container-botones-acciones-foto-perfil-admin{
+    width: 150px;;
+    position: absolute;
+    top: 50px;
+    left: 150px;
+    display: flex;
+    flex-direction: column;
+    z-index: 16;
+    box-shadow: 0 4px 8px rgb(154, 154, 154);
+}
+
+.botones-acciones-foto-perfil-admin {
+    width: 100%;
+    height: 35px;
+    border: none;
+    background-color: var(--white);
+}
+
+.botones-acciones-foto-perfil-admin:hover{
+    background-color: rgb(224, 224, 224);
+}
+
+#button-cargar-imagen-super-admin {
+    display: none;
+}

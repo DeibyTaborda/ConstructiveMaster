@@ -1,0 +1,55 @@
+.container-img-grande-datos-basicos {
+    position: relative;
+    width: 400px;
+    height: 100px;  
+}
+
+.container-img-grande-datos-basicos.none{
+    background: rgb(235,190,0);
+    background: linear-gradient(90deg, rgba(235,190,0,1) 0%, rgba(243,164,44,1) 41%, rgba(255,224,107,1) 100%, rgba(244,255,0,1) 100%);
+}
+
+.imagen-perfil-admin-super {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.container-cargar-img-perfil {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Color de fondo semitransparente */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.container-img-grande-datos-basicos:hover .container-cargar-img-perfil {
+    opacity: 1;
+    visibility: visible;
+    cursor: pointer;
+ 
+}
+
+.icon-subir-imagen {
+    font-size: 2rem;
+    color: white;
+  }
+  
+  .parrafo-info-subir-img-perfil {
+    color: white;
+    margin-top: 10px;
+  }
+
+
+

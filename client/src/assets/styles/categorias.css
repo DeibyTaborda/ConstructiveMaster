@@ -1,0 +1,76 @@
+.container-categorias{
+    display: flex;
+}
+
+.form-categorias-subcategorias{
+    position: relative;
+    left: 40px;
+    width: calc(100% - 40px);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+#formulario-subcategoria{
+    margin: 20px 0 20px 0;
+}
+
+#formulario-categoria{
+    margin: 20px 0 20px 0;
+}
+
+.container-table-categories{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-form-categorys{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tables-categories-subcategories{
+    width: 90%;
+    overflow: auto;
+}
+
+.container-categories-subcategories{
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+#confirm-delete{
+    display: flex; /* Enable flexbox layout */
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    position: fixed; /* Fix the position to prevent scrolling issues */
+    top: 0; /* Position at top of the viewport */
+    left: 0; /* Position at left of the viewport */
+    width: 100%; /* Span the full width of the viewport */
+    height: 100%; /* Span the full height of the viewport */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Semi-transparent background */
+    z-index: 101;
+}
+
+.container-category-edit {
+    display: flex; /* Enable flexbox layout */
+    justify-content: center; /* Horizontally center the content */
+    align-items: center; /* Vertically center the content */
+    position: fixed; /* Fix the position to prevent scrolling issues */
+    top: 0; /* Position at top of the viewport */
+    left: 0; /* Position at left of the viewport */
+    width: 100%; /* Span the full width of the viewport */
+    height: 100%; /* Span the full height of the viewport */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Semi-transparent background */
+    z-index: 101;
+}

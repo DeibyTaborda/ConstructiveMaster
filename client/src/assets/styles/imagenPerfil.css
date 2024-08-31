@@ -1,0 +1,11 @@
+.contenedor-imagen-perfil-admin-super {
+    border-radius: 100%;
+}
+
+.img-perfil-admin-super {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgb(148, 148, 148, 0.8);
+}
