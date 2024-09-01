@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios'; // Importa axios en lugar de useAxios
 import ReactDOM from 'react-dom';
 import '../../assets/styles/categorias.css';
@@ -9,6 +9,7 @@ import TablaAdmin from '../../components/administrador/TablaAdmin';
 import ConfirmDelete from '../../components/administrador/ConfirmDelete';
 import useAxios from '../../services/api';
 import FormEditarCategoria from '../../components/administrador/FormEditarCategorias';
+import SubcategoryContext from "../../context/SubcategoryContext";
 
 function Categorias() {
   const [datos, setDatos] = useState({ categories: [], subcategories: [] });
@@ -16,6 +17,7 @@ function Categorias() {
   const [isOpenEdit, setIsOpenEdit] = useState(false);
   const { loading, error, data, fetchData } = useAxios('http://localhost:3001/categorias');
 
+  const { setSelectedSubcategory, selectedSubcategory } = useContext(SubcategoryContext);
 
   const formTitle = 'Subcategorías';
   const titleCategorias = 'Categorías';
@@ -33,13 +35,17 @@ function Categorias() {
   const columsSubcategories = ['id', 'subcategoria', 'img_subcategoria', 'created_at', 'Acciones'];
 
   useEffect(() => {
-    
     if (data) {
       setDatos(data);
       console.log(data);
-    } 
-
+    }
   }, [data]);
+
+  useEffect(() => {
+    if (selectedSubcategory) {
+      fetchData();
+    }
+  }, [selectedSubcategory]);
 
   const openConfirmDelete = () => setIsOpenDelete(true);
 
@@ -57,6 +63,16 @@ function Categorias() {
   }
 
   const update = () => fetchData();
+
+  const acciones = (id, data, tableId) => {
+    const selectedCategoryId = data.find((row) => row.id === id);
+    const selectedCategory = selectedCategoryId[tableId];
+    setSelectedSubcategory({
+      tableId,
+      categoryId: id,
+      nameCategory: selectedCategory,
+    });
+  }
 
   return (
     <div className="container-categorias">
@@ -86,6 +102,7 @@ function Categorias() {
               tableId="categoria"
               onClick={openConfirmDelete}
               onClickEdit={openPortalEdit}
+              acciones={acciones}
             />
           </div>
           <div className="container-categories-subcategories">
@@ -106,6 +123,7 @@ function Categorias() {
               tableId="subcategoria"
               onClick={openConfirmDelete}
               onClickEdit={openPortalEdit}
+              acciones={acciones}
             />
           </div>
           <div className="container-categories-subcategories">
@@ -129,7 +147,7 @@ function Categorias() {
             </div>,
             document.body
           )}
-        {isOpenEdit &&   
+        {isOpenEdit &&
           ReactDOM.createPortal(
             <div className='container-category-edit'>
               <FormEditarCategoria onClick={closePortalEdit} 

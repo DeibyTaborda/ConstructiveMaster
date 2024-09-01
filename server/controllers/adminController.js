@@ -1,4 +1,5 @@
 const db = require('../db/db');
+const dbMysql2 = require('../db/db-mysql2');
 const validations = require('../validations/validations')
 
 // Controlador para obtener todos los clientes
@@ -166,7 +167,7 @@ exports.deleteCategory = (req, res) => {
       }
     });
     console.log(`Categoria con ID ${Id} en la tabla ${tableId} eliminada`);
-    res.status(200).json({ message: 'Categoría eliminada exitosamente' });
+    return res.status(200).json({ message: 'Categoría eliminada exitosamente' });
   }
 }
 
@@ -294,4 +295,21 @@ exports.categoryPut = (req, res) => {
 
     })
   }
+}
+
+exports.eliminarCliente = async(req, res) => {
+  const {id} = req.params;
+  const eliminarCliente = 'DELETE FROM cliente WHERE id = ?';
+
+  if (!id) { 
+    return res.status(400).json({ message: 'Por favor, verifica el ID ingresado y vuelve a intentarlo.'});
+  }
+
+  try {
+    await dbMysql2.query(eliminarCliente, [id]);
+    res.status(200).json({ message: 'El cliente se eliminó exitosamente' });
+  } catch (error) {
+    res.status(500).json({ message: 'No se pudo eliminar el cliente' });
+  }
+
 }

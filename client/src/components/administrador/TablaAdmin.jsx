@@ -6,34 +6,31 @@ import ButtonEliminar from "./ButtonEliminar";
 import useDelete from "../../services/delete";
 import SubcategoryContext from "../../context/SubcategoryContext";
 
-function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit }) {
+function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, acciones }) {
   const { setSelectedSubcategory, selectedSubcategory } = useContext(SubcategoryContext);
+  const [id, setId] = useState(null);
 
   const handleSelected = (id) => {
+    if (tableId === 'clientes') {
+      return onClick(id);
+    }
     onClick();
-    const selectedCategoryId = data.find((row) => row.id === id);
-    const selectedCategory = selectedCategoryId[tableId];
-    setSelectedSubcategory({
-      tableId,
-      categoryId: id,
-      nameCategory: selectedCategory,
-    });
-  };
+    if (['subcategoria', 'categoria'].includes(tableId)) {
+      acciones(id, data, tableId);
+    }
+  }
 
   const handleSelectedEdit = (id) => {
     onClickEdit();
-    const selectedCategoryId = data.find((row) => row.id === id);
-    const selectedCategory = selectedCategoryId[tableId];
-    setSelectedSubcategory({
-      tableId,
-      categoryId: id,
-      nameCategory: selectedCategory,
-    });
+    if (['subcategoria', 'categoria'].includes(tableId)) {
+      acciones(id, data, tableId);
+    }
   }
 
   useEffect(() => {
     console.log(selectedSubcategory);
   }, [selectedSubcategory]);
+
 
   if (!data) return <p>loading...</p>
 
@@ -73,6 +70,13 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit }) {
           ))}
         </tbody>
       </table>
+      {selectedSubcategory && (
+        <>
+                <p>{selectedSubcategory.tableId}</p>
+                <p>{selectedSubcategory.nameCategory}</p>
+                <p>{selectedSubcategory.categoryId}</p>
+        </>
+      )}
     </>
   );
 }

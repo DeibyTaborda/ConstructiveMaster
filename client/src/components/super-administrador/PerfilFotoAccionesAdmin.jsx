@@ -9,7 +9,8 @@ function PerfilFotoAccionesAdmin() {
     const [imagen, setImagen] = useState(null);
     const { usuario, actualizarUsuario } = useContext(UsuarioContexto);
     const { loading, error, response, postRequest } = usePostRequest(`http://localhost:3001/admin/imagen`);
-    const {responseDelete, eliminar} = useDelete(`http://localhost:3001/admin/imagen/${usuario.id}`);
+    const {response: responseDelete, eliminar} = useDelete(`http://localhost:3001/admin/imagen/${usuario.id}`);
+
 
     const handleFileChange = (e) => {
         const { files } = e.target;

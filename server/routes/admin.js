@@ -15,6 +15,6 @@ router.delete('/categorias/:tableId/:Id', adminController.deleteCategory); // So
 router.get('/solicitud_profesional', adminController.getSolicitudProfesional); // Solicitud GET para obtener solicitudes de profesionales
 router.put('/categorias/:tabla/:id', upload2.single('imgCategoria'), adminController.categoryPut);
 router.post('/login', loginController.logearUsuario);
-
+router.delete('/clientes/:id', verificarToken, verificarRol(['admin', 'super_admin']), adminController.eliminarCliente);
 
 module.exports = router; // Exporta el enrutador para su uso en otros archivos de la aplicación
