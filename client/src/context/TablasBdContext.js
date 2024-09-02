@@ -17,7 +17,7 @@ export const TablasProveedor = ({children}) => {
     }, [tablasBD]);
 
     const actualizarTablasBD = (nuevosDatosTablasBD) => {
-        setTablasBD({...tablasBD, ...nuevosDatosTablasBD});
+        setTablasBD({...tablasBD, ...nuevosDatosTablasBD}); 
     }
 
     const limpiarTablasBD = () => {

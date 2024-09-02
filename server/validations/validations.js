@@ -28,9 +28,9 @@ const validarTelefono = (telefono) => {
     const lengthTelefono = telefono.length;
 
     if (lengthTelefono > 10){
-        return errorMessage = 'Solo se permiten 10 dígitos';
-    } else if (lengthTelefono < 10) {
-        return errorMessage = 'El número debe tener al menos 10 dígitos';
+        return errorMessage = 'El número telefonico debe contener máximo 10 dígitos';
+    } else if (lengthTelefono < 7) {
+        return errorMessage = 'El número debe tener al menos 7 dígitos';
     }
 
     return errorMessage;
@@ -94,6 +94,14 @@ const validarNumerosYSimbolos = (texto) => {
     return regexNumerosYSimbolos.test(texto);
 }
 
+const validarNumeroTelefonico = (telefono) => {
+    const regexTelefono = /^(3\d{9}|\d{7})$/
+    if (regexTelefono.test(telefono)) {
+        return true;
+    }
+
+    return false;
+}
 
 
 
@@ -109,3 +117,4 @@ exports.validarCategoria  = validarCategoria;
 exports.validarSoloLetras  = validarSoloLetras;
 exports.validarLongitud = validarLongitud;
 exports.validarNumerosYSimbolos = validarNumerosYSimbolos;
+exports.validarNumeroTelefonico = validarNumeroTelefonico;

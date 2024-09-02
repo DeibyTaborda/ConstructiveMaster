@@ -296,7 +296,7 @@ exports.categoryPut = (req, res) => {
     })
   }
 }
-
+ 
 exports.eliminarCliente = async(req, res) => {
   const {id} = req.params;
   const eliminarCliente = 'DELETE FROM cliente WHERE id = ?';
@@ -310,6 +310,64 @@ exports.eliminarCliente = async(req, res) => {
     res.status(200).json({ message: 'El cliente se eliminó exitosamente' });
   } catch (error) {
     res.status(500).json({ message: 'No se pudo eliminar el cliente' });
+  }
+
+}
+
+exports.actualizarCliente = async(req, res) => {
+  const {id} = req.params;
+  const {nombre, correo, telefono, direccion} = req.body;
+  const imagen = req.file?.path || null;
+  console.log(nombre);
+
+  if (validations.validarNumerosYSimbolos(nombre)) {
+    return res.status(400).json({ message: 'El nombre no debe contener números ni caracteres especiales' });
+  } else if (validations.validarLongitud(nombre, 30)) {
+    return res.status(400).json({ message: 'El nombre no debe contener más de 30 caracteres' });
+  }
+
+  if (validations.validarCorreo(correo)) {
+    return res.status(400).json({ message: 'Por favor, ingrese un correo válido' });
+  } else if (validations.validarLongitud(correo, 100)) {
+    return res.status(400).json({ message: 'El correo no debe contener más de 100 caracteres' });
+  }
+
+  if (!validations.validarNumeroTelefonico(telefono)) {
+    return res.status(400).json({ message: 'Número telefónico inválido. Usa 7 dígitos (fijo) o 10 dígitos (celular).' });
+  } else if (validations.validarLongitud(direccion, 20)) {
+    return res.status(400).json({ message: 'La dirección no debe contener más de 20 caracteres' });
+  }
+
+  if (!validations.validarImagen(imagen)) {
+    return res.status(400).json({ message: 'Tipo de archivo no permitido' });
+  }
+
+  const camposActualizar = {};
+  if (nombre) camposActualizar.nombre = nombre;
+  if (correo) camposActualizar.correo = correo;
+  if (telefono) camposActualizar.telefono = telefono;
+  if (direccion) camposActualizar.direccion = direccion;
+  if (imagen) camposActualizar.imagen = imagen
+
+  if (Object.keys(camposActualizar).length === 0) {
+    return res.status(200).json({ message: 'No se proporcionaron datos para actualizar.' })
+  }
+
+  const clausulaClienteSql = Object.entries(camposActualizar)
+  .map(([key, value]) => `${key} = ?`)
+  .join(', ');
+
+  const values = Object.values(camposActualizar);
+
+  values.push(id);
+
+  const clienteActulizarSql = `UPDATE cliente SET ${clausulaClienteSql} WHERE id = ?`
+
+  try {
+    await dbMysql2.query(clienteActulizarSql, values);
+    res.status(200).json({ message: 'Se actulizaron los datos del cliente exitosamente' });
+  } catch (error) {
+    res.status(500).json({ message: 'No se pudo actulizar los datos del cliente' });
   }
 
 }

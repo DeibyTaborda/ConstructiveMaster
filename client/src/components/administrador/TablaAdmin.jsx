@@ -21,6 +21,9 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
   }
 
   const handleSelectedEdit = (id) => {
+    if (tableId === 'clientes') {
+      return onClickEdit(id);
+    }
     onClickEdit();
     if (['subcategoria', 'categoria'].includes(tableId)) {
       acciones(id, data, tableId);
@@ -28,7 +31,9 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
   }
 
   useEffect(() => {
-    console.log(selectedSubcategory);
+    if (selectedSubcategory){
+      console.log(selectedSubcategory);
+    }
   }, [selectedSubcategory]);
 
 
