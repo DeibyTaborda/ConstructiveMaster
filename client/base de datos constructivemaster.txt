@@ -11,7 +11,7 @@ CREATE TABLE cliente(
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(30) NOT NULL,
     correo VARCHAR(100) NOT NULL,
-    contrasena VARCHAR(10) NOT NULL,
+    contrasena VARCHAR(100) NOT NULL,
     telefono INT(10) NULL,
     direccion VARCHAR(20) NULL
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -48,7 +48,7 @@ CREATE TABLE super_admin(
     nombre VARCHAR(60) NOT NULL,
     correo VARCHAR(100) NOT NULL,
     telefono VARCHAR(10) NULL,
-    contrasena VARCHAR(10) NOT NULL,
+    contrasena VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -58,7 +58,7 @@ CREATE TABLE admin(
     apellido VARCHAR(30) NOT NULL,
     correo VARCHAR(100) NOT NULL,
     telefono VARCHAR(10) NOT NULL,
-    contrasena VARCHAR(10) NOT NULL,
+    contrasena VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ); 
 
@@ -70,7 +70,7 @@ CREATE TABLE profesional(
     correo VARCHAR(100) NOT NULL,
     telefono VARCHAR(10) NOT NULL,
     curriculum VARCHAR(100) NOT NULL,
-    contrasena VARCHAR(10) NOT NULL,
+    contrasena VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

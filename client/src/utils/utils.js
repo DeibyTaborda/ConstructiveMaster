@@ -66,7 +66,6 @@ export const validarNumerosYSimbolos = (texto) => {
     return regexNumerosYSimbolos.test(texto);
 }
 
-
 export const validarLongitudTexto = (texto, longitud) => {
     if (texto.length > longitud){
         return true;
@@ -74,4 +73,9 @@ export const validarLongitudTexto = (texto, longitud) => {
 
     return false;
 } 
+
+export const validarCorreo2 = (correo) => {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(correo);
+}
 

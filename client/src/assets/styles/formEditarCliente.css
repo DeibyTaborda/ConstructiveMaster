@@ -1,7 +1,87 @@
 .form-editar-cliente {
+    width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: var(--white);
+} 
 
+.titulo-form-editar-cliente {
+    margin: 20px 0 5px 0;
+    color: var(--color-principal);
+    font-family: var(--parrafos2);
+}
+
+.nombre-cliente-editar {
+    font-family: var(--parrafos2);
+    font-style: italic;
+}
+
+ .label-form-editar-cliente {
+    width: 200px;
+    margin-top: 20px;
+    font-family: var(--parrafos2);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-principal);
+ }
+
+ .input-form-editar-cliente {
+    margin-top: 10px;
+    width: 200px;
+    border: none;
+    padding-left: 5px;
+    border-bottom: 1px solid var(--color-principal);
+    color: gray;
+    transition: border-bottom 0.3s ease;
+}
+
+.input-form-editar-cliente:focus {
+    outline: none;
+    border-bottom: 1px solid gray;
+    color: black;
+    font-size: 14px;
+}
+
+.input-file-form-editar-cliente {
+    width: 200px;
+    margin-top: 10px;
+}
+
+.contenedor-botones-form-editar-cliente {
+    width: 200px;
+    margin: 40px 0 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.boton-form-agregar-cliente {
+    width: 80px;
+    border: none;
+    padding: 2px 0 2px 0;
+    background-color: var(--color-principal);
+    color: var(--white);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-form-agregar-cliente:hover {
+    background-color: #D97300;
+}
+
+.boton-cancelar-agregar-cliente {
+    width: 80px;
+    border: none;
+    padding: 2px 0 2px 0;
+    color: var(--white);
+    background-color: #B0B0B0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-cancelar-agregar-cliente:hover{
+    background-color: #808080;
 }

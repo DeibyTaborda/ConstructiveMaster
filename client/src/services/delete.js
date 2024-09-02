@@ -16,7 +16,7 @@ const useDelete = (url) => {
                 headers: {Authorization: `Bearer ${token}` }
             });
             console.log("Respuesta completa:", response); // Agrega esta línea
-            setResponse(response.data);
+            setResponse(response.data.message);
             console.log("Respuesta data:", response.data); // Y esta también
         } catch (error) {
             if (error.response && error.response.data && error.response.data.message) {

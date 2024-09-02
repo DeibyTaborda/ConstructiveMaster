@@ -12,10 +12,8 @@ import SubcategoryContext from "../context/SubcategoryContext";
 import { UsuarioProveedor } from "../context/UsuarioContexto";
 import { TablasProveedor } from "../context/TablasBdContext";
 
-
 function Aplication(){
     const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  ;
 
     return(
         <>

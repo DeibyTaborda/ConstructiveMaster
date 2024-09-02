@@ -18,7 +18,7 @@ function usePostRequest(url) {
                       Authorization: `Bearer ${token}` 
                 },
             });
-            setResponse(res.data);
+            setResponse(res.data.message);
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 setError(err.response.data.message);

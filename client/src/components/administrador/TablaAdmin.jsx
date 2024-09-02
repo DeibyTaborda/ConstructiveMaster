@@ -5,6 +5,7 @@ import ButtonEditar from "./ButtonEditar";
 import ButtonEliminar from "./ButtonEliminar";
 import useDelete from "../../services/delete";
 import SubcategoryContext from "../../context/SubcategoryContext";
+import { MdOutlinePassword } from "react-icons/md";
 
 function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, acciones }) {
   const { setSelectedSubcategory, selectedSubcategory } = useContext(SubcategoryContext);
@@ -57,14 +58,22 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
                 if (column === "Acciones") {
                   return (
                     <td key={index}>
-                      <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(row.id)} />
-                      <ButtonEliminar id="boton-eliminar" onClick={() => handleSelected(row.id)} description="Eliminar" />
+                      <div className="contenedor-botones-tabla-admin">
+                        <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(row.id)} />
+                        <ButtonEliminar onClick={() => handleSelected(row.id)} description="Eliminar" />
+                      </div>
                     </td>
                   );
                 } else if (column === "curriculum") {
                   return (
                     <td key={index}>
                       <FaFilePdf size={20} />
+                    </td>
+                  );
+                } else if (column === 'contrasena') {
+                  return (
+                    <td key={index}>
+                      <MdOutlinePassword size={20} />
                     </td>
                   );
                 } else {

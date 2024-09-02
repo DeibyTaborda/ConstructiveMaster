@@ -15,5 +15,6 @@ router.put('/categorias/:tabla/:id', upload2.single('imgCategoria'), adminContro
 router.post('/login', loginController.logearUsuario);
 router.delete('/clientes/:id', verificarToken, verificarRol(['admin', 'super_admin']), adminController.eliminarCliente);
 router.put('/clientes/:id', verificarToken, verificarRol(['admin', 'super_admin']), upload2.single('imagen'), adminController.actualizarCliente);
+router.post('/clientes', verificarToken, verificarRol(['admin', 'super_admin']), upload2.single('imagen'), adminController.agregarCliente);
 
 module.exports = router; // Exporta el enrutador para su uso en otros archivos de la aplicación

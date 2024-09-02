@@ -1,0 +1,39 @@
+.dialogo-confirmar-eliminar-cliente {
+    width: 300px;
+    display: flex;
+    padding: 30px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white);
+}
+
+.titulo-confirmar-eliminar-cliente {
+    font-family: var(--parrafos2);
+    color: var(--color-principal);
+}
+
+.nombre-del-cliente-a-eliminar {
+    margin-top: 3px;
+    font-family: var(--parrafos2);
+    font-style: italic;
+}
+
+.pregunta-confirmar-eliminar-cliente {
+    margin-top: 15px;
+    font-family: var(--parrafos2);
+    font-size: 14px;
+}
+
+.icon-confirmar-eliminar-cliente {
+    margin: 20px 0 20px 0;
+    font-size: 100px;
+}
+
+.contenedor-botones-confirmar-eliminar-cliente {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}

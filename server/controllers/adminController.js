@@ -1,6 +1,8 @@
 const db = require('../db/db');
 const dbMysql2 = require('../db/db-mysql2');
-const validations = require('../validations/validations')
+const validations = require('../validations/validations');
+const bcrypt = require('bcryptjs');
+const generadorContrasena = require('password-generator');
 
 // Controlador para obtener todos los clientes
 exports.getClientes = (req, res) => {
@@ -320,26 +322,40 @@ exports.actualizarCliente = async(req, res) => {
   const imagen = req.file?.path || null;
   console.log(nombre);
 
+  const errores = [];
+
+  // Validar nombre
   if (validations.validarNumerosYSimbolos(nombre)) {
-    return res.status(400).json({ message: 'El nombre no debe contener números ni caracteres especiales' });
+    errores.push('El nombre no debe contener números ni caracteres especiales');
   } else if (validations.validarLongitud(nombre, 30)) {
-    return res.status(400).json({ message: 'El nombre no debe contener más de 30 caracteres' });
+    errores.push('El nombre no debe contener más de 30 caracteres');
   }
-
+  
+  // Validar correo
   if (validations.validarCorreo(correo)) {
-    return res.status(400).json({ message: 'Por favor, ingrese un correo válido' });
+    errores.push('Por favor, ingrese un correo válido');
   } else if (validations.validarLongitud(correo, 100)) {
-    return res.status(400).json({ message: 'El correo no debe contener más de 100 caracteres' });
+    errores.push('El correo no debe contener más de 100 caracteres');
   }
-
+  
+  // Validar teléfono
   if (!validations.validarNumeroTelefonico(telefono)) {
-    return res.status(400).json({ message: 'Número telefónico inválido. Usa 7 dígitos (fijo) o 10 dígitos (celular).' });
-  } else if (validations.validarLongitud(direccion, 20)) {
-    return res.status(400).json({ message: 'La dirección no debe contener más de 20 caracteres' });
+    errores.push('Número telefónico inválido. Usa 7 dígitos (fijo) o 10 dígitos (celular).');
   }
-
-  if (!validations.validarImagen(imagen)) {
-    return res.status(400).json({ message: 'Tipo de archivo no permitido' });
+  
+  // Validar dirección
+  if (validations.validarLongitud(direccion, 30)) {
+    errores.push('La dirección no debe contener más de 30 caracteres');
+  }
+  
+  // Validar imagen
+  if (imagen && !validations.validarImagen(imagen)) {
+    errores.push('Tipo de archivo no permitido');
+  }
+  
+  // Si hay errores, enviarlos
+  if (errores.length > 0) {
+    return res.status(400).json({ message: errores });
   }
 
   const camposActualizar = {};
@@ -370,4 +386,102 @@ exports.actualizarCliente = async(req, res) => {
     res.status(500).json({ message: 'No se pudo actulizar los datos del cliente' });
   }
 
+}
+
+exports.agregarCliente = async(req, res) => {
+  const {nombre, correo, telefono, direccion} = req.body;
+  const imagen = req.file?.path || null;
+  console.log(nombre);
+  console.log(correo);
+  const errores = [];
+
+  // Validar nombre
+  if (validations.validarNumerosYSimbolos(nombre)) {
+    errores.push('El nombre no debe contener números ni caracteres especiales');
+  } else if (validations.validarLongitud(nombre, 30)) {
+    errores.push('El nombre no debe contener más de 30 caracteres');
+  }
+  
+  // Validar correo
+  if (validations.validarCorreo(correo)) {
+    errores.push('Por favor, ingrese un correo válido');
+  } else if (validations.validarLongitud(correo, 100)) {
+    errores.push('El correo no debe contener más de 100 caracteres');
+  }
+  
+  // Validar teléfono
+  if (telefono && !validations.validarNumeroTelefonico(telefono)) {
+    errores.push('Número telefónico inválido. Usa 7 dígitos (fijo) o 10 dígitos (celular).');
+  }
+  
+  // Validar dirección
+  if (validations.validarLongitud(direccion, 30)) {
+    errores.push('La dirección no debe contener más de 30 caracteres');
+  }
+  
+  // Validar imagen
+  if (imagen && !validations.validarImagen(imagen)) {
+    errores.push('Tipo de archivo no permitido');
+  }
+  
+  // Si hay errores, enviarlos
+  if (errores.length > 0) {
+    console.log(errores);
+    return res.status(400).json({ message: errores });
+  }
+  
+  const consultarCorreoUsuarios = [
+    'SELECT correo FROM super_admin WHERE correo = ?',
+    'SELECT correo FROM admin WHERE correo = ?',
+    'SELECT correo FROM cliente WHERE correo = ?',
+    'SELECT correo FROM profesional WHERE correo = ?'
+];
+
+  //generar una contraseña de manera automática
+  const contrasena = generadorContrasena(12, false);
+  console.log('Contraseña Generada:', contrasena);
+
+  // Encriptar la contraseña
+  const sal = bcrypt.genSaltSync(10);
+  const contrasenaEncriptada = bcrypt.hashSync(contrasena, sal);
+  console.log('Contraseña Encriptada:', contrasenaEncriptada);
+  
+
+  const camposAgregar = {};
+  if (nombre) camposAgregar.nombre = nombre;
+  if (correo) camposAgregar.correo = correo;
+  if (telefono) camposAgregar.telefono = telefono;
+  if (direccion) camposAgregar.direccion = direccion;
+  if (imagen) camposAgregar.imagen = imagen
+  if (contrasenaEncriptada) camposAgregar.contrasena = contrasenaEncriptada;
+
+  if (Object.keys(camposAgregar).length === 0) {
+    return res.status(200).json({ message: 'No se proporcionaron datos para actualizar.' })
+  }
+
+  const clausulaClienteSql = Object.entries(camposAgregar)
+  .map(([key, value]) => `${key}`)
+  .join(', ');
+
+  const valores = Object.values(camposAgregar)
+  .map(valor => `'${valor}'`)
+  .join(', ');;
+
+  const agregarClienteSql = `INSERT INTO cliente(${clausulaClienteSql}) VALUES(${valores})`;
+
+  try {
+    for (let consulta of consultarCorreoUsuarios) {
+      const [resultado] = await dbMysql2.query(consulta, [correo]);
+      if (resultado.length > 0) {
+        console.log('el correo ya esta en uso')
+          return res.status(409).json({ message: 'El correo ya está en uso.' });
+      }
+    }
+    await dbMysql2.query(agregarClienteSql, valores);
+    console.log('Se registro correctamente el cliente');
+    res.status(200).json({ message: 'EL cliente se registro exitosamente' });
+  } catch (error) {
+    console.error('No se puedo registrar el cliente', error);
+    res.status(500).json({ message: 'No se pudo registrar el cliente. Por favor, intentar más tarde' });
+  }
 }

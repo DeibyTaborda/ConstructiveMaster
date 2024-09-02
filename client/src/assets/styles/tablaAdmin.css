@@ -47,10 +47,11 @@ td.item-table-admin {
     text-overflow: ellipsis; /* Añade puntos suspensivos si el texto es demasiado largo */
 }
 
-#boton-eliminar{
-    position: relative;
-    left: 20px;
+.contenedor-botones-tabla-admin {
+    display: flex;
+    gap: 10px;
 }
+
 
 
 @media (max-width: 768px) {
