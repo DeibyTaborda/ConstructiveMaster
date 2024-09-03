@@ -485,3 +485,58 @@ exports.agregarCliente = async(req, res) => {
     res.status(500).json({ message: 'No se pudo registrar el cliente. Por favor, intentar más tarde' });
   }
 }
+
+exports.incorporarProfesional = async(req, res) => {
+  const { id } = req.params;
+  const consultas = [
+    'SELECT * FROM solicitud WHERE id = ?',
+    'INSERT INTO profesional(nombre, apellido, especialidad, correo, telefono, curriculum, contrasena) VALUES(?, ?, ?, ?, ?, ?, ?)',
+    'DELETE FROM solicitud WHERE id = ?'
+  ];
+
+  if (!id) {
+    return res.status(400).json({ message: 'No se proporcionó el id' });
+  }
+
+  try {
+    // Obtener los datos de la solicitud profesional
+    const [datosSolicitudProfesional] = await dbMysql2.query(consultas[0], [id]);
+    console.log(datosSolicitudProfesional);
+
+    if (datosSolicitudProfesional.length === 0) {
+      return res.status(404).json({ message: 'No se pudo encontrar los datos del profesional' });
+    }
+
+    // Generar una contraseña de manera automática
+    const contrasena = generadorContrasena(12, false);
+    console.log('Contraseña Generada:', contrasena);
+
+    // Encriptar la contraseña
+    const sal = bcrypt.genSaltSync(10);
+    const contrasenaEncriptada = bcrypt.hashSync(contrasena, sal);
+    console.log('Contraseña Encriptada:', contrasenaEncriptada);
+
+    // Asignar los datos del profesional, incluyendo la contraseña encriptada
+    const datosProfesional = [
+      datosSolicitudProfesional[0].nombre,
+      datosSolicitudProfesional[0].apellido,
+      datosSolicitudProfesional[0].especialidad,
+      datosSolicitudProfesional[0].correo,
+      datosSolicitudProfesional[0].telefono,
+      datosSolicitudProfesional[0].curriculum,
+      contrasenaEncriptada
+    ];
+    console.log(datosProfesional);
+
+    // Insertar los datos del profesional en la base de datos
+    await dbMysql2.query(consultas[1], datosProfesional);
+
+    // Eliminar la solicitud después de agregar al profesional
+    await dbMysql2.query(consultas[2], [id]);
+
+    res.status(200).json({ message: 'El profesional se incorporó de manera exitosa' });
+  } catch (error) {
+    console.error('No se pudo incorporar el profesional', error);
+    res.status(500).json({ message: 'No se pudo incorporar al profesional' });
+  }
+};

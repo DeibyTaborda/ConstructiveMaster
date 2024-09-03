@@ -22,7 +22,7 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
   }
 
   const handleSelectedEdit = (id) => {
-    if (tableId === 'clientes') {
+    if (['clientes', 'solicitud_profesional'].includes(tableId)) {
       return onClickEdit(id);
     }
     onClickEdit();
@@ -51,16 +51,25 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
             ))}
           </tr>
         </thead>
-        <tbody>
-          {data.map((row) => (
+        <tbody> 
+          {data && data.map((row) => (
             <tr key={row.id}>
               {columns.map((column, index) => {
                 if (column === "Acciones") {
                   return (
                     <td key={index}>
                       <div className="contenedor-botones-tabla-admin">
-                        <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(row.id)} />
-                        <ButtonEliminar onClick={() => handleSelected(row.id)} description="Eliminar" />
+                        {tableId === 'solicitud_profesional' ? (
+                          <>
+                              <ButtonEditar descripcion="Aceptar" onClick={() => handleSelectedEdit(row.id)} />
+                              <ButtonEliminar onClick={() => handleSelected(row.id)} description="Archivar" />
+                          </>
+                        ) : (
+                          <>
+                            <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(row.id)} />
+                            <ButtonEliminar onClick={() => handleSelected(row.id)} description="Eliminar" />
+                          </>
+                        )}
                       </div>
                     </td>
                   );

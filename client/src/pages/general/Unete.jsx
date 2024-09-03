@@ -6,6 +6,7 @@ import Footer from "../../components/general/footer";
 import SubmitButton from "../../components/general/SubmitButton";
 import useAxios from "../../services/api";
 import axios from "axios";
+import {validarNumerosYSimbolos, validarLongitudTexto} from '../../utils/utils'
 
 function Unete(){
     const [datos, setDatos] = useState({
@@ -17,10 +18,26 @@ function Unete(){
         curriculum: ''
     });
 
+    const [response, setResponse] = useState(null);
+    const [errorPost, setErrorPost] = useState(null);
+
     const {loading, error, data, fetchData} = useAxios('http://localhost:3001/unete');
 
     const handleChange = (e) => {
         const {name, value} = e.target;
+        if(['nombre', 'apellido'].includes(name)){
+            if (validarNumerosYSimbolos(value)) return;
+            if (validarLongitudTexto(value, 30)) return;
+        }
+
+        if (name === 'correo') {
+            if (validarLongitudTexto(value, 100)) return;
+        }
+
+        if (name === 'telefono') {
+            if (validarLongitudTexto(value, 10)) return;
+        }
+
         setDatos({...datos, [name] : value});
     }
 
@@ -31,6 +48,9 @@ function Unete(){
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (errorPost) setErrorPost('');
+        if (response) setResponse('');
 
         const formData = new FormData();
         
@@ -49,10 +69,9 @@ function Unete(){
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
-            console.log('solicitud enviando datos');
+            setResponse(response.data.message);
         } catch (error) {
-            console.error('Error en enviar los datos', error);
+            setErrorPost(error.response?.data.message);
         }
 
         setDatos({
@@ -92,6 +111,7 @@ function Unete(){
                     />
                     <label htmlFor="especialidad" className="label-login-form">Especialidad:</label>
                     <select name="especialidad" value={datos.especialidad} onChange={handleChange}>
+                        <option value="seleccionar">Seleccionar</option>
                         {data && data.map((subcategoria, index) => (
                             <option key={index} value={subcategoria.subcategoria}>{subcategoria.subcategoria}</option>
                         ))};
@@ -118,19 +138,19 @@ function Unete(){
                     <input
                         type="file"
                         name="curriculum"
+                        accept=".pdf,.doc,.docx"
                         id="curriculum"
                         onChange={handleFileChange}
                     />
                     <SubmitButton id='submit-boton' />
                 </form>
+                {response && (
+                    <p>{response}</p>
+                )}
+                {errorPost && (
+                    <p>{errorPost}</p>
+                )}
             </section>
-            <p>{datos.nombre && datos.nombre}</p>
-            <p>{datos.apellido && datos.apellido}</p>
-            <p>{datos.especialidad && datos.especialidad}</p>
-            <p>{datos.correo && datos.correo}</p>
-            <p>{datos.telefono && datos.telefono}</p>
-            <p>{datos.curriculum.name && datos.curriculum.name}</p>
-            
         <Footer/>
     </>
     );

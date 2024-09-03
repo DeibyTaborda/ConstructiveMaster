@@ -2,7 +2,7 @@ const regexvalidacionCaracteres = /[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/;
 
 
 const validarNombre = (name) => {
-    const regex = /\d|\.|,|[^\w\s]/;
+    const regex = regexvalidacionCaracteres;
     let messageError = '';
     if (regex.test(name)) {
         messageError = 'No se permite números y caracteres especiales';

@@ -1,6 +1,8 @@
 .section-register-form-unete{
     height: 100vh;
     display: flex;
+    flex-direction: column;
+    gap: 30px;
     justify-content: center;
     align-items: center;
 }

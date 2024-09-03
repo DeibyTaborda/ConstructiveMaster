@@ -79,3 +79,8 @@ export const validarCorreo2 = (correo) => {
     return regex.test(correo);
 }
 
+export const validarArchivo = (nombreArchivo) => {
+    const regex = /\.((docx?)|(pdf))$/i;
+    return regex.test(nombreArchivo);
+};
+
