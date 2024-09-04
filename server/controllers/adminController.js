@@ -540,3 +540,23 @@ exports.incorporarProfesional = async(req, res) => {
     res.status(500).json({ message: 'No se pudo incorporar al profesional' });
   }
 };
+
+
+exports.eliminarSolicitudProfesional = async(req, res) => {
+  const {id} = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: 'No se proporcionó un id de referencia' });
+  }
+
+  // Consulta 
+  const eliminarSolicitud = 'DELETE FROM solicitud WHERE id = ?';
+
+  try {
+    await dbMysql2.query(eliminarSolicitud, [id]);
+    res.status(200).json({ message: 'La solicitud se eliminó exitosamente' });
+  } catch (error) {
+    res.status(500).json({ message: 'No se pudo eliminar la solicitud. Por favor, inténtalo más tarde' });
+  }
+
+}

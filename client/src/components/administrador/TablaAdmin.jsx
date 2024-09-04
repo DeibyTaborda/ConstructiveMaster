@@ -12,7 +12,7 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
   const [id, setId] = useState(null);
 
   const handleSelected = (id) => {
-    if (tableId === 'clientes') {
+    if (['clientes', 'solicitud_profesional'].includes(tableId)) {
       return onClick(id);
     }
     onClick();
