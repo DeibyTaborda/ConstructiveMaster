@@ -60,7 +60,7 @@ function Clientes(){
     const actualizarCliente = async(data) => {
         await sendPutRequest(`http://localhost:3001/clientes/${idClienteSeleccionado}`, data);
         fetchData();
-        setModalEditarCliente(false);
+        setModalEditarCliente(false); 
     };
 
     const datosClienteEliminar = () => {

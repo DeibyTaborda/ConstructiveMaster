@@ -35,8 +35,7 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
     if (selectedSubcategory){
       console.log(selectedSubcategory);
     }
-  }, [selectedSubcategory]);
-
+  }, [selectedSubcategory]); 
 
   if (!data) return <p>loading...</p>
 
@@ -76,14 +75,19 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
                 } else if (column === "curriculum") {
                   return (
                     <td key={index}>
-                      <FaFilePdf size={20} />
+                     {row.curriculum ?  <FaFilePdf size={20} /> : ''}
                     </td>
                   );
                 } else if (column === 'contrasena') {
                   return (
                     <td key={index}>
-                      <MdOutlinePassword size={20} />
+                      {row.contrasena  ? <MdOutlinePassword size={20} /> : ''}
                     </td>
+                  );
+                } else if (column === 'id_categoria') {
+                  return (
+                    row.id_categoria === 1 ? <td key={index}>Diseño y planificación</td> : <td key={index}>Ejecución</td> 
+                    
                   );
                 } else {
                   return <td key={index}>{row[column]}</td>;

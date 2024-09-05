@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import '../../assets/styles/formularioCategorias.css';
 import usePostRequest from "../../services/usePostRequest";
 import {primeraLetraMayuscula} from '../../utils/utils';
+import useAxios from "../../services/api";
 
-function FormularioCategorias({ campos, title, id, onClick}) {
+function FormularioCategorias({ campos, title, id, onClick, foreingKeysCategoria}) {
     const [formData, setFormData] = useState({});
     const [errores, setErrores] = useState('');
     const [erroresImage, setErroresImage] = useState('');
 
-    const {loading, error, response, postRequest} = usePostRequest('http://localhost:3001/categorias');
+    const {loading, error, response, postRequest} = usePostRequest('http://localhost:3001/categorias'); 
     
     useEffect(() => {
         if (response) {
@@ -22,7 +23,7 @@ function FormularioCategorias({ campos, title, id, onClick}) {
         const { name, value } = e.target;
         const regex = /\d|\.|,|[^\w\sáéíóúÁÉÍÓÚüÜñÑ]/;
 
-        if (regex.test(value)){
+        if (['categoria', 'subcategoria'].includes(name) && regex.test(value)){
             setErrores('No se permiten números');
             return;
         } 
@@ -64,7 +65,7 @@ function FormularioCategorias({ campos, title, id, onClick}) {
         console.log(formData)
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault();
         const data = new FormData();
     
@@ -73,7 +74,7 @@ function FormularioCategorias({ campos, title, id, onClick}) {
             data.append(key, formData[key]);
         });
     
-        postRequest(data);
+        await postRequest(data);
         setFormData({});
     }
 
@@ -94,6 +95,17 @@ function FormularioCategorias({ campos, title, id, onClick}) {
                      {name === 'imagenCategoria' || name === 'imagenSubcategoria' && erroresImage ? <p className="error-form-category">{erroresImage}</p> : <p className="error-form-category"></p> }
                 </>
             ))}
+            {foreingKeysCategoria && (
+                <>
+                    <label htmlFor="id_categoria" className="label-categoria">Categoría:</label>
+                    <select autofocus  name="id_categoria" onChange={handleChange}>
+                    <option value="seleccionar">Seleccionar</option>
+                        {foreingKeysCategoria && foreingKeysCategoria.map((categoria) => (
+                    <option value={categoria.id}>{categoria.categoria}</option>
+                        ))}
+                </select>
+                </>
+                    )}
             <input type="submit" className="boton-enviar-categoria"/>
             {error && <p className="error-category-exists">{error}</p>}
         </form>

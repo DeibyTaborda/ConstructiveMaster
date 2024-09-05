@@ -2,7 +2,9 @@
 export const validarNombre = (name) => {
     const regex = /[^a-zA-ZñÑáéíóúüÁÉÍÓÚÜ\s]/g;
     let messageError = '';
-    if (regex.test(name)) {
+    if (!name) {
+        messageError = 'El nombre es obligatorio. Por favor, ingresa tu nombre';
+    } else if (regex.test(name)) {
         messageError = 'No se permite números y caracteres especiales';
     } else if (name.length > 50){
         messageError = 'No se permiten más de 50 caracteres';

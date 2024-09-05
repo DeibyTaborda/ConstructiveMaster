@@ -23,7 +23,7 @@ function Categorias() {
   const titleCategorias = 'Categorías';
   const camposSubcategorias = [
     { label: 'Nombre', name: 'subcategoria', tipo: 'text' },
-    { label: 'Imagen', name: 'imagenSubcategoria', tipo: 'file' },
+    { label: 'Imagen', name: 'imagenSubcategoria', tipo: 'file' }
   ];
 
   const camposCategorias = [
@@ -32,7 +32,7 @@ function Categorias() {
   ];
 
   const columsCategories = ['id', 'categoria', 'img_categoria', 'created_at', 'Acciones'];
-  const columsSubcategories = ['id', 'subcategoria', 'img_subcategoria', 'created_at', 'Acciones'];
+  const columsSubcategories = ['id', 'id_categoria','subcategoria', 'img_subcategoria', 'created_at', 'Acciones'];
 
   useEffect(() => {
     if (data) {
@@ -84,6 +84,7 @@ function Categorias() {
             campos={camposSubcategorias}
             title={formTitle}
             onClick={update}
+            foreingKeysCategoria={datos.categories}
           />
           <FormularioCategorias
             id="formulario-categoria"
@@ -152,6 +153,7 @@ function Categorias() {
             <div className='container-category-edit'>
               <FormEditarCategoria onClick={closePortalEdit} 
                 onUpdate={update}
+                foreingKeysCategorias={data.categories}
               />
             </div>, 
             document.body

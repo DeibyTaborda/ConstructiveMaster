@@ -28,7 +28,9 @@ CREATE TABLE subcategoria(
     id INT AUTO_INCREMENT PRIMARY KEY,
     subcategoria VARCHAR(30) NOT NULL,
     img_subcategoria VARCHAR(255) DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_categoria INT,
+    FOREIGN KEY (categoria_id) REFERENCES categoria(id)
 );
 
 CREATE TABLE solicitud(

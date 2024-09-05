@@ -21,7 +21,7 @@ function SolicitudProfesional() {
     const {loading: loadingEliminar, response, error: errorEliminar, eliminar} = useDelete(urlDelete);
 
     // Columnas de la tabla solicitudes profesionales
-    const columnas = ['id', 'nombre', 'apellido', 'especialidad', 'correo', 'telefono', 'curriculum', 'created_at', 'Acciones'];
+    const columnas = ['id', 'nombre', 'apellido', 'especialidad', 'correo', 'telefono', 'curriculum', 'imagen','created_at', 'Acciones'];
 
     useEffect(() => {
       if (idProfesionalSeleccionado) {

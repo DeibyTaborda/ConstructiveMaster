@@ -21,7 +21,9 @@ exports.getClientes = (req, res) => {
 
 //Controlador para registrar una categoría o subcategoría
 exports.registerCategory = (req, res) => {
-  const { categoria, subcategoria } = req.body;
+  const { categoria, subcategoria, id_categoria } = req.body;
+  console.log(id_categoria);
+  const id_categoriaNumber = Number(id_categoria);
   const regexNombre = /\d+/;
 
   // Acceso a los archivos subidos
@@ -34,7 +36,7 @@ exports.registerCategory = (req, res) => {
 
   // SQL queries
   const categoryRegister = 'INSERT INTO categoria(categoria, img_categoria) VALUES(?, ?)';
-  const subcategoryRegister = 'INSERT INTO subcategoria(subcategoria, img_subcategoria) VALUES(?, ?)';
+  const subcategoryRegister = 'INSERT INTO subcategoria(subcategoria, id_categoria, img_subcategoria) VALUES(?, ?, ?)';
   const categoryExists = 'SELECT categoria FROM categoria WHERE categoria = ?';
   const subcategoryExists = 'SELECT subcategoria FROM subcategoria WHERE subcategoria = ?';
 
@@ -105,7 +107,7 @@ exports.registerCategory = (req, res) => {
         console.log(`La subcategoría ${subcategoria} ya existe`);
         return res.status(400).json({ message: `La subcategoría ${subcategoria} ya existe` });
       } else {
-        db.query(subcategoryRegister, [subcategoria, subcategoriaImagePath], (error, results) => {
+        db.query(subcategoryRegister, [subcategoria, id_categoriaNumber, subcategoriaImagePath], (error, results) => {
           if (error) {
             console.error('La subcategoría no se registró', error);
             return res.status(500).json({ message: 'La subcategoría no se registró' });
@@ -558,5 +560,88 @@ exports.eliminarSolicitudProfesional = async(req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'No se pudo eliminar la solicitud. Por favor, inténtalo más tarde' });
   }
+}
+
+exports.obtenerProfesionales = async(req, res) => {
+  console.log('La solicitud pasó por aquí')
+  const seleccionarProfesionales = 'SELECT * FROM profesional';
+  try {
+    const [datosProfesional] = await dbMysql2.query(seleccionarProfesionales);
+    res.status(200).json(datosProfesional)
+  } catch (error) {
+    res.status(500).json({ message: 'Los profesionales no se pudieron seleccionar' });
+  }
 
 }
+
+exports.agregarProfesional = async (req, res) => {
+  const {nombre, apellido, especialidad, correo, telefono} = req.body;
+  const curriculumFile = req.files['curriculum'] ? req.files['curriculum'][0].path : null;
+  const imagenFile = req.files['imagen'] ? req.files['imagen'][0].path : null;
+
+  if (!nombre && !apellido && !especialidad && !correo && !telefono && !curriculumFile) {
+    return res.status(400).json({ message: 'Todos los campos son obligatorios. Por favor, ingrese los datos' });
+  }
+
+// validar formato del teléfono y el curriculum
+const validacionTelefono = validations.validarTelefono(telefono);
+const validacionCurriculum = validations.validarFile(curriculumFile);
+const validacionImagen = imagenFile ? validations.validarImagen(imagenFile) : null;
+
+
+  // validar que todos los datos sí esten presentes
+  const errores = {};
+  if (!nombre) errores.nombre = 'El nombre no puede estar vacío. Por favor, ingresa tu nombre.';
+  if (!apellido) errores.apellido = 'El apellido no puede estar vacío. Por favor, ingresa tu apellido.';
+  if (!especialidad) errores.especialidad = 'No seleccionaste una especialidad. Por favor, selecciona una especialidad.';
+  if (!correo) errores.correo = 'El correo no puede estar vacío. Por favor, ingresa tu correo electrónico.';
+  if (!telefono) errores.telefono = 'No ingresaste tu número telefónico. Por favor, ingrésalo.';
+
+  // Validar formato de los datos
+  if (!curriculumFile) errores.curriculum = 'No seleccionaste tu hoja de vida. Por favor, selecciona tu archivo de hoja de vida.';
+  if (validations.validarNumerosYSimbolos(nombre)) errores.formatoNombre = 'El nombre no puede contener números ni caracteres especiales';
+  if (validations.validarNumerosYSimbolos(apellido)) errores.apellido = 'El apellido no puede contener números ni caracteres especiales';
+  if (validations.validarCorreo(correo)) errores.formatoApellido = 'El correo no es válido. Por favor, ingresar un correo electrónico válido';
+  if (validacionImagen) errores.formatoImagen = 'La extensión del archivo es incorrecta. Solo se permiten imágenes en formato JPG, PNG, GIF o BMP.'
+  if (validacionTelefono) errores.formatoTelefono = validacionTelefono;
+  if (validacionCurriculum) errores.formatoCurriculum = validacionCurriculum;
+
+
+  if (Object.values(errores).length > 0) {
+    return res.status(400).json(errores);
+  }
+
+  // Generar una contraseña de manera automática
+  const contrasena = generadorContrasena(12, false);
+  console.log('Contraseña Generada:', contrasena);
+
+  // Encriptar la contraseña
+  const sal = bcrypt.genSaltSync(10);
+  const contrasenaEncriptada = bcrypt.hashSync(contrasena, sal);
+  console.log('Contraseña Encriptada:', contrasenaEncriptada);
+
+  const consultarCorreoUsuarios = [
+    'SELECT correo FROM super_admin WHERE correo = ?',
+    'SELECT correo FROM admin WHERE correo = ?',
+    'SELECT correo FROM cliente WHERE correo = ?',
+    'SELECT correo FROM profesional WHERE correo = ?'
+];
+
+  const agregarProfesional = 'INSERT INTO profesional(nombre, apellido, especialidad, correo, telefono, curriculum, imagen, contrasena) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+
+  try {
+      // Verificar si el correo ya existe en alguna tabla
+    for (let consulta of consultarCorreoUsuarios) {
+      const [resultado] = await dbMysql2.query(consulta, [correo]);
+      if (resultado.length > 0) {
+          return res.status(409).json({ message: 'El correo ya está en uso.' });
+      }
+    }
+    await dbMysql2.query(agregarProfesional, [nombre, apellido, especialidad, correo, telefono, curriculumFile, imagenFile, contrasenaEncriptada]);
+    res.status(200).json({ message: 'El profesional se incorporó de manera exitosa' });
+  } catch (error) {
+    console.error('Esto es un error', error)
+    res.status(500).json({ message: 'No se pudo incorporar el profesional' });
+  }
+}
+

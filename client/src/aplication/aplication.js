@@ -11,6 +11,7 @@ import DatosPersonalesAdmin from "../pages/administrador/DatosPersonalesAdmin";
 import SubcategoryContext from "../context/SubcategoryContext";
 import { UsuarioProveedor } from "../context/UsuarioContexto";
 import { TablasProveedor } from "../context/TablasBdContext";
+import Profesionales from "../pages/administrador/Profesionales";
 
 function Aplication(){
     const [selectedSubcategory, setSelectedSubcategory] = useState(null);
@@ -30,6 +31,7 @@ function Aplication(){
                         <Route path="/categorias" element={<Categorias/>}/>
                         <Route path="/panel_de_control" element={<PanelDeControl/>} />
                         <Route path="/datos/personales" element={<DatosPersonalesAdmin/>}/>
+                        <Route path="/profesionales" element={<Profesionales/>}/>
                     </Routes> 
                 </TablasProveedor>
             </UsuarioProveedor>

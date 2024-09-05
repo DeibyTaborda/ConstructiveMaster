@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function usePostRequest(url) {
@@ -20,8 +20,8 @@ function usePostRequest(url) {
             });
             setResponse(res.data.message);
         } catch (err) {
-            if (err.response && err.response.data && err.response.data.message) {
-                setError(err.response.data.message);
+            if (err.response && err.response.data) {
+                setError(err.response.data.message ? err.response.data.message :  err.response.data);
             } else {
                 setError('Error al enviar la solicitud.');
             }
@@ -29,7 +29,6 @@ function usePostRequest(url) {
             setLoading(false);
         }
     };
-
     return { response, error, loading, postRequest };
 }
 
