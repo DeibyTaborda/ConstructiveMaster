@@ -563,7 +563,6 @@ exports.eliminarSolicitudProfesional = async(req, res) => {
 }
 
 exports.obtenerProfesionales = async(req, res) => {
-  console.log('La solicitud pasó por aquí')
   const seleccionarProfesionales = 'SELECT * FROM profesional';
   try {
     const [datosProfesional] = await dbMysql2.query(seleccionarProfesionales);
@@ -602,10 +601,9 @@ const validacionImagen = imagenFile ? validations.validarImagen(imagenFile) : nu
   if (validations.validarNumerosYSimbolos(nombre)) errores.formatoNombre = 'El nombre no puede contener números ni caracteres especiales';
   if (validations.validarNumerosYSimbolos(apellido)) errores.apellido = 'El apellido no puede contener números ni caracteres especiales';
   if (validations.validarCorreo(correo)) errores.formatoApellido = 'El correo no es válido. Por favor, ingresar un correo electrónico válido';
-  if (validacionImagen) errores.formatoImagen = 'La extensión del archivo es incorrecta. Solo se permiten imágenes en formato JPG, PNG, GIF o BMP.'
+  if (!validacionImagen) errores.formatoImagen = 'La extensión del archivo es incorrecta. Solo se permiten imágenes en formato JPG, PNG, GIF o BMP.'
   if (validacionTelefono) errores.formatoTelefono = validacionTelefono;
   if (validacionCurriculum) errores.formatoCurriculum = validacionCurriculum;
-
 
   if (Object.values(errores).length > 0) {
     return res.status(400).json(errores);
@@ -640,8 +638,107 @@ const validacionImagen = imagenFile ? validations.validarImagen(imagenFile) : nu
     await dbMysql2.query(agregarProfesional, [nombre, apellido, especialidad, correo, telefono, curriculumFile, imagenFile, contrasenaEncriptada]);
     res.status(200).json({ message: 'El profesional se incorporó de manera exitosa' });
   } catch (error) {
-    console.error('Esto es un error', error)
     res.status(500).json({ message: 'No se pudo incorporar el profesional' });
   }
 }
 
+
+exports.editarProfesional = async(req, res) => {
+  const {id} = req.params;
+  const {nombre, apellido, especialidad, correo, telefono} = req.body;
+  const curriculumFile = req.files['curriculum'] ? req.files['curriculum'][0].path : null;
+  const imagenFile = req.files['imagen'] ? req.files['imagen'][0].path : null;
+
+  if (!id) {
+    return res.status(400).json({ mensaje: 'ID inválido.' });
+  }
+
+// validar formato del teléfono y el curriculum
+const validacionTelefono = telefono ? validations.validarTelefono(telefono) : null;
+const validacionCurriculum = curriculumFile ? validations.validarFile(curriculumFile) : null;
+const validacionImagen = imagenFile ? validations.validarImagen(imagenFile) : null;
+
+  // Validar formato de los datos
+  const errores = {};
+  if (nombre){
+    if (validations.validarNumerosYSimbolos(nombre)) {
+      errores.formatoNombre = 'El nombre no puede contener números ni caracteres especiales';
+    }
+  }
+
+  if (apellido) {
+    if (validations.validarNumerosYSimbolos(apellido)) {
+      errores.apellido = 'El apellido no puede contener números ni caracteres especiales';
+    }
+  }
+
+  if (correo) {
+    if (validations.validarCorreo(correo)) {
+      errores.formatoApellido = 'El correo no es válido. Por favor, ingresar un correo electrónico válido';
+    }
+  }
+
+  if (telefono) {
+    if (validacionTelefono) {
+      errores.formatoTelefono = validacionTelefono;
+    }
+  }
+
+  if (!validacionImagen && validacionImagen !== null) errores.formatoImagen = 'La extensión del archivo es incorrecta. Solo se permiten imágenes en formato JPG, PNG, GIF o BMP.'
+  if (validacionCurriculum) errores.formatoCurriculum = validacionCurriculum;
+
+  console.log(errores);
+
+  if (Object.values(errores).length > 0) {
+    return res.status(400).json(errores);
+  }
+
+    // Crear un objeto con solo los campos que no son undefined
+    const camposAActualizar = {};
+    if (nombre) camposAActualizar.nombre = nombre;
+    if (apellido) camposAActualizar.apellido = apellido;
+    if (especialidad) camposAActualizar.especialidad = especialidad;
+    if (correo) camposAActualizar.correo = correo;
+    if (telefono) camposAActualizar.telefono = telefono;
+    if (curriculumFile) camposAActualizar.curriculum = curriculumFile;
+    if (imagenFile) camposAActualizar.imagen = imagenFile;
+
+    // Verificar si hay algo que actualizar
+    console.log(camposAActualizar);
+    if (Object.keys(camposAActualizar).length === 0) {
+        return res.status(400).json({ mensaje: 'No se proporcionaron datos para actualizar.' });
+    }
+
+    // Construir la consulta SQL dinámicamente
+    const setClause = Object.entries(camposAActualizar)
+        .map(([key, value]) => `${key} = ?`)
+        .join(', ');
+
+    const values = Object.values(camposAActualizar);
+
+    const sql = `UPDATE profesional SET ${setClause} WHERE id = ?`;
+
+    values.push(id); // Añadir el ID al final de los valores
+
+  const consultarCorreoUsuarios = [
+    'SELECT correo FROM super_admin WHERE correo = ?',
+    'SELECT correo FROM admin WHERE correo = ?',
+    'SELECT correo FROM cliente WHERE correo = ?',
+    'SELECT correo FROM profesional WHERE correo = ?'
+];
+
+  try {
+      // Verificar si el correo ya existe en alguna tabla
+    for (let consulta of consultarCorreoUsuarios) {
+      const [resultado] = await dbMysql2.query(consulta, [correo]);
+      if (resultado.length > 0) {
+          return res.status(409).json({ message: 'El correo ya está en uso.' });
+      }
+    }
+
+    await dbMysql2.query(sql, values);
+    res.status(200).json({ message: 'El profesional se incorporó de manera exitosa' });
+  } catch (error) {
+    res.status(500).json({ message: 'No se pudo incorporar el profesional' });
+  }
+}

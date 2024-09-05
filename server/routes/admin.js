@@ -20,5 +20,6 @@ router.delete('/solicitud_profesional/:id', verificarToken, verificarRol(['admin
 router.delete('/solicitud_profesional/:id/:nombre', verificarToken, verificarRol(['admin', 'super_admin']), adminController.eliminarSolicitudProfesional);
 router.get('/profesionales', verificarToken, verificarRol(['admin', 'super_admin']), adminController.obtenerProfesionales);
 router.post('/profesionales', verificarToken, verificarRol(['admin', 'super_admin']), upload,adminController.agregarProfesional);
+router.put('/profesionales/:id', verificarToken, verificarRol(['admin', 'super_admin']), upload,adminController.editarProfesional);
 
 module.exports = router; // Exporta el enrutador para su uso en otros archivos de la aplicación
