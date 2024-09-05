@@ -6,31 +6,70 @@ import useAxios from "../../services/api";
 import TarjetaAgregarEntidad from "../../components/administrador/TarjetaAgregarEntidad";
 import FormAgregarProfesional from "../../components/super-administrador/FormAgregarProfesional";
 import usePostRequest from "../../services/usePostRequest";
+import FormEditarProfesional from "../../components/super-administrador/FormEditarProfesional";
+import { usePutRequest } from "../../services/usePutRequest.js";
 
 function Profesionales() {
+    const [idProfesionalSeleccionado, setIdProfesionalSeleccionado] = useState(null);
     const [errores, setErrores] = useState(null);
-    const [respuestas, setRespuestas] = useState(null);
+    const [respuestasExitosas, setRespuestasExitosas] = useState(null);
     const {loading, error, response, data, fetchData} = useAxios('http://localhost:3001/profesionales');
     const {loading: loadingAgregar, error: errorAgregar, response: responseAgregar, postRequest} = usePostRequest('http://localhost:3001/profesionales');
+    const {loading: loadingActualizar, error: errorActualizar, response: responseActualizar, sendPutRequest} = usePutRequest();
 
     const columnas = ['id', 'nombre', 'apellido', 'especialidad', 'correo', 'telefono', 'curriculum', 'contrasena', 'imagen', 'Acciones'];
 
     const crearProfesional = async(formData) => {
         setErrores('');
-        setRespuestas('');
+        setRespuestasExitosas('');
         await postRequest(formData);
         await fetchData();
+    }
+
+    const editarProfesional = async(data) => {
+        setErrores('');
+        setRespuestasExitosas('');
+        await sendPutRequest(`http://localhost:3001/profesionales/${idProfesionalSeleccionado}`, data);
+        await fetchData();
+    }
+
+    const obtenerIdProfesional = (id) => {
+        setIdProfesionalSeleccionado(id);
     }
 
     useEffect(() => {
         if (errorAgregar) {
             setErrores(errorAgregar);
-            setRespuestas(''); // Limpiar respuesta en caso de error
-        } else if (responseAgregar) {
-            setRespuestas(responseAgregar);
-            setErrores(''); // Limpiar errores en caso de respuesta exitosa
+            setRespuestasExitosas('');
+        } 
+    }, [errorAgregar]);
+    
+    useEffect(() => {
+        if (responseAgregar) {
+            setRespuestasExitosas(responseAgregar);
+            setErrores('');
         }
-    }, [errorAgregar, responseAgregar]);
+    }, [responseAgregar]);
+    
+    useEffect(() => {
+        if (errorActualizar) {
+            console.log(errorActualizar);
+            setErrores(errorActualizar);
+        }
+    }, [errorActualizar]);
+    
+    useEffect(() => {
+        if (idProfesionalSeleccionado) {
+            console.log(idProfesionalSeleccionado);
+        }
+    }, [idProfesionalSeleccionado]);
+    
+    useEffect(() => {
+        if (responseActualizar) {
+            setRespuestasExitosas(responseActualizar);
+            setErrores('');
+        }
+    }, [responseActualizar]);
     
 
     return(
@@ -39,12 +78,13 @@ function Profesionales() {
                 <MenuAdmin />
                 <div className="container-table-solicitud-profesional">
                     <div className="hola">
-                        <TablaAdmin  columns={columnas}  title={'Profesionales'} data={data}/>                 
+                        <TablaAdmin  columns={columnas}  title={'Profesionales'} data={data} onClickEdit={obtenerIdProfesional} tableId={'profesionales'}/>                 
                     </div>
                     <TarjetaAgregarEntidad cadena={'Agregar profesional'}/>
                     <div>
                         <FormAgregarProfesional onClickCrear={crearProfesional}/>
-                        {respuestas && <p>{respuestas}</p>}
+                        <FormEditarProfesional onClickEditar={editarProfesional}/>
+                        {respuestasExitosas ? <p>{respuestasExitosas}</p> : ''}
                         {errores && typeof errores === 'string' ? (
                             <p>{errores}</p>
                         ) : (
