@@ -742,3 +742,18 @@ const validacionImagen = imagenFile ? validations.validarImagen(imagenFile) : nu
     res.status(500).json({ message: 'No se pudo incorporar el profesional' });
   }
 }
+
+exports.eliminarProfesional = async(req, res) => {
+  const {id} = req.params;
+  const elimnarProfesionalSql = 'DELETE FROM profesional WHERE id = ?';
+
+  if (!id) return res.status(400).json({ message: 'El id no existe' });
+
+  try {
+    await dbMysql2.query(elimnarProfesionalSql, [id]);
+    res.status(200).json({ message: 'Se eliminó exitosamente el profesional' });
+  } catch (error) {
+    console.error('No se pudo eliminar el profesional:' , error)
+    res.status(500).json({ message: 'No se pudo eliminar el profesional' });
+  }
+}
