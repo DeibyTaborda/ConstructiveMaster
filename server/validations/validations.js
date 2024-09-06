@@ -112,15 +112,9 @@ const esFechaValida = (fecha) => {
 }
 
 const esHoraValida = (hora) => {
-    const regexHora = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    const regexHora = /^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/
     return regexHora.test(hora);
 }
-  
-  
-
-
-
-
 
 
 exports.validarNombre = validarNombre;
