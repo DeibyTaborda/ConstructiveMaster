@@ -12,7 +12,7 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
   const [id, setId] = useState(null);
 
   const handleSelected = (id) => {
-    if (['clientes', 'solicitud_profesional', 'profesionales'].includes(tableId)) {
+    if (['clientes', 'solicitud_profesional', 'profesionales', 'trabajos'].includes(tableId)) {
       return onClick(id);
     }
     onClick();
@@ -22,7 +22,7 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
   }
 
   const handleSelectedEdit = (id) => {
-    if (['clientes', 'solicitud_profesional', 'profesionales'].includes(tableId)) {
+    if (['clientes', 'solicitud_profesional', 'profesionales', 'trabajos'].includes(tableId)) {
       return onClickEdit(id);
     }
     onClickEdit();
@@ -30,6 +30,31 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
       acciones(id, data, tableId);
     }
   }
+
+  const renderButtons = (id) => {
+    if (tableId === 'solicitud_profesional') {
+      return (
+        <>
+          <ButtonEditar descripcion="Aceptar" onClick={() => handleSelectedEdit(id)} />
+          <ButtonEliminar onClick={() => handleSelected(id)} description="Archivar" />
+        </>
+      );
+    } else if (tableId === 'trabajos') {
+      return (
+        <>
+          <ButtonEditar descripcion="Confirmar" onClick={() => handleSelectedEdit(id)} />
+          <ButtonEliminar onClick={() => handleSelected(id)} description="Cancelar" />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(id)} />
+          <ButtonEliminar onClick={() => handleSelected(id)} description="Eliminar" />
+        </>
+      );
+    }
+  };
 
   useEffect(() => {
     if (selectedSubcategory){
@@ -58,17 +83,7 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
                   return (
                     <td key={index}>
                       <div className="contenedor-botones-tabla-admin">
-                        {tableId === 'solicitud_profesional' ? (
-                          <>
-                              <ButtonEditar descripcion="Aceptar" onClick={() => handleSelectedEdit(row.id)} />
-                              <ButtonEliminar onClick={() => handleSelected(row.id)} description="Archivar" />
-                          </>
-                        ) : (
-                          <>
-                            <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(row.id)} />
-                            <ButtonEliminar onClick={() => handleSelected(row.id)} description="Eliminar" />
-                          </>
-                        )}
+                        {renderButtons(row.id)}
                       </div>
                     </td>
                   );

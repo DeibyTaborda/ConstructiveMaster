@@ -240,7 +240,7 @@ exports.SolicitudTrabajo = async(req, res) => {
  }
 
 exports.editarSolicitudTrabajo = async(req, res) => {
-    const {id_cliente, id_profesional, hora, fecha, direccion, valor, descripcion}  = req.body;
+    const {id_cliente, id_profesional, hora, fecha, direccion, valor, descripcion, estado}  = req.body;
     const {id} = req.params;
 
     if (!id_cliente && id_profesional && !hora && !fecha && !direccion && !valor && !descripcion) {
@@ -248,14 +248,6 @@ exports.editarSolicitudTrabajo = async(req, res) => {
     }
 
     const erroresSolicitudTrabajo = {};
-    console.log(id_cliente);
-    if (!id_cliente) erroresSolicitudTrabajo.id_cliente = 'El id del cliente es obligatorio';
-    if (!id_profesional) erroresSolicitudTrabajo.id_profesional = 'El id del profesional es obligatorio';
-    if (!hora) erroresSolicitudTrabajo.hora = 'La hora es obligatoria';
-    if (!fecha) erroresSolicitudTrabajo.fecha = 'La fecha es obligatoria';
-    if (!direccion) erroresSolicitudTrabajo.direccion = 'La dirección es obligatoria';
-    if (!valor) erroresSolicitudTrabajo.valor = 'El valor es obligatorio';
-    
     if (id_cliente && !validations.esNumerico(id_cliente)) erroresSolicitudTrabajo.formatoId_cliente = 'El id del cliente no es un valor númerico';
     if (id_profesional && !validations.esNumerico(id_profesional)) erroresSolicitudTrabajo.formatoId_profesional = 'El id del profesional no es un valor númerico';
     if (fecha && !validations.esFechaValida( new Date(fecha))) erroresSolicitudTrabajo.formatoFecha = 'Fecha no válida: por favor, ingrese una fecha correcta.';
@@ -275,6 +267,7 @@ exports.editarSolicitudTrabajo = async(req, res) => {
     if (direccion) datosSolicitud.direccion = direccion;
     if (valor) datosSolicitud.valor = valor;
     if (descripcion) datosSolicitud.descripcion = descripcion;
+    if (estado) datosSolicitud.estado = estado;
 
 
     if (Object.keys(datosSolicitud).length === 0) {
