@@ -757,3 +757,83 @@ exports.eliminarProfesional = async(req, res) => {
     res.status(500).json({ message: 'No se pudo eliminar el profesional' });
   }
 }
+
+exports.editarSolicitudTrabajo = async(req, res) => {
+  const {id_cliente, id_profesional, hora, fecha, direccion, valor, descripcion, estado}  = req.body;
+  const {id} = req.params;
+  console.log(req.body)
+
+  if (!id_cliente && id_profesional && !hora && !fecha && !direccion && !valor && !descripcion) {
+      return res.status(400).json({ message: 'Todos los campos están vacíos' });
+  }
+
+  const erroresSolicitudTrabajo = {};
+  if (id_cliente && !validations.esNumerico(id_cliente)) erroresSolicitudTrabajo.formatoId_cliente = 'El id del cliente no es un valor númerico';
+  if (id_profesional && !validations.esNumerico(id_profesional)) erroresSolicitudTrabajo.formatoId_profesional = 'El id del profesional no es un valor númerico';
+  if (fecha && !validations.esFechaValida(new Date(fecha))) erroresSolicitudTrabajo.formatoFecha = 'Fecha no válida: por favor, ingrese una fecha correcta.';
+  if (hora &&!validations.esHoraValida(hora)) erroresSolicitudTrabajo.formatoHora = 'Hora no válida: por favor, ingrese una hora válida';
+  if (valor && !validations.esNumerico(valor)) erroresSolicitudTrabajo.formatoValor = 'El valor debe ser un valor númerico';
+
+  // Verificar si hay errores
+  if (Object.keys(erroresSolicitudTrabajo).length > 0) {
+    console.log(erroresSolicitudTrabajo)
+    return res.status(200).json(erroresSolicitudTrabajo);
+  } 
+
+  const datosSolicitud = {};
+  if (id_cliente) datosSolicitud.id_cliente = id_cliente;
+  if (id_profesional) datosSolicitud.id_profesional = id_profesional;
+  if (fecha) datosSolicitud.fecha = fecha;
+  if (hora) datosSolicitud.hora = hora;
+  if (direccion) datosSolicitud.direccion = direccion;
+  if (valor) datosSolicitud.valor = valor;
+  if (descripcion) datosSolicitud.descripcion = descripcion;
+  if (estado) datosSolicitud.estado = estado;
+
+
+  if (Object.keys(datosSolicitud).length === 0) {
+      return res.status(400).json({ mensaje: 'No se proporcionaron datos para actualizar.' });
+  }
+
+  // Construir la consulta SQL dinámicamente
+  const setClauseKeys = Object.entries(datosSolicitud)
+  .map(([key, value]) => `${key} = ?`)
+  .join(', ');
+
+  const datos = Object.values(datosSolicitud);
+  datos.push(id);
+
+  const editarSolicitudTrabajo = `UPDATE trabajo SET ${setClauseKeys} WHERE id = ?`;
+
+  try {
+      await dbMysql2.query(editarSolicitudTrabajo, datos);
+      res.status(200).json({ message: 'La solicitud de trabajo se modificó de manera exitosa' });
+  } catch (error) {
+      res.status(500).json({ message: 'No se pudo actualizar la solicitud de trabajo' });
+  }
+}
+
+exports.obtenerSolicitudesTrabajo = async(req, res) => {
+  const {estado} = req.body;
+  console.log(req.body);
+
+  let obtenerSolicitudesTrabajo = `SELECT trabajo.id, cliente.nombre AS nombre_cliente, profesional.nombre AS nombre_profesional, trabajo.fecha, trabajo.hora, trabajo.direccion, trabajo.descripcion, trabajo.valor, trabajo.fecha_inicio, trabajo.estado FROM trabajo JOIN cliente ON trabajo.id_cliente = cliente.id JOIN profesional ON trabajo.id_profesional = profesional.id`;
+
+  const queryParams = [];
+
+  // Si se proporciona el estado, agregar WHERE
+  if (estado) {
+    obtenerSolicitudesTrabajo += ` WHERE trabajo.estado = ?`;
+    queryParams.push(estado);
+  }
+
+
+  try {
+    const [solicitudesTrabajo] = await dbMysql2.query(obtenerSolicitudesTrabajo, queryParams);
+    res.status(200).json(solicitudesTrabajo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'No se pudieron seleccionar las solicitudes de trabajo' });
+  }
+}
+
