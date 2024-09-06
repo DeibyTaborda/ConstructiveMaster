@@ -98,3 +98,14 @@ CREATE TABLE trabajo (
     FOREIGN KEY (id_cliente) REFERENCES cliente(id),
     FOREIGN KEY (id_profesional) REFERENCES profesional(id)
 );
+
+CREATE TABLE contrato (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_firma DATE NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE,
+    valor_total INT NOT NULL,
+    forma_pago VARCHAR(50),
+    id_trabajo INT,
+    FOREIGN KEY (id_trabajo) REFERENCES trabajo(id)
+);
