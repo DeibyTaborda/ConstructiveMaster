@@ -83,16 +83,18 @@ CREATE TABLE imagenTabla(
     imagen_tabla VARCHAR(100) NULL
 );
 
-CREATE TABLE trabajo(
+CREATE TABLE trabajo (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_cliente INT NOT NULL FOREIGN KEY,
-    id_profesional INT NOT NULL FOREING KEY,
-    fecha DATA NOT NULL,
+    id_cliente INT NOT NULL,
+    id_profesional INT NOT NULL,
+    fecha DATE NOT NULL,
     hora TIME NOT NULL,
     direccion VARCHAR(30) NOT NULL,
-    descripcion VARCHAR(200) NULL,
+    descripcion TEXT,
     valor INT NOT NULL,
     fecha_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    feha_fin DATE NULL,
-    estado ENUM('confirmado', 'por confirmar', 'cancelado') NOT NULL
+    fecha_fin DATE NULL,
+    estado ENUM('pendiente', 'confirmado', 'en_progreso', 'finalizado', 'cancelado', 'rechazado') NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES cliente(id),
+    FOREIGN KEY (id_profesional) REFERENCES profesionale(id)
 );
