@@ -43,7 +43,13 @@ function FormEditarProfesional({onClickEditar}) {
 
     const validacion = () => {
         const erroresValidacion = {};
-        
+        // if (!datosEnviar.nombre) erroresValidacion.nombre = 'El nombre es obligatorio. Por favor, ingresa tu nombre';
+        // if (!datosEnviar.apellido) erroresValidacion.apellido = 'El apellido es obligatorio. Por favor, ingresa tu nombre';
+        // if (!datosEnviar.especialidad) erroresValidacion.especialidad = 'No seleccionaste una especialidad. Por favor, selecciona una especialidad.';
+        // if (!datosEnviar.correo) erroresValidacion.correo = 'El correo no puede estar vacío. Por favor, ingresa tu correo electrónico.';
+        // if (!datosEnviar.telefono) erroresValidacion.telefono = 'No ingresaste tu número telefónico. Por favor, ingrésalo.';
+        // if (!datosEnviar.curriculum) erroresValidacion.curriculum = 'No adjuntaste la hoja de vida. Por favor, adjunta tu hoja de vida';
+
         const validadoCorreo = datosEnviar.correo ? validarCorreo(datosEnviar.correo) : null;
         if (validadoCorreo) erroresValidacion.formatoCorreo = validadoCorreo;
 

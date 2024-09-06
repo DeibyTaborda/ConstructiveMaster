@@ -103,18 +103,10 @@ const validarNumeroTelefonico = (telefono) => {
     return false;
 }
 
-const esNumerico = (valor) => {
-    return !isNaN(parseFloat(valor)) && isFinite(valor);
-  }
 
-const esFechaValida = (fecha) => {
-    return fecha instanceof Date && !isNaN(fecha.getTime());
-}
 
-const esHoraValida = (hora) => {
-    const regexHora = /^([01]\d|2[0-3]):([0-5]\d)$/;
-    return regexHora.test(hora);
-}
+
+
 
 exports.validarNombre = validarNombre;
 exports.validarCorreo = validarCorreo;
@@ -126,6 +118,3 @@ exports.validarSoloLetras  = validarSoloLetras;
 exports.validarLongitud = validarLongitud;
 exports.validarNumerosYSimbolos = validarNumerosYSimbolos;
 exports.validarNumeroTelefonico = validarNumeroTelefonico;
-exports.esNumerico = esNumerico;
-exports.esFechaValida = esFechaValida;
-exports.esHoraValida= esHoraValida;

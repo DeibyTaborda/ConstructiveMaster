@@ -96,5 +96,5 @@ CREATE TABLE trabajo (
     fecha_fin DATE NULL,
     estado ENUM('pendiente', 'confirmado', 'en_progreso', 'finalizado', 'cancelado', 'rechazado') NOT NULL DEFAULT 'pendiente',
     FOREIGN KEY (id_cliente) REFERENCES cliente(id),
-    FOREIGN KEY (id_profesional) REFERENCES profesional(id)
+    FOREIGN KEY (id_profesional) REFERENCES profesionale(id)
 );
