@@ -94,7 +94,7 @@ CREATE TABLE trabajo (
     valor INT NOT NULL,
     fecha_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_fin DATE NULL,
-    estado ENUM('pendiente', 'confirmado', 'en_progreso', 'finalizado', 'cancelado', 'rechazado') NOT NULL,
+    estado ENUM('pendiente', 'confirmado', 'en_progreso', 'finalizado', 'cancelado', 'rechazado') NOT NULL DEFAULT 'pendiente',
     FOREIGN KEY (id_cliente) REFERENCES cliente(id),
     FOREIGN KEY (id_profesional) REFERENCES profesionale(id)
 );
