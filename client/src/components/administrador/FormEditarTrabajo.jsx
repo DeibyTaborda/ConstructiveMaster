@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../../assets/styles/formEditarCliente.css';
+import '../../assets/styles/forms.css';
 
 function FormEditarTrabajo({datos, solicitudPUT, onClick}) {
     const [errores, setErrores] = useState();
@@ -68,52 +68,52 @@ function FormEditarTrabajo({datos, solicitudPUT, onClick}) {
 
     return(
         <>
-            <form className="form-editar-cliente" onSubmit={handleSubmit}>
+            <form className="form" onSubmit={handleSubmit}>
                 <h3 className="titulo-form-editar-cliente">Editar</h3>
                 <h4 className="nombre-cliente-editar">{datos?.nombre}</h4>
-                <label htmlFor="id_profesional" className="label-form-editar-cliente">Profesional:</label>
+                <label htmlFor="id_profesional" className="label-form">Profesional:</label>
                 <input 
                     type="number" 
                     name="id_profesional" 
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     onChange={handleOnchange}
                     value={data.id_profesional}
                 />
-                <label htmlFor="fecha" className="label-form-editar-cliente">Fecha:</label>
+                <label htmlFor="fecha" className="label-form">Fecha:</label>
                 <input 
                     type="date" 
                     name="fecha"
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     onChange={handleOnchange}
                 />
                 {errores && errores.correo && (
                     <p>{errores.correo}</p>
                 )}
-                <label htmlFor="hora" className="label-form-editar-cliente">Hora:</label>
+                <label htmlFor="hora" className="label-form">Hora:</label>
                 <input 
                     type="time" 
                     name="hora"
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     onChange={handleOnchange}
                     value={data.hora}
                 />
-                <label htmlFor="direccion" className="label-form-editar-cliente">Dirección:</label>
+                <label htmlFor="direccion" className="label-form">Dirección:</label>
                 <input 
                     type="text" 
                     name="direccion"
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     onChange={handleOnchange}
                     value={data.direccion}
                 />
-                <label htmlFor="valor" className="label-form-editar-cliente">Valor:</label>
+                <label htmlFor="valor" className="label-form">Valor:</label>
                 <input 
                     type="number" 
                     name="valor"
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     value={data.valor}
                     onChange={handleOnchange}
                 />
-                <label htmlFor="descripcion" className="label-form-editar-cliente">Descripción:</label>
+                <label htmlFor="descripcion" className="label-form">Descripción:</label>
                 <textarea name="descripcion">
                     Descripción...
                 </textarea>

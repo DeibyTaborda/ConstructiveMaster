@@ -75,42 +75,42 @@ function FormEditarCliente({datos, solicitudPUT, onClick}) {
             <form className="form-editar-cliente" onSubmit={handleSubmit}>
                 <h3 className="titulo-form-editar-cliente">Editar</h3>
                 <h4 className="nombre-cliente-editar">{datos?.nombre}</h4>
-                <label htmlFor="nombre" className="label-form-editar-cliente">Nombre:</label>
+                <label htmlFor="nombre" className="label-form">Nombre:</label>
                 <input 
                     type="text" 
                     name="nombre" 
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     onChange={handleOnchange}
                     value={data.nombre}
                 />
-                <label htmlFor="correo" className="label-form-editar-cliente">Correo:</label>
+                <label htmlFor="correo" className="label-form">Correo:</label>
                 <input 
                     type="text" 
                     name="correo"
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     onChange={handleOnchange}
                     value={data.correo}
                 />
                 {errores && errores.correo && (
                     <p>{errores.correo}</p>
                 )}
-                <label htmlFor="telefono" className="label-form-editar-cliente">Teléfono:</label>
+                <label htmlFor="telefono" className="label-form">Teléfono:</label>
                 <input 
                     type="number" 
                     name="telefono"
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     onChange={handleOnchange}
                     value={data.telefono}
                 />
-                <label htmlFor="direccion" className="label-form-editar-cliente">Dirección:</label>
+                <label htmlFor="direccion" className="label-form">Dirección:</label>
                 <input 
                     type="text" 
                     name="direccion"
-                    className="input-form-editar-cliente"
+                    className="input-form "
                     value={data.direccion}
                     onChange={handleOnchange}
                 />
-                <label htmlFor="imagen" className="label-form-editar-cliente">Imagen:</label>
+                <label htmlFor="imagen" className="label-form">Imagen:</label>
                 <input 
                     type="file" 
                     name="imagen"
