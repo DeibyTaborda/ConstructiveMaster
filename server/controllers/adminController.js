@@ -815,7 +815,6 @@ exports.editarSolicitudTrabajo = async(req, res) => {
 
 exports.obtenerSolicitudesTrabajo = async(req, res) => {
   const {estado} = req.body;
-  console.log(req.body);
 
   let obtenerSolicitudesTrabajo = `SELECT trabajo.id, cliente.nombre AS nombre_cliente, profesional.nombre AS nombre_profesional, trabajo.fecha, trabajo.hora, trabajo.direccion, trabajo.descripcion, trabajo.valor, trabajo.fecha_inicio, trabajo.estado FROM trabajo JOIN cliente ON trabajo.id_cliente = cliente.id JOIN profesional ON trabajo.id_profesional = profesional.id`;
 
@@ -830,10 +829,23 @@ exports.obtenerSolicitudesTrabajo = async(req, res) => {
 
   try {
     const [solicitudesTrabajo] = await dbMysql2.query(obtenerSolicitudesTrabajo, queryParams);
+    console.log(solicitudesTrabajo);
     res.status(200).json(solicitudesTrabajo);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'No se pudieron seleccionar las solicitudes de trabajo' });
+  }
+}
+
+exports.obtenerContratos = async(req, res) => {
+  const obtenerContratos = 'SELECT * FROM contrato';
+
+  try {
+    const [contratos] = await dbMysql2.query(obtenerContratos);
+    res.status(200).json(contratos); 
+  } catch (error) {
+    console.log('OCURRIO UN ERROR', error);
+    res.status(500).json({ message: 'No se pudo seleccionar los contratos' });
   }
 }
 
