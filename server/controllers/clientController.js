@@ -291,3 +291,19 @@ exports.editarSolicitudTrabajo = async(req, res) => {
         res.status(500).json({ message: 'No se pudo actualizar la solicitud de trabajo' });
     }
 }
+
+exports.buscarProfesional = async(req, res) => {
+    const { query } = req.query; // Obtenemos el parámetro de búsqueda de la URL
+    try {
+        // Consultamos en la base de datos por nombre o especialidad
+        const [profesionales] = await mysql2.query(
+            `SELECT * FROM profesional 
+            WHERE nombre LIKE ? OR especialidad LIKE ?`,
+            [`%${query}%`, `%${query}%`]
+        );
+        res.json(profesionales);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error al buscar profesionales' });
+    }
+}
