@@ -1,28 +1,3 @@
-// validaciones.js
-export const validarNombre = (name) => {
-    const regex = /[^a-zA-ZñÑáéíóúüÁÉÍÓÚÜ\s]/g;
-    let messageError = '';
-    if (!name) {
-        messageError = 'El nombre es obligatorio. Por favor, ingresa tu nombre';
-    } else if (regex.test(name)) {
-        messageError = 'No se permite números y caracteres especiales';
-    } else if (name.length > 50){
-        messageError = 'No se permiten más de 50 caracteres';
-    }
-    return messageError;
-};
-
-export const validarCorreo = (correo) => {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    let messageError = '';
-    if (!regex.test(correo)) {
-        messageError = 'Correo no permitido';
-    } else if(correo.length > 60){
-        messageError = 'No se permiten más de 60 caracteres';
-    }
-    return messageError;
-};
-
 export const validarContrasena = (contrasena) => {
     let messageError = '';
     if (contrasena.length > 15) {
@@ -39,18 +14,6 @@ export const validarLongitudCorreo = (correo) => {
     return messageError;
 }
 
-// export const primeraLetraMayusculas = (texto) => {
-//     const palabras = texto.split(' ');
-
-//     const palabrasConPrimeraLetraMayuscula = palabras.map(palabra => {
-//         const primeraLetra = palabra.charAt(0).toUpperCase();
-//         const restoDeLaPalabra = palabra.slice(1);
-//         return primeraLetra + restoDeLaPalabra;
-//     });
-    
-//     return palabrasConPrimeraLetraMayuscula.join(' ');
-// }
-
 export const contrasenaMinima = (contrasena) => {
     let messageError = '';
     if(contrasena.length < 8 ){
@@ -61,11 +24,6 @@ export const contrasenaMinima = (contrasena) => {
 
 export const primeraLetraMayuscula = (cadena) => {
     return cadena.replace(/^[a-zA-Z]/, (match) => match.toUpperCase());
-}
-
-export const validarNumerosYSimbolos = (texto) => {
-    const regexNumerosYSimbolos = /[0-9!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/~`]/; 
-    return regexNumerosYSimbolos.test(texto);
 }
 
 export const validarLongitudTexto = (texto, longitud) => {
@@ -86,3 +44,100 @@ export const validarArchivo = (nombreArchivo) => {
     return regex.test(nombreArchivo);
 };
 
+
+//NUEVAS FUNCIONES ACTUALIZADAS
+// Expresiones regulares
+const regexValidacionCaracteres = /[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/;
+const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const regexFile = /^.*\.(pdf|doc|docx)$/i;
+const regexImagen = /\.(jpg|jpeg|png|gif|bmp)$/i;
+const regexNumerosYSimbolos = /[0-9!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/~`]/;
+const regexTelefono = /^(3\d{9}|\d{7})$/;
+const regexHora = /^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$/;
+
+// Validar nombre (no permite números ni caracteres especiales)
+export const validarNombre = (name) => {
+    if (regexValidacionCaracteres.test(name)) {
+        return 'No se permiten números ni caracteres especiales';
+    } else if (name.length > 30) {
+        return 'No se permiten más de 30 caracteres';
+    }
+    return '';
+};
+
+// Validar correo electrónico
+export const validarCorreo = (email) => {
+    if (!regexCorreo.test(email)) {
+        return 'Por favor, introduce un correo electrónico válido.';
+    }
+    return '';
+};
+
+// Validar teléfono
+export const validarTelefono = (telefono) => {
+    const lengthTelefono = telefono.length;
+    if (lengthTelefono > 10) {
+        return 'El número telefónico debe contener máximo 10 dígitos';
+    } else if (lengthTelefono < 7) {
+        return 'El número debe tener al menos 7 dígitos';
+    }
+    return '';
+};
+
+// Validar archivo (solo PDF, DOC, DOCX)
+export const validarFile = (file) => {
+    if (!regexFile.test(file)) {
+        return 'Extensión de archivo no permitida';
+    }
+    return '';
+};
+
+// Validar imagen (solo formatos jpg, jpeg, png, gif, bmp)
+export const validarImagen = (imagen) => {
+    return regexImagen.test(imagen);
+};
+
+// Validar categoría (sin caracteres especiales ni números)
+export const validarCategoria = (categoria) => {
+    if (categoria.length > 30) {
+        return 'No se permiten más de 30 caracteres';
+    } else if (regexValidacionCaracteres.test(categoria)) {
+        return 'No se permiten números ni caracteres especiales. Inténtalo nuevamente';
+    }
+    return '';
+};
+
+// Validar solo letras (no números ni símbolos)
+export const validarSoloLetras = (cadena) => {
+    return regexValidacionCaracteres.test(cadena);
+};
+
+// Validar longitud de una cadena
+export const validarLongitud = (cadena, longitud) => {
+    return cadena.length > longitud;
+};
+
+// Validar si contiene números y símbolos
+export const validarNumerosYSimbolos = (texto) => {
+    return regexNumerosYSimbolos.test(texto);
+};
+
+// Validar número telefónico (colombiano)
+export const validarNumeroTelefonico = (telefono) => {
+    return regexTelefono.test(telefono);
+};
+
+// Validar si un valor es numérico
+export const esNumerico = (valor) => {
+    return !isNaN(parseFloat(valor)) && isFinite(valor);
+};
+
+// Validar si una fecha es válida
+export const esFechaValida = (fecha) => {
+    return fecha instanceof Date && !isNaN(fecha.getTime());
+};
+
+// Validar si una hora es válida (formato HH:mm o HH:mm:ss)
+export const esHoraValida = (hora) => {
+    return regexHora.test(hora);
+};
