@@ -200,7 +200,7 @@ function Trabajos() {
                 ) : (
                     <p>{errores}</p>
                 )}
-                {/* {respuestasExitosas && <p>{respuestasExitosas}</p>} */}
+                {respuestasExitosas && <p>{respuestasExitosas}</p>}
             </div>
         </div>
     );

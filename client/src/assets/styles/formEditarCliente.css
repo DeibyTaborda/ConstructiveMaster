@@ -18,7 +18,7 @@
     font-style: italic;
 }
 
- .label-form-editar-cliente {
+ . {
     width: 200px;
     margin-top: 20px;
     font-family: var(--parrafos2);
@@ -27,7 +27,7 @@
     color: var(--color-principal);
  }
 
- .input-form-editar-cliente {
+ .input-form  {
     margin-top: 10px;
     width: 200px;
     border: none;
@@ -37,7 +37,7 @@
     transition: border-bottom 0.3s ease;
 }
 
-.input-form-editar-cliente:focus {
+.input-form :focus {
     outline: none;
     border-bottom: 1px solid gray;
     color: black;

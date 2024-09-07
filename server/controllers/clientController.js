@@ -200,6 +200,8 @@ exports.SolicitudTrabajo = async(req, res) => {
 
     // Verificar si hay errores
     if (Object.keys(erroresSolicitudTrabajo).length > 0) {
+        console.log('Que coño de errores');
+        console.log(erroresSolicitudTrabajo)
       return res.status(200).json(erroresSolicitudTrabajo);
     } 
 
@@ -232,6 +234,7 @@ exports.SolicitudTrabajo = async(req, res) => {
 
     try {
         await mysql2.query(crearSolicitudProfesional, datos);
+        console.log('solicitud exitosa')
         res.status(200).json({ message: 'El trabajo se envió exitosamente'});
     } catch (error) {
         console.error('jajajaj', error)

@@ -7,4 +7,5 @@ router.post('/registro', clientController.registroUsuario); // Solicitud POST qu
 router.get('/unete', clientController.seleccionarSubategorias); // Solicitud GET que permite seleccionar todas las subcategorías para mostrarla en options del select con name especialidad en el formulario /unete
 router.post('/unete', upload.single('curriculum'), clientController.solicitudProfesional); // Solicitud POST que permite enviar las solicitudes de los usuarios que desean incorporar en el equipo de profesionales de ConstructiveMaster
 router.post('/trabajos', clientController.SolicitudTrabajo);
+router.get('/buscar-profesionales', clientController.buscarProfesional);
 module.exports = router; // Exporta el enrutador para que pueda ser utilizado en otros archivos de la aplicación
