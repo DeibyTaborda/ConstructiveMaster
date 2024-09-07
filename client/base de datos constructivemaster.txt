@@ -105,7 +105,8 @@ CREATE TABLE contrato (
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE,
     valor_total INT NOT NULL,
-    forma_pago VARCHAR(50),
+    forma_pago ENUM('transferencia', 'efectivo) NOT NULL DEFAULT 'transferencia',
     id_trabajo INT,
+    estado ENUM('pendiente', 'pagado', 'cancelado') NOT NULL DEFAULT 'pendiente',
     FOREIGN KEY (id_trabajo) REFERENCES trabajo(id)
 );
