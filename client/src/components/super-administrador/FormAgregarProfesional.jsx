@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
-import '../../assets/styles/formAgregarProfesional.css';
+import '../../assets/styles/forms.css';
 import useAxios from "../../services/api";
 import {validarNumerosYSimbolos, validarLongitudTexto, validarCorreo} from '../../utils/utils';
 
-function FormAgregarProfesional({onClickCrear}) {
+function FormAgregarProfesional({onClickCrear, onClickCancelar}) {
     const [datos, setDatos] = useState({ categories: [], subcategories: [] });
+
+    // Hook para realizar una solicitud GET para obtener las subcategorias 
     const {loading, error, response, data, fetchData} = useAxios('http://localhost:3001/categorias');
+
+    // Estado de manejador de errores
     const [errores, setErrores] = useState(false);
 
+    // Estado de los campos del formulario
     const [datosEnviar, setDatosEnviar] = useState({
         nombre: '',
         apellido: '',
@@ -18,12 +23,7 @@ function FormAgregarProfesional({onClickCrear}) {
         imagen: null
     })
 
-    useEffect(() => {
-        if (datosEnviar) {
-            console.log(datosEnviar);
-        }
-    }, [datosEnviar]);
-
+    // Manejador de eventos de los campos del formulario
     const handleOnchange = (e) => {
         const {name, value} = e.target;
         if (['nombre', 'apellido'].includes(name)) {
@@ -32,26 +32,27 @@ function FormAgregarProfesional({onClickCrear}) {
         } else if (name === 'telefono') {
             if (validarLongitudTexto(value, 10)) return;
         }
-        
         setDatosEnviar({...datosEnviar, [name] : value});
     }
 
+    // Manejador de eventos de los input tipo file
     const handleFileOnchange = (e) => {
         const {name, files} = e.target;
         setDatosEnviar({...datosEnviar, [name] : files[0]});
     }
 
+    // Función para validar la existencia de los datos
     const validacion = () => {
         const erroresValidacion = {};
-        if (!datosEnviar.nombre) erroresValidacion.nombre = 'El nombre es obligatorio. Por favor, ingresa tu nombre';
-        if (!datosEnviar.apellido) erroresValidacion.apellido = 'El apellido es obligatorio. Por favor, ingresa tu nombre';
-        if (!datosEnviar.especialidad) erroresValidacion.especialidad = 'No seleccionaste una especialidad. Por favor, selecciona una especialidad.';
-        if (!datosEnviar.correo) erroresValidacion.correo = 'El correo no puede estar vacío. Por favor, ingresa tu correo electrónico.';
-        if (!datosEnviar.telefono) erroresValidacion.telefono = 'No ingresaste tu número telefónico. Por favor, ingrésalo.';
-        if (!datosEnviar.curriculum) erroresValidacion.curriculum = 'No adjuntaste la hoja de vida. Por favor, adjunta tu hoja de vida';
+        if (!datosEnviar.nombre) erroresValidacion.nombre = 'El nombre es obligatorio.';
+        if (!datosEnviar.apellido) erroresValidacion.apellido = 'El apellido es obligatorio.';
+        if (!datosEnviar.especialidad) erroresValidacion.especialidad = 'Selecciona una especialidad.';
+        if (!datosEnviar.correo) erroresValidacion.correo = 'El correo es obligatorio.';
+        if (!datosEnviar.telefono) erroresValidacion.telefono = 'El teléfono es obligatorio.';
+        if (!datosEnviar.curriculum) erroresValidacion.curriculum = 'Adjunta tu hoja de vida.';        
 
-        const validadoCorreo = datosEnviar.correo ? validarCorreo(datosEnviar.correo) : null;
-        if (validadoCorreo) erroresValidacion.formatoCorreo = validadoCorreo;
+        const validadoCorreo = validarCorreo(datosEnviar.correo);
+        if (!validadoCorreo) erroresValidacion.formatoCorreo = validadoCorreo;
 
         setErrores(erroresValidacion);
         return erroresValidacion;
@@ -81,9 +82,8 @@ function FormAgregarProfesional({onClickCrear}) {
             setErrores(erroresValidacion);
         }
     };
-    
-    
 
+    // Función para almacenar la data en un estado del componente
     useEffect(() => {
         if (data) {
           setDatos(data);
@@ -91,70 +91,84 @@ function FormAgregarProfesional({onClickCrear}) {
       }, [data]);
 
     return(
-        <form onSubmit={handleSubmit} className="form-agregar-profesional">
-        <label htmlFor="nombre">Nombre:</label>
+        <form onSubmit={handleSubmit} className="form">
+            <h3 className="titulo-form">Agregar profesional</h3>
+        <label htmlFor="nombre" className="label-form ">Nombre:</label>
         <input 
             type="text"
             name="nombre"
-            className="input-agegar-cliente"
+            className="input-form"
             value={datosEnviar.nombre}
             onChange={handleOnchange}
         />
-        <label htmlFor="apellido">Apellido:</label>
+        {errores.nombre ? (<p className="mensaje-error-campo">{errores.nombre}</p>) : ''}
+
+        <label htmlFor="apellido" className="label-form">Apellido:</label>
         <input 
             type="text" 
             name="apellido"
-            className="input-agegar-cliente"
+            className="input-form"
             value={datosEnviar.apellido}
             onChange={handleOnchange}
         />
+        {errores.apellido ? (<p className="mensaje-error-campo">{errores.apellido}</p>) : ''}
+
         {data && (
             <>
-                <label htmlFor="especialidad">Especialidad</label>
+                <label htmlFor="especialidad" className="label-form">Especialidad</label>
                 <select name="especialidad" onChange={handleOnchange}>
                     <option value="seleccionar">Seleccionar</option>
                     {datos.subcategories && datos.subcategories.map((subcategoria) => (
                          <option value={subcategoria.id}>{subcategoria.subcategoria}</option>
                     ))}
                 </select>
+                {errores.especialidad ? (<p className="mensaje-error-campo">{errores.especialidad}</p>) : ''}
             </>
         )}
-        <label htmlFor="correo">Correo:</label>
+
+        <label htmlFor="correo" className="label-form">Correo:</label>
         <input 
             type="email" 
             name="correo"
             value={datosEnviar.correo}
             onChange={handleOnchange}
+            className="input-form"
         />
-        <label htmlFor="telefono">Teléfono:</label>
+        {errores.correo ? (<p className="mensaje-error-campo">{errores.correo}</p>) : ''}
+
+        <label htmlFor="telefono" className="label-form">Teléfono:</label>
         <input 
             type="number" 
             name="telefono"
             value={datosEnviar.telefono}
             onChange={handleOnchange}
+            className="input-form"
         />
-        <label htmlFor="curriculum">Hoja de vida:</label>
+        {errores.telefono ? (<p className="mensaje-error-campo">{errores.telefono}</p>) : ''}
+
+        <label htmlFor="curriculum" className="label-form">Hoja de vida:</label>
         <input 
             type="file"
             name="curriculum"
             onChange={handleFileOnchange}
             accept=".pdf, .doc, .docx"
-            />
-        <label htmlFor="imagen">Imagen:</label>
+            className="input-form-file"
+        />
+        {errores.curriculum ? (<p className="mensaje-error-campo">{errores.curriculum}</p>) : ''}
+
+        <label htmlFor="imagen" className="label-form">Imagen:</label>
         <input 
             type="file" 
             name="imagen"
             onChange={handleFileOnchange}
             accept=".jpg, .png, jpeg"
+            className="input-form-file"
         />
-        {errores && typeof errores === 'string' ? (
-            <p>{errores}</p>
-        ) : (
-            errores && Object.values(errores).map((error, index) => (
-                <p key={index}>{error}</p>
-            ))
-        )}
-        <input type="submit" />
+        {errores.imagen ? (<p className="mensaje-error-campo">{errores.imagen}</p>) : ''}
+        <div className="contenedor-botones-form">
+            <input type="submit" className="input-submit"/>
+            <button className="input-cancelar" onClick={onClickCancelar}>Cancelar</button>
+        </div>
     </form>
     );
 }

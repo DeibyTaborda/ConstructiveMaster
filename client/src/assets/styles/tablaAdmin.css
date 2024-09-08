@@ -1,15 +1,26 @@
 /* Tabla.css */
+.contenedor-general-tabla-admin {
+    margin-top: 30px;
+}
+
+.table-container {
+    max-height: 80vh;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
-    font-size: 16px;
+    font-size: 16px; 
     text-align: left;
     table-layout: auto; /* Permite que las celdas se ajusten al contenido */
 }
 
-caption.title-table-admin {
+h2.title-table-admin {
     caption-side: top;
+    font-family: var(--titulos);
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
@@ -53,7 +64,6 @@ td.item-table-admin {
 }
 
 
-
 @media (max-width: 768px) {
     table {
         font-size: 14px;
@@ -65,5 +75,13 @@ td.item-table-admin {
 
     caption.title-table-admin {
         font-size: 20px;
+    }
+
+    /* Opcional: Ocultar algunas columnas en pantallas pequeñas */
+    @media (max-width: 600px) {
+        th:nth-child(4), /* Ajusta el índice según las columnas a ocultar */
+        td:nth-child(4) {
+            display: none;
+        }
     }
 }

@@ -4,15 +4,19 @@ import MenuAdmin from "../../components/administrador/MenuAdmin";
 import TablaAdmin from "../../components/administrador/TablaAdmin";
 import useAxios from "../../services/api";
 import useDelete from "../../services/delete";
-import ConfirmarAgregarProfesionalModal from "../../components/super-administrador/ConfirmarAgregarProfesionalModal";
-import ConfirmarEliminarCliente from "../../components/administrador/ConfirmarEliminarCliente";
-
+import { TiDeleteOutline } from "react-icons/ti";
+import ConfirmarAccionEntidad from "../../components/administrador/ConfirmarAccionEntidad";
+import { MdOutlineQuestionMark } from "react-icons/md"
+import PaginaDeError from "../../components/general/PaginaDeError";
 
 function SolicitudProfesional() {
-  //ID seleccionado
+  //Estados para gestionar solicitudes de profesionales
   const [idProfesionalSeleccionado, setIdProfesionalSeleccionado] = useState(null);
+  const [solicitudesTrabajo, setSolicitudesTrabajos] = useState([]);
   const [urlDelete, setUrlDelete] = useState(null);
+  const [columnas, setColumnas] = useState( ['id', 'nombre', 'apellido', 'especialidad', 'correo', 'telefono', 'curriculum', 'imagen','created_at', 'Acciones'])
 
+  // Estados para cerrar los modales de confirmación para archivar y aceptar un profesional
   const [openConfirmarAgregarProfesionalModal, setOpenConfirmarAgregarProfesionalModal] = useState(false);
   const [openConfirmarEliminarProfesionalModal, setOpenConfirmarEliminarProfesionalModal] = useState(false);
 
@@ -20,18 +24,9 @@ function SolicitudProfesional() {
     const {loading, error, data, fetchData} = useAxios('http://localhost:3001/solicitud_profesional');
     const {loading: loadingEliminar, response, error: errorEliminar, eliminar} = useDelete(urlDelete);
 
-    // Columnas de la tabla solicitudes profesionales
-    const columnas = ['id', 'nombre', 'apellido', 'especialidad', 'correo', 'telefono', 'curriculum', 'imagen','created_at', 'Acciones'];
-
-    useEffect(() => {
-      if (idProfesionalSeleccionado) {
-        console.log(idProfesionalSeleccionado)
-      }
-    }, [idProfesionalSeleccionado]);
-
     useEffect(() => {
       if (data) {
-        console.log(data);
+        setSolicitudesTrabajos(data);
       }
     }, [data]);
 
@@ -58,6 +53,11 @@ function SolicitudProfesional() {
       return data.find((solicitud) => solicitud.id === idProfesionalSeleccionado);
     }
 
+    const obtenerNombreCompleto = () => {
+      const {nombre, apellido} = datosSolicitudSeleccionada();
+      return `${nombre} ${apellido}`
+    }
+
     const seleccionarIdBotonArchivar = (id) => {
       setIdProfesionalSeleccionado(id);
       setOpenConfirmarEliminarProfesionalModal(true);
@@ -70,21 +70,41 @@ function SolicitudProfesional() {
       setOpenConfirmarEliminarProfesionalModal(false);
     }
 
+    if (!solicitudesTrabajo) return <PaginaDeError/>
+
     return (
-        <div className="container-menu-table">
+        <div className="contenedor-general-tablas">
             <MenuAdmin />
-            <div className="container-table-solicitud-profesional">
-              <div className="hola">
+            <div className="subcontenedor-tablas">
+              <div className="contenedor-tablas-admin">
                 <TablaAdmin  columns={columnas} data={data} title={'Solitudes de Profesionales'} tableId={'solicitud_profesional'} onClick={seleccionarIdBotonArchivar} onClickEdit={seleccionarId} />
-              </div>
+              </div> 
               {openConfirmarAgregarProfesionalModal && (
-                <div className="contenedor-confirmar-eliminar-solicitud">
-                  <ConfirmarAgregarProfesionalModal data={datosSolicitudSeleccionada()} onClick={agregarProfesional} onClickCancelar={() => setOpenConfirmarAgregarProfesionalModal(false)}/>
+                <div className="contenedor-modales-position-fixed">
+                  <ConfirmarAccionEntidad 
+                  titulo='Incorporar a'
+                  referencia={obtenerNombreCompleto()}
+                  mensaje={'¿Estás seguro de que deseas incorparar el profesional?'}
+                  onClick={agregarProfesional}
+                  onClickCancelar={() => setOpenConfirmarAgregarProfesionalModal(false)}
+                  Icono={MdOutlineQuestionMark}
+                  boton1="Aceptar"
+                  boton2="Cancelar"
+                  />
                 </div>
               )}
               {openConfirmarEliminarProfesionalModal && (
-                <div className="modal-eliminar-solicitud-profesional">
-                  <ConfirmarEliminarCliente data={datosSolicitudSeleccionada()} onClick={() => setOpenConfirmarEliminarProfesionalModal(false)} onClickDelete={archivarSolicitudProfesional}/>
+                <div className="contenedor-modales-position-fixed">
+                  <ConfirmarAccionEntidad
+                  titulo="Rechazar Solicitud de"
+                  referencia={obtenerNombreCompleto()}
+                  mensaje={'¿Estás seguro de que deseas rechazar esta solicitud?'}
+                  Icono={TiDeleteOutline}
+                  onClickCancelar={() => setOpenConfirmarEliminarProfesionalModal(false)}
+                  onClick={archivarSolicitudProfesional}
+                  boton1="Rechazar"
+                  boton2="Cancelar"
+                 />
                 </div>
               )}
               {errorEliminar ? <p>{errorEliminar}</p> : ''}

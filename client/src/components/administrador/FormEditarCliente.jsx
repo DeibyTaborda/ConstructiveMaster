@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import '../../assets/styles/formEditarCliente.css';
-import {validarNumerosYSimbolos, validarLongitudTexto, validarCorreo2, primeraLetraMayuscula} from '../../utils/utils';
+import {validarNumerosYSimbolos, validarLongitudTexto, primeraLetraMayuscula} from '../../utils/utils';
 
 function FormEditarCliente({datos, solicitudPUT, onClick}) {
     const [errores, setErrores] = useState({});
+
+    // Estado de los campos del formulario
      const [data, setData] = useState({
         nombre: datos?.nombre || '',
         correo: datos?.correo || '',
@@ -12,19 +14,7 @@ function FormEditarCliente({datos, solicitudPUT, onClick}) {
         imagen: datos?.imagen || ''
     });
 
-    useEffect(() => {
-        if (datos) {
-            setData({
-                nombre: datos?.nombre || '',
-                correo: datos?.correo || '',
-                telefono: datos?.telefono || '',
-                direccion: datos?. direccion || '',
-                imagen: datos?.imagen || '' 
-            });
-        }
-    }, [datos]);
-
-
+    // Controlador de eventos de los campos del formulario
     const handleOnchange = (e) => {
         const {name, value} = e.target;
 
@@ -51,6 +41,7 @@ function FormEditarCliente({datos, solicitudPUT, onClick}) {
         setData({...data, [name] : value});
     }
 
+    // Controlador de eventos para los campos tipo file
     const handleFileOnchange = (e) => {
         const {name, files} = e.target;
         setData({...data, [name] : files[0]});
@@ -91,9 +82,7 @@ function FormEditarCliente({datos, solicitudPUT, onClick}) {
                     onChange={handleOnchange}
                     value={data.correo}
                 />
-                {errores && errores.correo && (
-                    <p>{errores.correo}</p>
-                )}
+
                 <label htmlFor="telefono" className="label-form">Teléfono:</label>
                 <input 
                     type="number" 

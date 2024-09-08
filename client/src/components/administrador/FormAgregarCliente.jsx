@@ -3,7 +3,7 @@ import '../../assets/styles/formAgregarCliente.css';
 import { validarNumerosYSimbolos, validarLongitudTexto, validarCorreo2, primeraLetraMayuscula } from '../../utils/utils';
 
 function FormAgregarCliente({ solicitudPOST, onClick }) {
-    const [errores, setErrores] = useState({});
+    // Estado de los datos del formulario
     const [data, setData] = useState({
         nombre: '',
         correo: '',
@@ -12,6 +12,10 @@ function FormAgregarCliente({ solicitudPOST, onClick }) {
         imagen: ''
     });
 
+    // Estado para el manejo de errores
+    const [errores, setErrores] = useState({});
+
+    // Controlador de eventos de los campos del formulario
     const handleOnchange = (e) => {
         const { name, value } = e.target;
 
@@ -30,18 +34,18 @@ function FormAgregarCliente({ solicitudPOST, onClick }) {
         setData({ ...data, [name]: value });
     };
 
+    // Controlador de eventos de los campos tipo file
     const handleFileOnchange = (e) => {
         const { name, files } = e.target;
         setData({ ...data, [name]: files[0] });
     };
 
+
+    //Función para validar que el campo nombre y nombre esten presentes y que el correo tenga un formato válido
     const validacion = () => {
         let mensajesError = {};
 
-        if (!data.nombre) {
-            mensajesError.nombre = 'El nombre es obligatorio';
-        }
-
+        if (!data.nombre) mensajesError.nombre = 'El nombre es obligatorio';
         if (!data.correo) {
             mensajesError.correo = 'El correo es obligatorio';
         } else if (!validarCorreo2(data.correo)) {
@@ -50,7 +54,6 @@ function FormAgregarCliente({ solicitudPOST, onClick }) {
 
         setErrores(mensajesError);
 
-        // Retorna true si no hay errores
         return Object.keys(mensajesError).length === 0;
     };
 

@@ -7,8 +7,9 @@
     color: var(--white);
     padding: 1px 0 1px 0;
     transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 
 .button-editar:hover{
-    background-color: rgb(170, 168, 168);
+    background-color: var(--color-boton-naranja-hover);
 }

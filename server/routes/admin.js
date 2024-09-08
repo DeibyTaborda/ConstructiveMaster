@@ -17,7 +17,7 @@ router.delete('/clientes/:id', verificarToken, verificarRol(['admin', 'super_adm
 router.put('/clientes/:id', verificarToken, verificarRol(['admin', 'super_admin']), upload2.single('imagen'), adminController.actualizarCliente);
 router.post('/clientes', verificarToken, verificarRol(['admin', 'super_admin']), upload2.single('imagen'), adminController.agregarCliente);
 router.delete('/solicitud_profesional/:id', verificarToken, verificarRol(['admin', 'super_admin']), adminController.incorporarProfesional);
-router.delete('/solicitud_profesional/:id/:nombre', verificarToken, verificarRol(['admin', 'super_admin']), adminController.eliminarSolicitudProfesional);
+router.delete('/solicitud_profesional/:id', verificarToken, verificarRol(['admin', 'super_admin']), adminController.eliminarSolicitudProfesional);
 router.get('/profesionales', verificarToken, verificarRol(['admin', 'super_admin']), adminController.obtenerProfesionales);
 router.post('/profesionales', verificarToken, verificarRol(['admin', 'super_admin']), upload,adminController.agregarProfesional);
 router.put('/profesionales/:id', verificarToken, verificarRol(['admin', 'super_admin']), upload,adminController.editarProfesional);

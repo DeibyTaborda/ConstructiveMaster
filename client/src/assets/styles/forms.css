@@ -7,6 +7,12 @@
     background-color: var(--white);
 }
 
+.titulo-form {
+    margin-top: 20px;
+    font-family: var(--parrafos2);
+    color: var(--color-principal);
+}
+
 .label-form {
     width: 200px;
     margin-top: 20px;
@@ -16,7 +22,7 @@
     color: var(--color-principal);
 }
 
-input-form {
+.input-form {
     margin-top: 10px;
     width: 200px;
     border: none;
@@ -33,11 +39,12 @@ input-form {
     font-size: 14px;
 }
 
-.input-form.file {
-
+.input-form-file {
+    margin-top: 10px;
+    width: 200px;
 }
 
-.contenedor-con-opacidad {
+.contenedor-modales-position-fixed {
     position: fixed;
     top: 0;
     left: 0;
@@ -47,4 +54,54 @@ input-form {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.mensaje-error-campo {
+    width: 200px;
+    margin-top: 5px;
+    font-size: 12px;
+    font-family: var(--parrafos2);
+    font-style: italic;
+    color: red;
+}
+
+.input-submit {
+    width:80px;
+    padding: 2px 0 2px 0;
+    margin: 40px 0 40px 0;
+    border: none;
+    background-color: var(--color-principal);
+    color: var(--white);
+    font-family: var(--parrafos);
+    text-align: center;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.input-submit:hover {
+    background-color: var(--color-boton-naranja-hover);
+}
+
+.contenedor-botones-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.input-cancelar {
+    width:80px;
+    padding: 2px 0 2px 0;
+    margin: 40px 0 40px 0;
+    border: none;
+    background-color: #B0B0B0;
+    color: var(--white);
+    font-family: var(--parrafos);
+    text-align: center;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.input-cancelar:hover {
+    background-color: #808080;
 }

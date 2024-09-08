@@ -393,8 +393,7 @@ exports.actualizarCliente = async(req, res) => {
 exports.agregarCliente = async(req, res) => {
   const {nombre, correo, telefono, direccion} = req.body;
   const imagen = req.file?.path || null;
-  console.log(nombre);
-  console.log(correo);
+
   const errores = [];
 
   // Validar nombre
@@ -475,15 +474,12 @@ exports.agregarCliente = async(req, res) => {
     for (let consulta of consultarCorreoUsuarios) {
       const [resultado] = await dbMysql2.query(consulta, [correo]);
       if (resultado.length > 0) {
-        console.log('el correo ya esta en uso')
           return res.status(409).json({ message: 'El correo ya está en uso.' });
       }
     }
     await dbMysql2.query(agregarClienteSql, valores);
-    console.log('Se registro correctamente el cliente');
     res.status(200).json({ message: 'EL cliente se registro exitosamente' });
   } catch (error) {
-    console.error('No se puedo registrar el cliente', error);
     res.status(500).json({ message: 'No se pudo registrar el cliente. Por favor, intentar más tarde' });
   }
 }
@@ -582,28 +578,27 @@ exports.agregarProfesional = async (req, res) => {
     return res.status(400).json({ message: 'Todos los campos son obligatorios. Por favor, ingrese los datos' });
   }
 
-// validar formato del teléfono y el curriculum
-const validacionTelefono = validations.validarTelefono(telefono);
-const validacionCurriculum = validations.validarFile(curriculumFile);
-const validacionImagen = imagenFile ? validations.validarImagen(imagenFile) : null;
+// Validar formato del teléfono, currículum y la imagen
+const validacionTelefono = telefono && validations.validarTelefono(telefono);
+const validacionCurriculum = curriculumFile && validations.validarFile(curriculumFile);
+const validacionImagen = imagenFile && validations.validarImagen(imagenFile);
 
+// Validar que todos los datos estén presentes
+const errores = {};
+if (!nombre) errores.nombre = 'El nombre no puede estar vacío. Por favor, ingresa tu nombre.';
+if (!apellido) errores.apellido = 'El apellido no puede estar vacío. Por favor, ingresa tu apellido.';
+if (!especialidad) errores.especialidad = 'No seleccionaste una especialidad. Por favor, selecciona una especialidad.';
+if (!correo) errores.correo = 'El correo no puede estar vacío. Por favor, ingresa tu correo electrónico.';
+if (!telefono) errores.telefono = 'No ingresaste tu número telefónico. Por favor, ingrésalo.';
+if (!curriculumFile) errores.curriculum = 'No seleccionaste tu hoja de vida. Por favor, selecciona tu archivo de hoja de vida.';
 
-  // validar que todos los datos sí esten presentes
-  const errores = {};
-  if (!nombre) errores.nombre = 'El nombre no puede estar vacío. Por favor, ingresa tu nombre.';
-  if (!apellido) errores.apellido = 'El apellido no puede estar vacío. Por favor, ingresa tu apellido.';
-  if (!especialidad) errores.especialidad = 'No seleccionaste una especialidad. Por favor, selecciona una especialidad.';
-  if (!correo) errores.correo = 'El correo no puede estar vacío. Por favor, ingresa tu correo electrónico.';
-  if (!telefono) errores.telefono = 'No ingresaste tu número telefónico. Por favor, ingrésalo.';
-
-  // Validar formato de los datos
-  if (!curriculumFile) errores.curriculum = 'No seleccionaste tu hoja de vida. Por favor, selecciona tu archivo de hoja de vida.';
-  if (validations.validarNumerosYSimbolos(nombre)) errores.formatoNombre = 'El nombre no puede contener números ni caracteres especiales';
-  if (validations.validarNumerosYSimbolos(apellido)) errores.apellido = 'El apellido no puede contener números ni caracteres especiales';
-  if (validations.validarCorreo(correo)) errores.formatoApellido = 'El correo no es válido. Por favor, ingresar un correo electrónico válido';
-  if (!validacionImagen) errores.formatoImagen = 'La extensión del archivo es incorrecta. Solo se permiten imágenes en formato JPG, PNG, GIF o BMP.'
-  if (validacionTelefono) errores.formatoTelefono = validacionTelefono;
-  if (validacionCurriculum) errores.formatoCurriculum = validacionCurriculum;
+// Validar formato de los datos
+if (nombre && validations.validarNumerosYSimbolos(nombre)) errores.formatoNombre = 'El nombre no puede contener números ni caracteres especiales';
+if (apellido && validations.validarNumerosYSimbolos(apellido)) errores.formatoApellido = 'El apellido no puede contener números ni caracteres especiales';
+if (correo && !validations.validarCorreo(correo)) errores.formatoCorreo = 'Por favor, ingresa un correo electrónico válido.';
+if (!validacionImagen) errores.formatoImagen = 'La extensión del archivo es incorrecta. Solo se permiten imágenes en formato JPG, PNG, GIF o BMP.';
+if (!validacionTelefono) errores.formatoTelefono = 'El número de teléfono no es válido.';
+if (!validacionCurriculum) errores.formatoCurriculum = 'Formato de archivo de hoja de vida no permitido.';
 
   if (Object.values(errores).length > 0) {
     return res.status(400).json(errores);
@@ -737,7 +732,7 @@ const validacionImagen = imagenFile ? validations.validarImagen(imagenFile) : nu
     }
 
     await dbMysql2.query(sql, values);
-    res.status(200).json({ message: 'El profesional se incorporó de manera exitosa' });
+    res.status(200).json({ message: 'Actualización exitosa' });
   } catch (error) {
     res.status(500).json({ message: 'No se pudo incorporar el profesional' });
   }
@@ -838,14 +833,25 @@ exports.obtenerSolicitudesTrabajo = async(req, res) => {
 }
 
 exports.obtenerContratos = async(req, res) => {
-  const obtenerContratos = 'SELECT * FROM contrato';
+  const {estado_pago} = req.query;
+  console.log(estado_pago)
+  const obtenerContratos = 'SELECT * FROM contrato WHERE estado_pago LIKE ?';
+  const obtenerTodosContratos = 'SELECT * FROM contrato';
 
+if (estado_pago === 'todos') {
   try {
-    const [contratos] = await dbMysql2.query(obtenerContratos);
+    const [contratos] = await dbMysql2.query(obtenerTodosContratos);
     res.status(200).json(contratos); 
   } catch (error) {
-    console.log('OCURRIO UN ERROR', error);
     res.status(500).json({ message: 'No se pudo seleccionar los contratos' });
   }
+} else {
+  try {
+    const [contratos] = await dbMysql2.query(obtenerContratos, [estado_pago]);
+    res.status(200).json(contratos); 
+  } catch (error) {
+    res.status(500).json({ message: 'No se pudo seleccionar los contratos' });
+  }
+}
 }
 

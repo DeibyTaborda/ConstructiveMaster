@@ -18,7 +18,7 @@ const {usuario} = useContext(UsuarioContexto);
     if (data) {
       actualizarTablasBD(data.data);
     }
-  }, [data]);
+  }, [data]); 
 
   if (error) return <p>No tienes permiso para acceder a esta ruta</p>
   if (!data) return <p>Error 404</p>

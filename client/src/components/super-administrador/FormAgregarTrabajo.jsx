@@ -85,8 +85,7 @@ function FormAgregarTrabajo({solicitudPOST, onClick}) {
     return(
         <>
             <form className="form" onSubmit={handleSubmit}>
-                <h3 className="titulo-form-editar-cliente">Editar</h3>
-                <h4 className="nombre-cliente-editar">mi bro</h4>
+                <h3 className="titulo-form">Agregar trabajo</h3>
                 <label htmlFor="id_cliente" className="label-form">Cliente:</label>
                 <input 
                     type="number" 

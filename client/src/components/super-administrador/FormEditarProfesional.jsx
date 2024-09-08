@@ -1,22 +1,34 @@
 import React, { useEffect, useState } from "react";
-import '../../assets/styles/formAgregarProfesional.css';
 import useAxios from "../../services/api";
+import '../../assets/styles/forms.css';
 import {validarNumerosYSimbolos, validarLongitudTexto, validarCorreo} from '../../utils/utils';
 
-function FormEditarProfesional({onClickEditar}) {
+function FormEditarProfesional({onClickEditar, onClickCancelar, datosProfesional}) {
     const [datos, setDatos] = useState({ categories: [], subcategories: [] });
     const {loading, error, response, data, fetchData} = useAxios('http://localhost:3001/categorias');
     const [errores, setErrores] = useState(false);
 
     const [datosEnviar, setDatosEnviar] = useState({
-        nombre: '',
-        apellido: '',
-        especialidad: '',
-        correo: '',
-        telefono: '',
-        curriculum: null,
-        imagen: null
+        nombre: datosProfesional?.nombre || '',
+        apellido: datosProfesional?.apellido || '',
+        especialidad: datosProfesional?.especialidad || '',
+        correo: datosProfesional?.correo || '',
+        telefono: datosProfesional?.telefono || '',
+        curriculum: datosProfesional?.curriculum || '',
+        imagen: datosProfesional?.imagen || ''
     })
+
+    const verificarDiferencia = (datosEnviar, datosProfesional) => {
+        const data = {};
+        if (datosEnviar.nombre !== datosProfesional.nombre) data.nombre = datosEnviar.nombre;
+        if (datosEnviar.apellido !== datosProfesional.apellido) data.apellido = datosEnviar.apellido;
+        if (datosEnviar.especialidad !== datosProfesional.especialidad)  data.especialidad = datosEnviar.especialidad;
+        if (datosEnviar.correo !== datosProfesional.correo) data.correo = datosEnviar.correo;
+        if (datosEnviar.telefono !== datosProfesional.telefono)  data.telefono = datosEnviar.correo; 
+        if (datosEnviar.curriculum !== datosProfesional.curriculum) data.curriculum = datosEnviar.curriculum;
+        if (datosEnviar.imagen !== datosProfesional.imagen) data.imagen = datosEnviar.imagen;
+        return data;
+    }
 
     useEffect(() => {
         if (datosEnviar) {
@@ -41,49 +53,29 @@ function FormEditarProfesional({onClickEditar}) {
         setDatosEnviar({...datosEnviar, [name] : files[0]});
     }
 
-    const validacion = () => {
-        const erroresValidacion = {};
-        // if (!datosEnviar.nombre) erroresValidacion.nombre = 'El nombre es obligatorio. Por favor, ingresa tu nombre';
-        // if (!datosEnviar.apellido) erroresValidacion.apellido = 'El apellido es obligatorio. Por favor, ingresa tu nombre';
-        // if (!datosEnviar.especialidad) erroresValidacion.especialidad = 'No seleccionaste una especialidad. Por favor, selecciona una especialidad.';
-        // if (!datosEnviar.correo) erroresValidacion.correo = 'El correo no puede estar vacío. Por favor, ingresa tu correo electrónico.';
-        // if (!datosEnviar.telefono) erroresValidacion.telefono = 'No ingresaste tu número telefónico. Por favor, ingrésalo.';
-        // if (!datosEnviar.curriculum) erroresValidacion.curriculum = 'No adjuntaste la hoja de vida. Por favor, adjunta tu hoja de vida';
-
-        const validadoCorreo = datosEnviar.correo ? validarCorreo(datosEnviar.correo) : null;
-        if (validadoCorreo) erroresValidacion.formatoCorreo = validadoCorreo;
-
-        setErrores(erroresValidacion);
-        return erroresValidacion;
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        // Ejecutar la validación y obtener el resultado
-        const erroresValidacion = validacion(); 
+        // Verifica los campos que han cambiado
+        const diferenciaDatos = verificarDiferencia(datosEnviar, datosProfesional);
         
-        // Si no hay errores, continuar con la solicitud POST
-        if (Object.keys(erroresValidacion).length === 0) {
-            const formData = new FormData();
-            formData.append('nombre', datosEnviar.nombre);
-            formData.append('apellido', datosEnviar.apellido);
-            formData.append('especialidad', datosEnviar.especialidad);
-            formData.append('correo', datosEnviar.correo);
-            formData.append('telefono', datosEnviar.telefono);
-            formData.append('curriculum', datosEnviar.curriculum);
-            formData.append('imagen', datosEnviar.imagen);
-            
-            // Llamar a la función para enviar los datos
-            await onClickEditar(formData);
-        } else {
-            // Establecer los errores si hay alguno
-            setErrores(erroresValidacion);
+        // Si no hay cambios, puedes detener el proceso
+        if (Object.keys(diferenciaDatos).length === 0) {
+            onClickCancelar();
+            return;
         }
+    
+        // Crea el objeto FormData solo con los datos que cambiaron
+        const formData = new FormData();
+        Object.entries(diferenciaDatos).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
+    
+        // Envía los datos modificados
+        await onClickEditar(formData);
     };
     
     
-
     useEffect(() => {
         if (data) {
           setDatos(data);
@@ -91,70 +83,86 @@ function FormEditarProfesional({onClickEditar}) {
       }, [data]);
 
     return(
-        <form onSubmit={handleSubmit} className="form-agregar-profesional">
-        <label htmlFor="nombre">Nombre:</label>
+        <form onSubmit={handleSubmit} className="form">
+        <h3 className="titulo-form">Editar profesional</h3>
+        <label htmlFor="nombre" className="label-form">Nombre:</label>
         <input 
             type="text"
             name="nombre"
-            className="input-agegar-cliente"
+            className="input-form"
             value={datosEnviar.nombre}
             onChange={handleOnchange}
         />
-        <label htmlFor="apellido">Apellido:</label>
+        {errores.nombre ? (<p className="mensaje-error-campo">{errores.nombre}</p>) : ''}
+
+
+        <label htmlFor="apellido" className="label-form">Apellido:</label>
         <input 
             type="text" 
             name="apellido"
-            className="input-agegar-cliente"
+            className="input-form"
             value={datosEnviar.apellido}
             onChange={handleOnchange}
         />
+        {errores.apellido ? (<p className="mensaje-error-campo">{errores.apellido}</p>) : ''}
+
         {data && (
             <>
-                <label htmlFor="especialidad">Especialidad</label>
+                <label htmlFor="especialidad" className="label-form">Especialidad</label>
                 <select name="especialidad" onChange={handleOnchange}>
                     <option value="seleccionar">Seleccionar</option>
                     {datos.subcategories && datos.subcategories.map((subcategoria) => (
                          <option value={subcategoria.id}>{subcategoria.subcategoria}</option>
                     ))}
                 </select>
+                {errores.especialidad ? (<p className="mensaje-error-campo">{errores.especialidad}</p>) : ''}
             </>
         )}
-        <label htmlFor="correo">Correo:</label>
+        <label htmlFor="correo" className="label-form">Correo:</label>
         <input 
             type="email" 
             name="correo"
             value={datosEnviar.correo}
             onChange={handleOnchange}
+            className="input-form"
         />
-        <label htmlFor="telefono">Teléfono:</label>
+        {errores.correo ? (<p className="mensaje-error-campo">{errores.correo}</p>) : ''}
+
+        <label htmlFor="telefono" className="label-form">Teléfono:</label>
         <input 
             type="number" 
             name="telefono"
             value={datosEnviar.telefono}
             onChange={handleOnchange}
+            className="input-form"
         />
-        <label htmlFor="curriculum">Hoja de vida:</label>
+        {errores.telefono ? (<p className="mensaje-error-campo">{errores.telefono}</p>) : ''}
+
+        <label htmlFor="curriculum" className="label-form">Hoja de vida:</label>
         <input 
             type="file"
             name="curriculum"
             onChange={handleFileOnchange}
             accept=".pdf, .doc, .docx"
-            />
-        <label htmlFor="imagen">Imagen:</label>
+            className="input-form-file"
+        />
+        {errores.curriculum ? (<p className="mensaje-error-campo">{errores.curriculum}</p>) : ''}
+
+        <label htmlFor="imagen" className="label-form">Imagen:</label>
         <input 
             type="file" 
             name="imagen"
             onChange={handleFileOnchange}
             accept=".jpg, .png, jpeg"
+            className="input-form-file"
         />
-        {errores && typeof errores === 'string' ? (
-            <p>{errores}</p>
-        ) : (
-            errores && Object.values(errores).map((error, index) => (
-                <p key={index}>{error}</p>
-            ))
-        )}
-        <input type="submit" />
+        {errores.imagen ? (<p className="mensaje-error-campo">{errores.imagen}</p>) : ''}
+
+        <div className="contenedor-botones-form">
+            <input type="submit" className="input-submit"/>
+            <button className="input-cancelar" onClick={onClickCancelar}>Cancelar</button>
+        </div>
+        {/* {errores.sin_cambios ? (<p>{errores.sin_cambios}</p>) : ''} */}
     </form>
     );
 }

@@ -18,7 +18,7 @@ function MenuAdmin({id}){
                     <li className="items-menu-admin"><Link to='/clientes' className="link-menu-admin"><FaUsers className="icon-menu-admin"/></Link></li>
                     <li className="items-menu-admin"><Link to='/trabajos' className="link-menu-admin"><AiOutlineFolderAdd className="icon-menu-admin"/></Link></li>
                     <li className="items-menu-admin"><Link className="link-menu-admin"><GrTools className="icon-menu-admin"/></Link></li>
-                    <li className="items-menu-admin"><Link className="link-menu-admin"><FaFileContract className="icon-menu-admin"/></Link></li>
+                    <li className="items-menu-admin"><Link to="/contratos" className="link-menu-admin"><FaFileContract className="icon-menu-admin"/></Link></li>
                     <li className="items-menu-admin"><Link to='/categorias' className="link-menu-admin"><BiSolidCategory className="icon-menu-admin"/></Link></li>
                 </ul>
             </nav>

@@ -1,4 +1,4 @@
-.dialogo-confirmar-eliminar-cliente {
+.dialogo-confirmar-confirmar-entidad {
     width: 300px;
     display: flex;
     padding: 30px;
@@ -8,32 +8,34 @@
     background-color: var(--white);
 }
 
-.titulo-confirmar-eliminar-cliente {
+.titulo-confirmar-accion-entidad {
     font-family: var(--parrafos2);
     color: var(--color-principal);
 }
 
-.nombre-del-cliente-a-eliminar {
+.referencia-accion-entidad {
     margin-top: 3px;
     font-family: var(--parrafos2);
     font-style: italic;
 }
 
-.pregunta-confirmar-eliminar-cliente {
+.pregunta-confirmar-accion-entidad {
     margin-top: 15px;
     font-family: var(--parrafos2);
     font-size: 14px;
+    font-weight: 450;
+    text-align: center;
 }
 
-.icon-confirmar-eliminar-cliente {
-    margin: 20px 0 20px 0;
-    font-size: 100px;
-}
-
-.contenedor-botones-confirmar-eliminar-cliente {
+.contenedor-botones-confirmar-acciones-entidad {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 30px;
+}
+
+.icono-confirmar-accion-entidad {
+    margin: 20px 0 20px 0;
+    font-size: 120px;
 }

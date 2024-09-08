@@ -13,6 +13,7 @@ import { UsuarioProveedor } from "../context/UsuarioContexto";
 import { TablasProveedor } from "../context/TablasBdContext";
 import Profesionales from "../pages/administrador/Profesionales";
 import Trabajos from "../pages/administrador/Trabajos";
+import Contratos from "../pages/administrador/Contratos";
 
 function Aplication(){
     const [selectedSubcategory, setSelectedSubcategory] = useState(null);
@@ -34,6 +35,7 @@ function Aplication(){
                         <Route path="/datos/personales" element={<DatosPersonalesAdmin/>}/>
                         <Route path="/profesionales" element={<Profesionales/>}/>
                         <Route path="/trabajos" element={<Trabajos/>} />
+                        <Route path="/contratos" element={<Contratos/>} />
                     </Routes> 
                 </TablasProveedor>
             </UsuarioProveedor>

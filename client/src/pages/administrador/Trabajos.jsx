@@ -3,7 +3,6 @@ import '../../assets/styles/forms.css';
 import MenuAdmin from "../../components/administrador/MenuAdmin.jsx";
 import TablaAdmin from "../../components/administrador/TablaAdmin.jsx";
 import TarjetaAgregarEntidad from "../../components/administrador/TarjetaAgregarEntidad.jsx";
-import ConfirmarAgregarProfesionalModal from "../../components/super-administrador/ConfirmarAgregarProfesionalModal.jsx";
 import FormEditarTrabajo from "../../components/administrador/FormEditarTrabajo.jsx";
 import useAxios from "../../services/api";
 import usePostRequest from "../../services/usePostRequest";
@@ -11,6 +10,9 @@ import { usePutRequest } from "../../services/usePutRequest.js";
 import useDelete from "../../services/delete";
 import usePostRequestJson from "../../services/usePostRequestJson.js";
 import FormAgregarTrabajo from "../../components/super-administrador/FormAgregarTrabajo.jsx";
+import ConfirmarAccionEntidad from "../../components/administrador/ConfirmarAccionEntidad.jsx";
+import { FaCheckCircle } from "react-icons/fa";
+import { TiDeleteOutline } from "react-icons/ti";
 
 function Trabajos() {
     // Estados para gestionar trabajos
@@ -49,8 +51,7 @@ function Trabajos() {
             console.log('Llamando a postRequestJsonObtener con estado:', estado);
             postRequestJsonObtener(estado);
         }
-    }, [estado]);
-    
+    }, [estado]);    
 
     useEffect(() => {
         if (responseObtener) {
@@ -114,6 +115,7 @@ function Trabajos() {
     const editarEstadoTrabajo = async () => {
         await sendPutRequest(`http://localhost:3001/trabajos/${idTrabajoSeleccionado}`, { estado: 'confirmado' });
         await postRequestJsonObtener(estado);
+        setOpenConfirmarTrabajo(false);
     };
 
     const cancelarTrabajo = async () => {
@@ -144,12 +146,11 @@ function Trabajos() {
     const abrirFormEditarTrabajo = () => setOpenFormEditar(!isOpenFormEditar);
     const abrirFormAgregarTrabajo = () => setIsOpenFormAgregarTrabajo(!isOpenFormAgregarTrabajo);
 
-    // Render del componente
     return (
-        <div className="container-menu-table-clientes">
+        <div className="contenedor-general-tablas">
             <MenuAdmin />
-            <div className="container-table-clientes">
-                <div className="subcontenedor-tabla-clientes">
+            <div className="subcontenedor-tablas">
+                <div className="contenedor-tablas-admin">
                     {/* Selector para cambiar el estado del trabajo */}
                     <select name="estado" onChange={handleChange}>
                         <option value="pendiente">Pendiente</option>
@@ -174,23 +175,45 @@ function Trabajos() {
                 {/* Componentes para agregar, confirmar o cancelar trabajo */}
                 <TarjetaAgregarEntidad cadena="Añadir nuevo cliente" onClick={abrirFormAgregarTrabajo}/>
                 {isOpenConfirmarTrabajo && (
-                    <div className="contenedor-con-opacidad">
-                        <ConfirmarAgregarProfesionalModal onClick={editarEstadoTrabajo} onClickCancelar={cerrarModalConfirmarTrabajo}/>
+                    <div className="contenedor-modales-position-fixed">
+                        {/* <ConfirmarAgregarProfesionalModal onClick={editarEstadoTrabajo} onClickCancelar={cerrarModalConfirmarTrabajo}/> */}
+                        <ConfirmarAccionEntidad
+                            titulo="Confirmar trabajo"
+                            referencia={datosTrabajoSeleccionado.id}
+                            mensaje='¿Estás seguro de que deseas confirmar el trabajo?'
+                            Icono={FaCheckCircle}
+                            onClick={editarEstadoTrabajo}
+                            onClickCancelar={cerrarModalConfirmarTrabajo}
+                            boton1="Confirmar"
+                            boton2="Cancelar"
+                        />
                     </div>
                 )}
                 {isOpenCancelarTrabajo && (
-                    <div className="contenedor-con-opacidad">
-                        <ConfirmarAgregarProfesionalModal onClick={cancelarTrabajo} onClickCancelar={cerrarModalCancelarTrabajo} />
+                    <div className="contenedor-modales-position-fixed">
+                        <ConfirmarAccionEntidad
+                            titulo="Cancelar trabajo"
+                            referencia={datosTrabajoSeleccionado.id}
+                            mensaje='¿Estás seguro de que deseas cancelar el trabajo?'
+                            Icono={TiDeleteOutline}
+                            onClick={cancelarTrabajo}
+                            onClickCancelar={cerrarModalCancelarTrabajo}
+                            boton1="Suspender"
+                            boton2="Cancelar"
+                        />
                     </div>
                 )}
                 {isOpenFormAgregarTrabajo && (
-                    <div className="contenedor-con-opacidad">
+                    <div className="contenedor-modales-position-fixed">
                         <FormAgregarTrabajo solicitudPOST={agregarTrabajo} onClick={cerrarFormAgregarTrabajo}/>
                     </div>
                 )}
                 {isOpenFormEditar && (
-                    <div className="contenedor-con-opacidad">
-                        <FormEditarTrabajo datos={datosTrabajoSeleccionado} solicitudPUT={editarTrabajo} onClick={cerrarFormEditarTrabajo}/>
+                    <div className="contenedor-modales-position-fixed">
+                        <FormEditarTrabajo 
+                        datos={datosTrabajoSeleccionado} 
+                        solicitudPUT={editarTrabajo} 
+                        onClick={cerrarFormEditarTrabajo}/>
                     </div>
                 )}
 
