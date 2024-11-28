@@ -1,0 +1,66 @@
+.dialogo-confirmar-admision {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+}
+
+.titulo-admision-profesional {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.referencia-admision {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.mensaje-admision {
+    font-size: 1rem;
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.icono-admision {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 15px;
+}
+
+.contenedor-botones-admision {
+    display: flex;
+    justify-content: space-around;
+}
+
+.boton-admitir {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.boton-admitir:hover {
+    background-color: #45a049; /* Verde más oscuro */
+}
+
+.boton-rechazar {
+    background-color: #f44336; /* Rojo */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.boton-rechazar:hover {
+    background-color: #e53935; /* Rojo más oscuro */
+}

@@ -1,63 +1,57 @@
-/* .container-category-card{
-    width: 300px;
-    padding: 10px 0 10px 0;
-    margin: 5px 0 5px 0;
-    display: flex;
-    align-items: center;
-    background-color: rgb(213, 213, 213);
-
+/* Contenedor general de la carta */
+.container-category-card {
+    width: 200px; /* Tamaño pequeño de la carta */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para dar efecto de tarjeta */
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+    margin: 10px auto;
+    cursor: pointer;
 }
 
-.container-img-category{
-    width: 90px;
-    position: relative;
-    left: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.container-category-card:hover {
+    transform: translateY(-5px); /* Efecto hover que levanta la tarjeta */
 }
 
-.img-category{
+/* Contenedor de la imagen */
+.container-img-category {
+    width: 100%;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+/* Imagen dentro de la carta */
+.img-category {
     width: 100%;
     height: 100%;
+    object-fit: cover; /* Ajuste para que la imagen ocupe toda el área sin deformarse */
+    border-radius: 8px;
 }
 
-.category-name{
-    position: relative;
-    left: 30px;
-    font-weight: 700;
-} */
-
-
-
-.container-category-card{
-    width: 200px;
-    height: 50px;
-    padding: 10px 0 10px 0;
-    margin: 5px 5px 5px 5px;
-    display: flex;
-    align-items: center;
-    background-color: rgb(213, 213, 213);
+/* Nombre de la categoría */
+.category-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    text-transform: capitalize;
 }
 
-.container-img-category{
-    width: 60px;
-    position: relative;
-    left: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+/* Media query para pantallas pequeñas */
+@media (max-width: 768px) {
+    .container-category-card {
+        width: 150px; /* Se ajusta para pantallas más pequeñas */
+        padding: 8px;
+    }
 
-.img-category{
-    width: 100%;
-    height: 100%;
-}
+    .container-img-category {
+        height: 100px;
+    }
 
-.category-name{
-    width: calc(100% - 100px);
-    position: relative;
-    left: 30px;
-    font-weight: 700;
-    font-size: 13px;
+    .category-name {
+        font-size: 0.9rem;
+    }
 }

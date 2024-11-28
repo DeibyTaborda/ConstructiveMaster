@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import '../../assets/styles/registro.css';
-import Menu from "../../components/general/menu";
+import Menu from "../../components/general/Menu";
 import SubmitButton from "../../components/general/SubmitButton";
 import Footer from "../../components/general/footer";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 import { validarNombre, validarLongitudCorreo, validarContrasena} from "../../utils/utils";
 
 function Registro() {
+    const navigate = useNavigate();
     const [datos, setDatos] = useState({
         nombre: '',
         correo: '',
@@ -65,7 +67,6 @@ function Registro() {
 
         try {
             const response = await axios.post('http://localhost:3001/registro', datos);
-            console.log('Los datos se enviaron de manera exitosa');
 
             setDatos({
                 nombre : '',
@@ -73,10 +74,12 @@ function Registro() {
                 contrasena : '',
                 confirmContrasena : ''
             });
+            if (response.data.message) {
+                navigate('/login');
+            }
 
         } catch (error) {
-            console.error('Error en enviar los datos', error);
-            alert('Error en enviar los datos');
+            setErrores({...errores, errorGeneral: error.response.data.message});
         }
     };
 
@@ -95,7 +98,7 @@ function Registro() {
                         onChange={handleChange}
                         value={datos.nombre}
                     />
-                    {errores.nombre ? <p className="error">{errores.nombre}</p> : ''}
+                    {errores.nombre ? <p className="mensaje-error">{errores.nombre}</p> : ''}
                     
                     <label htmlFor="correo" className="label-login-form">Correo:</label>
                     <input
@@ -106,7 +109,7 @@ function Registro() {
                         onChange={handleChange}
                         value={datos.correo}
                     />
-                    {errores.correo ? <p className="error">{errores.correo}</p> : ''}
+                    {errores.correo ? <p className="mensaje-error">{errores.correo}</p> : ''}
                     
                     <label htmlFor="contrasena" className="label-login-form">Contraseña:</label>
                     <input
@@ -117,7 +120,7 @@ function Registro() {
                         onChange={handleChange}
                         value={datos.contrasena}
                     />
-                    {errores.contrasena && <p className="error">{errores.contrasena}</p>}
+                    {errores.contrasena && <p className="mensaje-error">{errores.contrasena}</p>}
                     
                     <label htmlFor="confirmContrasena" className="label-login-form">Confirmar contraseña:</label>
                     <input
@@ -128,7 +131,10 @@ function Registro() {
                         onChange={handleChange}
                         value={datos.confirmContrasena}
                     />
-                    {errores.confirmContrasena && <p className="error">{errores.confirmContrasena}</p>}
+                    {errores.confirmContrasena && <p className="mensaje-error">{errores.confirmContrasena}</p>}
+                    {errores?.errorGeneral && (
+                        <p className="error-mensaje">{errores?.errorGeneral || ''}</p>
+                    )}
                     
                     <SubmitButton id='submit-boton'  value={'Registrarse'}/>
                 </form>

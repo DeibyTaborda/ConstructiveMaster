@@ -1,0 +1,26 @@
+.section-subcategorias-de-ejecucion {
+    width: 100%;
+    height: auto;
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.titulo-subcategorias {
+    font-size: 1.6rem;
+    font-family: var(--titulos);
+    color: var(--color-principal);
+    margin: 20px 0 0 20px;
+
+}
+
+@media (max-width: 768px) {
+    .section-subcategorias-de-ejecucion {
+        width: 80%;
+    }
+}

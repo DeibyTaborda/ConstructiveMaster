@@ -1,0 +1,60 @@
+.contenedor-dato-profesional {
+    display: flex;
+    flex-direction: column; 
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 5px;
+    font-family: var(--parrafos);
+    background-color: #f9f9f9;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 200px;
+    transition: all 0.3s ease;
+}
+
+.contenedor-dato-profesional h3 {
+    font-size: 0.8rem;
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.contenedor-dato-profesional p {
+    font-size: 0.8rem;
+    margin: 0;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .contenedor-dato-profesional {
+        padding: 8px;
+        margin: 5px;
+        width: 90%; 
+    }
+
+    .contenedor-dato-profesional h3 {
+        font-size: 0.8rem;
+    }
+
+    .contenedor-dato-profesional p {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-dato-profesional {
+        padding: 5px;
+        margin: 5px 0;
+        width: 100px;
+        word-wrap: break-word; 
+        overflow-wrap: break-word;
+    }
+
+    .contenedor-dato-profesional h3 {
+        font-size: 0.6rem;
+    }
+
+    .contenedor-dato-profesional p {
+        font-size: 0.6rem;
+    }
+}

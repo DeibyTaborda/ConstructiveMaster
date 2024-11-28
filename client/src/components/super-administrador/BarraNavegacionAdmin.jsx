@@ -4,6 +4,7 @@ import { FaBuilding } from "react-icons/fa";
 import Perfil from "../general/Perfil";
 import AccionesCrear from "./AccionesCrear";
 import useClicAfuera from "../../hooks/useClicAfuera";
+import { Link } from "react-router-dom";
 
 function BarraNavegacionAdmin() {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,7 @@ function BarraNavegacionAdmin() {
     return (
         <ul className="lista-barra-navegacion-admin">
             <li className="item-barra-navegacion-admin"><FaBuilding className="icon-home-admin"/></li>
-            <li className="item-barra-navegacion-admin"></li>
+            <li className="item-barra-navegacion-admin"><Link className="base-de-datos" to='/solicitud_profesional'>Base de datos</Link></li>
             <li className="item-barra-navegacion-admin">
                 <button className="boton-admin-acciones" onClick={manejarClicBoton}>Crear</button>
                 {isOpen && (
@@ -29,7 +30,7 @@ function BarraNavegacionAdmin() {
                     </div>
                 )}
             </li>
-            <li className="item-barra-navegacion-admin"><input type="text" value="Buscar..." className="input-barra-de-busqueda"/></li>
+
             <li className="item-barra-navegacion-admin"><Perfil/></li>
         </ul>
     );

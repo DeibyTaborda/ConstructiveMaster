@@ -52,7 +52,7 @@ function FormAgregarProfesional({onClickCrear, onClickCancelar}) {
         if (!datosEnviar.curriculum) erroresValidacion.curriculum = 'Adjunta tu hoja de vida.';        
 
         const validadoCorreo = validarCorreo(datosEnviar.correo);
-        if (!validadoCorreo) erroresValidacion.formatoCorreo = validadoCorreo;
+        if (validadoCorreo) erroresValidacion.formatoCorreo = validadoCorreo;
 
         setErrores(erroresValidacion);
         return erroresValidacion;
@@ -63,6 +63,7 @@ function FormAgregarProfesional({onClickCrear, onClickCancelar}) {
         
         // Ejecutar la validación y obtener el resultado
         const erroresValidacion = validacion(); 
+        console.log(erroresValidacion)
         
         // Si no hay errores, continuar con la solicitud POST
         if (Object.keys(erroresValidacion).length === 0) {

@@ -18,5 +18,11 @@ body{
     --relaway:  "Raleway", sans-serif;
     --parrafos2: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     --color-boton-naranja-hover:  #D97300;
+    --color-bow-shadow: rgb(0, 0, 0, 0.8 );
+    --letra3: "Edu QLD Beginner", cursive; 
+    --color-secundario: #f2f2f2; /* Fondo claro */
+    --color-texto: #333; /* Texto oscuro */
+    --color-hover: #e07300; /* Hover naranja oscuro */
+    --color-borde: #ccc; /* Color de borde para las tarjetas */
 } 
 

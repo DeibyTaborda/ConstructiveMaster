@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import '../../assets/styles/forms.css';
+import '../../assets/styles/formTrabajos.css';
 import MenuAdmin from "../../components/administrador/MenuAdmin.jsx";
 import TablaAdmin from "../../components/administrador/TablaAdmin.jsx";
 import TarjetaAgregarEntidad from "../../components/administrador/TarjetaAgregarEntidad.jsx";
 import FormEditarTrabajo from "../../components/administrador/FormEditarTrabajo.jsx";
-import useAxios from "../../services/api";
-import usePostRequest from "../../services/usePostRequest";
-import { usePutRequest } from "../../services/usePutRequest.js";
 import useDelete from "../../services/delete";
 import usePostRequestJson from "../../services/usePostRequestJson.js";
 import FormAgregarTrabajo from "../../components/super-administrador/FormAgregarTrabajo.jsx";
 import ConfirmarAccionEntidad from "../../components/administrador/ConfirmarAccionEntidad.jsx";
+import RutaRestringida from "../../components/general/RutaRestringida.jsx";
+import useAxios from "../../services/api.js";
 import { FaCheckCircle } from "react-icons/fa";
 import { TiDeleteOutline } from "react-icons/ti";
+import { usePutRequest } from "../../services/usePutRequest.js";
 
 function Trabajos() {
     // Estados para gestionar trabajos
@@ -20,6 +21,7 @@ function Trabajos() {
     const [profesionales, setProfesionales] = useState([]);
     const [errores, setErrores] = useState(null);
     const [respuestasExitosas, setRespuestasExitosas] = useState(null);
+    const [respuestaExitosaAgregar, setRespuestaExitosaAgregar] = useState(null);
     const [estado, setEstado] = useState({ estado: 'pendiente' });
     const [columnas, setColumnas] = useState([
         'id', 'nombre_cliente', 'nombre_profesional', 'fecha', 'hora', 'direccion', 'descripcion', 'valor', 'fecha_inicio', 'fecha_fin', 'estado'
@@ -36,19 +38,18 @@ function Trabajos() {
     const { loading: loadingObtener, error: errorObtener, response: responseObtener, postRequestJson : postRequestJsonObtener } = usePostRequestJson('http://localhost:3001/trabajos/admin');
     const { loading: loadingAgregar, error: errorAgregar, response: responseAgregar, postRequestJson: postRequestJsonAgregar } = usePostRequestJson('http://localhost:3001/trabajos');
     const { loading: loadingEliminar, error: errorEliminar, response: responseEliminar, eliminar } = useDelete('http://localhost:3001/clientes/');
+    const {errorCode} = useAxios('http://localhost:3001/trabajos');
 
     // Manejo de cambio en el estado del trabajo
     const handleChange = async (event) => {
         const estadoSeleccionado = event.target.value;
         setEstado({ estado: estadoSeleccionado });
-        console.log('Estado antes de enviar:', estado); 
         await postRequestJsonObtener({ estado: estadoSeleccionado });
     };
 
     // Efectos para manejar actualizaciones en estado y respuestas
     useEffect(() => {
         if (estado) {
-            console.log('Llamando a postRequestJsonObtener con estado:', estado);
             postRequestJsonObtener(estado);
         }
     }, [estado]);    
@@ -61,18 +62,9 @@ function Trabajos() {
             } else if (response.length === 0 && columnas.includes('Acciones')) {
                 setColumnas(columnas.filter(col => col !== 'Acciones'));
             }
-            console.log(responseObtener)
             setProfesionales(responseObtener);
         }
     }, [responseObtener]);
-
-    useEffect(() => {
-        if (errorObtener) console.log(errorObtener);
-    }, [errorObtener]);
-
-    useEffect(() => {
-        if (idTrabajoSeleccionado) console.log(idTrabajoSeleccionado);
-    }, [idTrabajoSeleccionado]);
 
     useEffect(() => {
         if (errorActualizar) {
@@ -97,10 +89,32 @@ function Trabajos() {
 
     useEffect(() => {
         if (responseAgregar) {
-            setRespuestasExitosas(responseAgregar);
+            setRespuestaExitosaAgregar(responseAgregar);
             setErrores('');
         }
     }, [responseAgregar])
+
+    useEffect(() => {
+        if (respuestasExitosas) {
+          const timer = setTimeout(() => {
+            setRespuestasExitosas(null); // Oculta el mensaje después de 2 segundos
+          }, 2000);
+          
+          // Limpia el temporizador cuando el componente se desmonte o el mensaje cambie
+          return () => clearTimeout(timer);
+        }
+      }, [respuestasExitosas]);
+
+      useEffect(() => {
+        if (respuestaExitosaAgregar) {
+          const timer = setTimeout(() => {
+            setRespuestaExitosaAgregar(null); // Oculta el mensaje después de 2 segundos
+          }, 2000);
+          
+          // Limpia el temporizador cuando el componente se desmonte o el mensaje cambie
+          return () => clearTimeout(timer);
+        }
+      }, [respuestaExitosaAgregar]);
 
     // Funciones para seleccionar, editar y crear trabajos y abrir Modales
     const seleccionarIdConfirmar = (id) => {
@@ -121,6 +135,7 @@ function Trabajos() {
     const cancelarTrabajo = async () => {
         await sendPutRequest(`http://localhost:3001/trabajos/${idTrabajoSeleccionado}`, { estado: 'cancelado' });
         await postRequestJsonObtener(estado);
+        setIsOpenCancelarTrabajo(false);
     };
 
     const editarTrabajo = async (data) => {
@@ -131,6 +146,7 @@ function Trabajos() {
     const agregarTrabajo = async(data) => {
         await postRequestJsonAgregar(data);
         await postRequestJsonObtener(estado);
+        cerrarFormAgregarTrabajo();
     }
 
     // Datos del trabajo seleccionado
@@ -146,13 +162,15 @@ function Trabajos() {
     const abrirFormEditarTrabajo = () => setOpenFormEditar(!isOpenFormEditar);
     const abrirFormAgregarTrabajo = () => setIsOpenFormAgregarTrabajo(!isOpenFormAgregarTrabajo);
 
+    if (errorCode === 403 || localStorage.getItem('usuario') === null) return <RutaRestringida/>
+
     return (
         <div className="contenedor-general-tablas">
             <MenuAdmin />
             <div className="subcontenedor-tablas">
                 <div className="contenedor-tablas-admin">
                     {/* Selector para cambiar el estado del trabajo */}
-                    <select name="estado" onChange={handleChange}>
+                    <select name="estado" onChange={handleChange} id="camilito" >
                         <option value="pendiente">Pendiente</option>
                         <option value="confirmado">Confirmado</option>
                         <option value="en_progreso">En Progreso</option>
@@ -173,13 +191,13 @@ function Trabajos() {
                 </div>
 
                 {/* Componentes para agregar, confirmar o cancelar trabajo */}
-                <TarjetaAgregarEntidad cadena="Añadir nuevo cliente" onClick={abrirFormAgregarTrabajo}/>
+                <TarjetaAgregarEntidad cadena="Añadir nuevo trabajo" onClick={abrirFormAgregarTrabajo}/>
                 {isOpenConfirmarTrabajo && (
                     <div className="contenedor-modales-position-fixed">
                         {/* <ConfirmarAgregarProfesionalModal onClick={editarEstadoTrabajo} onClickCancelar={cerrarModalConfirmarTrabajo}/> */}
                         <ConfirmarAccionEntidad
                             titulo="Confirmar trabajo"
-                            referencia={datosTrabajoSeleccionado.id}
+                            referencia={datosTrabajoSeleccionado?.id}
                             mensaje='¿Estás seguro de que deseas confirmar el trabajo?'
                             Icono={FaCheckCircle}
                             onClick={editarEstadoTrabajo}
@@ -193,7 +211,7 @@ function Trabajos() {
                     <div className="contenedor-modales-position-fixed">
                         <ConfirmarAccionEntidad
                             titulo="Cancelar trabajo"
-                            referencia={datosTrabajoSeleccionado.id}
+                            referencia={datosTrabajoSeleccionado?.id}
                             mensaje='¿Estás seguro de que deseas cancelar el trabajo?'
                             Icono={TiDeleteOutline}
                             onClick={cancelarTrabajo}
@@ -223,7 +241,8 @@ function Trabajos() {
                 ) : (
                     <p>{errores}</p>
                 )}
-                {respuestasExitosas && <p>{respuestasExitosas}</p>}
+                {respuestasExitosas && <p className="mensaje-exitoso">{respuestasExitosas}</p>}
+                {respuestaExitosaAgregar && <p className="mensaje-exitoso">{respuestaExitosaAgregar}</p>}
             </div>
         </div>
     );

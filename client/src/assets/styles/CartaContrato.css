@@ -1,0 +1,80 @@
+/* frontend/src/CartaContrato.css */
+
+.carta-contrato {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    /* Para que ocupe todo el ancho disponible en pantallas pequeñas */
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+/* Estilo de cada item dentro de la carta */
+.carta-contrato-item {
+    flex: 1;
+    padding: 5px 10px;
+    /* Aseguramos que las celdas se ajusten en dispositivos pequeños */
+    min-width: 150px;
+}
+
+/* Estilos para el estado */
+.estado {
+    font-weight: bold;
+}
+
+.estado-pagado {
+    color: green;
+}
+
+.estado-cancelado {
+    color: red;
+}
+
+.estado-pendiente {
+    color: var(--color-principal);
+}
+
+.btn-pagar {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-pagar:hover {
+    background-color: #0056b3;
+}
+
+/* Media queries para dispositivos más pequeños */
+@media (max-width: 768px) {
+    .carta-contrato {
+        /* Elimina la distribución horizontal en pantallas pequeñas */
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* Aseguramos que cada item ocupe todo el ancho disponible */
+    .carta-contrato-item {
+        width: 100%;
+        padding: 10px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .carta-contrato {
+        padding: 10px;
+        margin: 5px;
+    }
+
+    .carta-contrato-item {
+        padding: 8px 0;
+    }
+}

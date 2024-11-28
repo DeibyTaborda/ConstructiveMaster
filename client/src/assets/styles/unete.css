@@ -1,8 +1,47 @@
 .section-register-form-unete{
-    height: 100vh;
+    height: auto;
     display: flex;
     flex-direction: column;
+    min-height: calc(100vh - 100px);
     gap: 30px;
     justify-content: center;
     align-items: center;
+    padding: 50px;
+}
+
+.section-register-form-unete.gradiente{
+    background: rgb(248,217,0);
+    background: linear-gradient(99deg, rgba(248,217,0,1) 0%, rgba(254,185,0,1) 41%);
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 100px);
+    gap: 30px;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+}
+
+.error-mensaje {
+    color: red;
+    font-size: 13px;
+}
+
+.contenedor-sin-especialidades {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+}
+
+.contenedor-sin-especialidades img {
+    height: 400px;
+
+}
+
+.sitio-sin-especialidades {
+    font-size: 1.5rem;
+    color: white;
+    font-weight: 700;
+    /* box-shadow: 0 4px 8px rgb(0, 0, 0, 0.5); */
 }

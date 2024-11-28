@@ -1,2 +1,15 @@
+.contenedor-sin-clientes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.contenedor-sin-clientes img {
+    width: 300px;
+}
 
+@media (max-width: 480px) {
+    .contenedor-sin-clientes img {
+        width: 200px;
+    }
+}

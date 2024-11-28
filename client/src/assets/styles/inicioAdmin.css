@@ -27,3 +27,44 @@
     align-items: center;
     background-color: rgb( 0, 0, 0, 0.7);
 }
+
+.repuesta-exitosa {
+    margin-top: 30px;
+    color: rgb(45, 145, 45);
+}
+
+.error-eliminar {
+    color: red;
+    margin-top: 30px;
+}
+
+.contenedor-sin-solicitudes-de-profesionales {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    opacity: 0.5;
+}
+
+.contenedor-sin-solicitudes-de-profesionales img {
+    width: 300px;
+}
+
+.contenedor-sin-solicitudes-de-profesionales p {
+    font-size: 1.3rem;
+    color: var(--color-principal);
+    font-style: italic;
+    font-family: cursive;
+}
+
+@media (max-width: 480px) {
+    .contenedor-sin-solicitudes-de-profesionales img {
+        width: 250px;
+    }
+
+    .contenedor-sin-solicitudes-de-profesionales p {
+        font-size: 1.1rem;
+    }
+}

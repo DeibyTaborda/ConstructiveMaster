@@ -1,0 +1,175 @@
+.contenedor-principal-perfil-profesional-consultado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.contenedor-imagen-nombre-profesional-consultado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contenedor-imagen-profesional-consultado {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.imagen-perfil-profesional-consultado {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.nombre-profesional-consultado {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    font-family: var(--titulos);
+    margin: 5px 0;
+}
+
+.especialidad-profesional-consultado {
+    font-size: 1.2rem;
+    color: #666;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.contenedor-descripcion-profesional-consultado {
+    width: 80%;
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 20px;
+    /* box-shadow: 0 4px 8px rgb(0, 0, 0, 0.1); */
+    background-color: #d4d4d4;
+    padding: 10px 40px;
+    border-radius: 20px;
+}
+
+.perfil-sin-descripcion {
+    font-size: 1rem;
+    color: #999;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.cotenedor-tarjetas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 800px;
+}
+
+.contenedor-imagenes-titulo-imagenes {   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    margin-top: 20px;
+    max-width: 600px;
+}
+
+.titulo-imagenes-profesional-consultado {
+    align-self: start;
+    font-family: var(--titulos);
+    font-size: 1rem;
+}
+
+.contenedor-imagenes-profesional-consultado {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    max-width: 90%;
+    margin: 20px 0;
+}
+
+.button-contratar-profesional-seleccionado {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-contratar-profesional-seleccionado:hover {
+    background-color: #218838;
+}
+
+.imagen-profesional-consultado {
+    max-width: 150px;
+}
+
+
+/* Estilos responsive */
+@media (max-width: 768px) {
+    .contenedor-principal-perfil-profesional-consultado {
+        padding: 15px;
+    }
+
+    .contenedor-imagen-profesional-consultado {
+        width: 120px;
+        height: 120px;
+    }
+
+    .nombre-profesional-consultado {
+        font-size: 1.3rem;
+    }
+
+    .especialidad-profesional-consultado {
+        font-size: 1rem;
+    }
+
+    .cotenedor-tarjetas {
+        max-width: 100%;
+    }
+
+    .contenedor-imagenes-profesional-consultado {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-imagen-profesional-consultado {
+        width: 100px;
+        height: 100px;
+    }
+
+    .nombre-profesional-consultado {
+        font-size: 1.2rem;
+    }
+
+    .especialidad-profesional-consultado {
+        font-size: 0.9rem;
+    }
+
+    .titulo-imagenes-profesional-consultado {
+        font-size: 0.9rem;
+    }
+
+    .button-contratar-profesional-seleccionado {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .imagen-profesional-consultado {
+        max-width: 80px;
+    }
+}

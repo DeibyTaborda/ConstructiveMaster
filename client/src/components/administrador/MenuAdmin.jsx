@@ -8,6 +8,7 @@ import { BiSolidCategory } from "react-icons/bi";
 import { IoIosHome } from "react-icons/io";
 
 function MenuAdmin({id}){
+
     return(
         <header className="header-admin" id={id}>
             <nav className="nav-admin">
@@ -17,7 +18,6 @@ function MenuAdmin({id}){
                     <li className="items-menu-admin"><Link to='/profesionales' className="link-menu-admin"><GrUserWorker className="icon-menu-admin"/></Link></li>
                     <li className="items-menu-admin"><Link to='/clientes' className="link-menu-admin"><FaUsers className="icon-menu-admin"/></Link></li>
                     <li className="items-menu-admin"><Link to='/trabajos' className="link-menu-admin"><AiOutlineFolderAdd className="icon-menu-admin"/></Link></li>
-                    <li className="items-menu-admin"><Link className="link-menu-admin"><GrTools className="icon-menu-admin"/></Link></li>
                     <li className="items-menu-admin"><Link to="/contratos" className="link-menu-admin"><FaFileContract className="icon-menu-admin"/></Link></li>
                     <li className="items-menu-admin"><Link to='/categorias' className="link-menu-admin"><BiSolidCategory className="icon-menu-admin"/></Link></li>
                 </ul>

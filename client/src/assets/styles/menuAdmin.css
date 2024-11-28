@@ -29,8 +29,8 @@
     align-items: center;
 }
 
-.items-menu-admin:hover{
-    background-color: var(--gray);
+.items-menu-admin.active {
+    background-color: #f0f0f0; 
 }
 
 .link-menu-admin{
@@ -44,7 +44,3 @@
     font-size: 20px;
     color: var(--white);
 }
-
-/* .icon-menu-admin:hover{
-    color: var(--gray);
-} */

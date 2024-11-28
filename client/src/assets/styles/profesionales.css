@@ -1,3 +1,36 @@
 #nono {
     margin-top: 20px;
 }
+
+/* Mensaje de error */
+.error-eliminar {
+
+    padding: 10px 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    margin-top: 15px; /* Espacio entre elementos */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: bold; /* Fuente en negrita */
+    text-align: center; /* Centrar el texto */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: opacity 0.3s ease; /* Transición suave al desaparecer */
+}
+
+/* Mensaje de éxito */
+.respuesta-exitosa {
+    position: fixed;
+    bottom: 30px; /* Coloca el mensaje 20px arriba del borde inferior */
+    left: 50%; /* Posiciona el mensaje en el 50% del ancho de la pantalla */
+    transform: translateX(-50%); /* Centra el mensaje horizontalmente */
+    
+    color: #4caf50; /* Verde vibrante */
+    background-color: #e7f9e8; /* Fondo verde claro */
+    border: 1px solid #4caf50; /* Borde verde intenso */
+    padding: 10px 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    font-size: 16px; /* Tamaño de fuente */
+    font-weight: bold; /* Fuente en negrita */
+    text-align: center; /* Centrar el texto */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    transition: opacity 0.3s ease; /* Transición suave al desaparecer */
+    z-index: 1000; /* Asegura que el mensaje esté por encima de otros elementos */
+}

@@ -1,0 +1,56 @@
+.contenedor-carta-categoria {
+    font-family: var(--titulos);
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.contenedor-carta-categoria:hover {
+    transform: scale(1.1);
+}
+
+.imagen-categoria {
+    position: relative;
+    width: 100%;
+    height: 200px; 
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imagen-categoria img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.nombre-categoria {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6); 
+    padding: 10px 0;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .nombre-categoria {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .imagen-categoria {
+        height: 200px;
+    }
+
+    .nombre-categoria {
+        font-size: 0.9em;
+    }
+}

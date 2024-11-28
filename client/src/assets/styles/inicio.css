@@ -1,0 +1,196 @@
+.section-bienvenida-inicio {
+    position: relative;
+    max-width: 100%;
+    max-height: calc(100vh - 100px);
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imagen-bienvenida {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.section-bienvenida-inicio div {
+    position: absolute;
+    top: 30%;
+    left: 30px;
+    padding: 20px;
+    font-family: var(--titulos);
+    background-color: rgb(0, 0, 0, 0.6);
+    max-width: 700px;
+    height: auto;
+}
+
+.section-bienvenida-inicio div h2 {
+    color: var(--color-principal);
+    font-size: 2.5rem;
+}
+
+.section-bienvenida-inicio div p {
+    color: white;
+    font-size: 1.8rem;
+    font-family: var(--letra3);
+}
+
+.link-contratar-profesional {
+    text-decoration: none;
+    padding: 5px 60px;
+    margin-top: 20px;
+    border-radius: 20px;
+    color: white;
+    font-family: var(--parrafos);
+    font-size: 1rem;
+    border: none;
+    background-color: var(--color-principal);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.link-contratar-profesional:hover {
+    transform: scale(1.1);
+    background-color: var(--color-hover);
+}
+
+.section-cartas-profesionales-inicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section-cartas-profesionales-inicio .titulo-cartas-profesional-inicio {
+    margin-top: 40px;
+    color: var(--color-principal);
+    font-family: var(--titulos);
+}
+
+.section-cartas-profesionales-inicio p {
+    font-family: var(--letra3);   
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+}
+
+.contenedor-cartas-profesionales-inicio {
+    max-width: 90%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.section-cartas-profesionales-inicio button {
+    padding: 4px 60px;
+    background-color: var(--color-principal);
+    margin-top: 40px;
+    border: none;
+    border-radius: 40px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: var(--parrafos);
+    font-size: 0.9rem;
+}
+
+.section-cartas-profesionales-inicio button:hover {
+    background-color: var(--color-hover);
+    transform: scale(1.1);
+}
+
+.section-cartas-subcategorias-inicio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contenedor-carta-subcategoria-inicio {
+    max-width: 90%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.section-cartas-subcategorias-inicio .titulo-cartas-subcateogorias-inicio {
+    margin: 40px 0 5px 0;
+    color: var(--color-principal);
+    font-family: var(--titulos);
+}
+
+.section-cartas-subcategorias-inicio p {
+    font-family: var(--letra3);   
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 1025px) {
+    .section-bienvenida-inicio div h2 {
+        font-size: 2.5rem;
+    }
+
+    .section-bienvenida-inicio div p {
+        font-size: 1.5rem;
+    }
+
+    .link-contratar-profesional {
+        padding: 5px 50px;
+
+    }
+    }
+
+    @media (max-width: 768px) {
+    .section-bienvenida-inicio div {
+        top: 50%;
+        left: 50%;
+        width: 90%;
+        transform: translate(-50%, -50%);
+    }
+
+    .section-bienvenida-inicio div h2 {
+        font-size: 1.5rem;
+    }
+
+    .section-bienvenida-inicio div p {
+        font-size: 1.5rem;
+    }
+
+    .link-contratar-profesional {
+        padding: 4px 70px;
+    }
+    
+    .section-cartas-profesionales-inicio p {
+        font-size: 1rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .section-bienvenida-inicio div {
+        width: 80%;
+    }
+
+    .section-bienvenida-inicio div h2 {
+        font-size: 1.5rem;
+    }
+
+    .section-bienvenida-inicio div p {
+        font-size: 1.2rem;
+        margin-top: 5px;
+    }
+
+    .link-contratar-profesional {
+        width: 90%;
+        padding: 4px 40px;
+        font-size: 0.8rem;
+    }
+
+    .section-cartas-profesionales-inicio p {
+        font-size: 1rem;
+        text-align: center;
+    }
+}

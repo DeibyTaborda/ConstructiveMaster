@@ -1,18 +1,75 @@
+/* formEditImgTabla.css */
 .form-edit-img-tabla {
     position: absolute;
-    width: 300px;
+    top: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background-color: var(--white);
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    background-color: #fff;
 }
-
-.input-form-edit-img-tabla {
-    width: 200px;
-}
-
 
 .label-form-add-imagen-tabla {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+    width: 100%;
+}
+
+.input-form-edit-img-tabla,
+.input-file-form-edit-img-tabla {
     width: 200px;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.input-file-form-edit-img-tabla {
+    padding: 3px;
+}
+
+.submit-button-form-edit-img-tabla {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.submit-button-form-edit-img-tabla:hover {
+    background-color: #0056b3;
+}
+
+.response-message,
+.error-message {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.response-message {
+    color: #28a745; /* Success color */
+}
+
+.error-message {
+    color: #dc3545; /* Error color */
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .form-edit-img-tabla {
+        padding: 15px;
+    }
+
+    .submit-button-form-edit-img-tabla {
+        width: 100%;
+    }
 }

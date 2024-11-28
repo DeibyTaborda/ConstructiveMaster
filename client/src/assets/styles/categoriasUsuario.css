@@ -1,0 +1,15 @@
+.section-categorias {
+    width: 100%;
+    height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 90px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+    .section-categorias {
+        flex-direction: column;
+    }
+}

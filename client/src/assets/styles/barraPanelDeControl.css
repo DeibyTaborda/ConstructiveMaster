@@ -1,0 +1,45 @@
+.barra-panel-control-profesional {
+  position: sticky;
+  width: 250px;
+  height: 100vh;
+  background-color: #fff; /* Fondo blanco */
+  border-right: 2px solid #e5e5e5; /* Línea separadora gris clara */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para dar un efecto de elevación */
+}
+
+.barra-panel-control-profesional h2 {
+  font-size: 1.5rem;
+  color: #f57c00; /* Color naranja */
+  margin-bottom: 20px;
+}
+
+.barra-panel-control-profesional ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.barra-panel-control-profesional li {
+  padding: 10px;
+  margin-bottom: 10px;
+  color: #333; /* Texto negro claro */
+  background-color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave */
+}
+
+.barra-panel-control-profesional li:hover {
+  background-color: #f57c00; /* Fondo naranja al pasar el mouse */
+  color: #fff; /* Texto blanco al pasar el mouse */
+}
+
+.barra-panel-control-profesional li.active {
+  background-color: #f57c00; /* Fondo naranja para la sección activa */
+  color: #fff; /* Texto blanco para la sección activa */
+  font-weight: bold; /* Resalta la sección activa */
+}
+
+.barra-panel-control-profesional li:active {
+  transform: scale(0.98); /* Efecto al hacer clic */
+}

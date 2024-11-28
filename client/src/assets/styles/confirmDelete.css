@@ -1,35 +1,67 @@
-.container-confirm-delete{
-    width: 400px;
-    height: 300px;
+.container-confirm-delete {
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title-delete {
+    font-size: 1.8em;
+    color: #dc3545;
+    margin-bottom: 15px;
+  }
+  
+  .category-delete {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .question-delete {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    color: #555;
+  }
+  
+  .icon-confirm-delete {
+    color: #dc3545;
+    margin-bottom: 20px;
+  }
+  
+  .botons-confirm {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgb(231, 231, 231);
-}
-
-.title-delete{
-    color: var(--color-principal);
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.category-delete{
-    font-size: 17px;
-    font-weight: 700;
-    margin-top: 5px;
-}
-
-.question-delete{
-    margin-top: 10px;
-}
-
-.icon-confirm-delete{
-    margin-top: 10px;
-}
-
-.botons-confirm{
-    display: flex;
-    margin-top: 10px;
-    gap: 10px;
-}
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .button-confirm {
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button-confirm.delete {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .button-confirm.delete:hover {
+    background-color: #c82333;
+  }
+  
+  .button-confirm.cancel {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .button-confirm.cancel:hover {
+    background-color: #5a6268;
+  }
+  

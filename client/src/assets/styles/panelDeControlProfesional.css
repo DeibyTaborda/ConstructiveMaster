@@ -1,0 +1,11 @@
+.contenedor-panel-de-control-profesional {
+    display: flex;
+  }
+
+  .contenedor-secciones-panel-profesional {
+    flex-grow: 1;
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  

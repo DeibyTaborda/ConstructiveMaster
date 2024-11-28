@@ -1,0 +1,53 @@
+/* tarjetaInfoTrabajoPendiente.css */
+
+.contenedor-tarjeta-inf-trabajo-pendiente {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    color: #333;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--parrafos);
+}
+
+.contenedor-tarjeta-inf-trabajo-pendiente div {
+    margin-bottom: 10px;
+}
+
+.contenedor-tarjeta-inf-trabajo-pendiente div span {
+    font-weight: bold;
+    color: var(--color-principal); /* Naranja para resaltar los labels */
+}
+
+.contenedor-tarjeta-inf-trabajo-pendiente .valor {
+    color: var(--color-principal); /* Naranja para el valor */
+    font-weight: bold;
+}
+
+.contenedor-tarjeta-inf-trabajo-pendiente .estado {
+    font-weight: bold;
+    color: var(--color-principal); /* Naranja para el estado */
+}
+
+.contenedor-tarjeta-inf-trabajo-pendiente button {
+    background-color: var(--color-principal); 
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    max-width: 300px;
+    width: 100%;
+    margin: 10px 0 10px 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.contenedor-tarjeta-inf-trabajo-pendiente button:hover {
+    background-color: var(--color-hover); /* Naranja oscuro al pasar el cursor */
+}

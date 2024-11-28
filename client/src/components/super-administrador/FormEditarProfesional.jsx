@@ -15,8 +15,10 @@ function FormEditarProfesional({onClickEditar, onClickCancelar, datosProfesional
         correo: datosProfesional?.correo || '',
         telefono: datosProfesional?.telefono || '',
         curriculum: datosProfesional?.curriculum || '',
-        imagen: datosProfesional?.imagen || ''
-    })
+        imagen: datosProfesional?.imagen || '',
+        estado: datosProfesional?.estado || 'Disponible'  
+    });
+    
 
     const verificarDiferencia = (datosEnviar, datosProfesional) => {
         const data = {};
@@ -24,7 +26,8 @@ function FormEditarProfesional({onClickEditar, onClickCancelar, datosProfesional
         if (datosEnviar.apellido !== datosProfesional.apellido) data.apellido = datosEnviar.apellido;
         if (datosEnviar.especialidad !== datosProfesional.especialidad)  data.especialidad = datosEnviar.especialidad;
         if (datosEnviar.correo !== datosProfesional.correo) data.correo = datosEnviar.correo;
-        if (datosEnviar.telefono !== datosProfesional.telefono)  data.telefono = datosEnviar.correo; 
+        if (datosEnviar.telefono !== datosProfesional.telefono)  data.telefono = datosEnviar.telefono; 
+        if (datosEnviar.estado !== datosProfesional.estado) data.estado = datosEnviar.estado;
         if (datosEnviar.curriculum !== datosProfesional.curriculum) data.curriculum = datosEnviar.curriculum;
         if (datosEnviar.imagen !== datosProfesional.imagen) data.imagen = datosEnviar.imagen;
         return data;
@@ -136,7 +139,24 @@ function FormEditarProfesional({onClickEditar, onClickCancelar, datosProfesional
             onChange={handleOnchange}
             className="input-form"
         />
+        
         {errores.telefono ? (<p className="mensaje-error-campo">{errores.telefono}</p>) : ''}
+
+        <label htmlFor="estado" className="label-form">Estado:</label>
+            <select 
+                name="estado"
+                className="input-form"
+                value={datosEnviar.estado}
+                onChange={handleOnchange}
+            >
+                <option value="Disponible">Disponible</option>
+                <option value="Inactivo">Inactivo</option>
+                <option value="Ocupado">Ocupado</option>
+                <option value="Suspendido">Suspendido</option>
+                <option value="Retirado">Retirado</option>
+                <option value="Bloqueado">Bloqueado</option>
+            </select>
+            {errores.estado && <p className="mensaje-error-campo">{errores.estado}</p>}
 
         <label htmlFor="curriculum" className="label-form">Hoja de vida:</label>
         <input 

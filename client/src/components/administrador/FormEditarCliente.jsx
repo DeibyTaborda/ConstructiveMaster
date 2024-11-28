@@ -1,123 +1,131 @@
 import React, { useEffect, useState } from "react";
 import '../../assets/styles/formEditarCliente.css';
-import {validarNumerosYSimbolos, validarLongitudTexto, primeraLetraMayuscula} from '../../utils/utils';
+import { validarNumerosYSimbolos, validarLongitudTexto, primeraLetraMayuscula } from '../../utils/utils';
 
-function FormEditarCliente({datos, solicitudPUT, onClick}) {
+function FormEditarCliente({ datos, solicitudPUT, onClick }) {
     const [errores, setErrores] = useState({});
-
+    
     // Estado de los campos del formulario
-     const [data, setData] = useState({
+    const [data, setData] = useState({
         nombre: datos?.nombre || '',
         correo: datos?.correo || '',
         telefono: datos?.telefono || '',
-        direccion: datos?. direccion || '',
-        imagen: datos?.imagen || ''
+        direccion: datos?.direccion || '',
+        imagen: datos?.imagen || '',
+        estado: datos?.estado || 'Activo' 
     });
 
     // Controlador de eventos de los campos del formulario
     const handleOnchange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
 
         if (name === 'nombre') {
             if (validarNumerosYSimbolos(value)) return;
             if (validarLongitudTexto(value, 30)) return;
             const primeraletra = primeraLetraMayuscula(value);
-            return setData({...data, [name] : primeraletra});
-
-        } 
+            return setData({ ...data, [name]: primeraletra });
+        }
 
         if (name === 'telefono') {
             if (value.length > 10) return;
         }
 
         if (name === 'correo') {
-            if (validarLongitudTexto(value, 100)) return; 
+            if (validarLongitudTexto(value, 100)) return;
         }
 
-        if (name === 'direccion'){
+        if (name === 'direccion') {
             if (validarLongitudTexto(value, 30)) return;
         }
 
-        setData({...data, [name] : value});
+        setData({ ...data, [name]: value });
     }
 
-    // Controlador de eventos para los campos tipo file
     const handleFileOnchange = (e) => {
-        const {name, files} = e.target;
-        setData({...data, [name] : files[0]});
+        const { name, files } = e.target;
+        setData({ ...data, [name]: files[0] });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const formData = new FormData(); 
+        const formData = new FormData();
         formData.append('nombre', data.nombre);
         formData.append('correo', data.correo);
         formData.append('telefono', data.telefono);
         formData.append('direccion', data.direccion);
         formData.append('imagen', data.imagen);
+        formData.append('estado', data.estado);
 
         solicitudPUT(formData);
     }
 
-
-    return(
+    return (
         <>
             <form className="form-editar-cliente" onSubmit={handleSubmit}>
                 <h3 className="titulo-form-editar-cliente">Editar</h3>
                 <h4 className="nombre-cliente-editar">{datos?.nombre}</h4>
                 <label htmlFor="nombre" className="label-form">Nombre:</label>
-                <input 
-                    type="text" 
-                    name="nombre" 
-                    className="input-form "
+                <input
+                    type="text"
+                    name="nombre"
+                    className="input-form"
                     onChange={handleOnchange}
                     value={data.nombre}
                 />
                 <label htmlFor="correo" className="label-form">Correo:</label>
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     name="correo"
-                    className="input-form "
+                    className="input-form"
                     onChange={handleOnchange}
                     value={data.correo}
                 />
-
                 <label htmlFor="telefono" className="label-form">Teléfono:</label>
-                <input 
-                    type="number" 
+                <input
+                    type="number"
                     name="telefono"
-                    className="input-form "
+                    className="input-form"
                     onChange={handleOnchange}
                     value={data.telefono}
                 />
                 <label htmlFor="direccion" className="label-form">Dirección:</label>
-                <input 
-                    type="text" 
+                <input
+                    type="text"
                     name="direccion"
-                    className="input-form "
+                    className="input-form"
                     value={data.direccion}
                     onChange={handleOnchange}
                 />
+                <label htmlFor="estado" className="label-form">Estado:</label>
+                <select
+                    name="estado"
+                    className="input-form"
+                    onChange={handleOnchange}
+                    value={data.estado}
+                >
+                    <option value="Activo">Activo</option>
+                    <option value="Deshabilitado">Deshabilitado</option>
+                </select>
                 <label htmlFor="imagen" className="label-form">Imagen:</label>
-                <input 
-                    type="file" 
+                <input
+                    type="file"
                     name="imagen"
                     className="input-file-form-editar-cliente"
                     onChange={handleFileOnchange}
                 />
-                
+
                 <div className="contenedor-botones-form-editar-cliente">
-                    <input 
-                        type="submit" 
-                        className="boton-form-agregar-cliente" 
-                        value={'Añadir'}
+                    <input
+                        type="submit"
+                        className="boton-form-agregar-cliente"
+                        value={'Actualizar'}
                     />
                     <button className="boton-cancelar-agregar-cliente" onClick={onClick}>Cancelar</button>
                 </div>
             </form>
         </>
-    ); 
+    );
 }
 
 export default FormEditarCliente;

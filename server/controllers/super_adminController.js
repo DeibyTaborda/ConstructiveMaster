@@ -3,15 +3,39 @@ const dbMysql2 = require('../db/db-mysql2');
 const validations = require('../validations/validations');
 const bcrypt = require('bcryptjs');
 const generadorContrasena = require('password-generator');
+const {encriptarContrasena} = require('../validations/generadorContrasena');
+
+exports.registrarSuperAdministrador = async(req, res) => {
+    const {nombre, correo, contrasena} = req.body;
+
+    try {
+        if (!nombre)  return res.status(400).json({ message: 'El nombre es obligatorio' });
+        if (!correo) return res.status(400).json({ message: 'El correo es obligatorio' });
+        if (!contrasena) return res.status(400).json({ message: 'La constraseña es obligatoria'});
+
+        const passwordRegex = /^.{8,20}$/;
+        if (!passwordRegex.test(contrasena)) {
+            return res.status(400).json({ message: 'La contraseña debe tener entre 8 y 20 caracteres.' });
+        } 
+
+        const constrasenaEncriptada = encriptarContrasena(contrasena);
+
+        const sql = 'INSERT INTO super_admin(nombre, correo, contrasena) VALUES(?, ?, ?)';
+        await dbMysql2.query(sql, [nombre, correo, constrasenaEncriptada]);
+        res.status(200).json({ message: 'Superadministrador registrado con exito' });
+    } catch (error) {
+        console.error('este es el error' , error)
+        res.status(500).json({ message: 'Error en el servidor' });
+    }
+}
 
 exports.subirTable = async(req, res) => {
     const {tabla, ruta }= req.body;
     const rutaImagenTabla = req?.file?.path || null;
     const rol = req.rol;
-    console.log(rol)
 
     if (!rol) return res.status(400).json({ message: 'No autorizado. El rol no ha sido proporcionado.' });
-    if (rol === 'admin') return res.status(403).json({ message: 'Acceso denegado. No tienes autorización para realizar esta acción.' });
+    if (rol !== 'super_admin') return res.status(403).json({ message: 'Acceso denegado. No tienes autorización para realizar esta acción.' });
   
 
     if (!tabla && ruta) {
@@ -22,7 +46,7 @@ exports.subirTable = async(req, res) => {
         return res.status(400).json({ message: 'La ruta es obligatoria' })
     }
 
-    if (validations.validarSoloLetras(tabla)) {
+    if (!validations.validarSoloLetras(tabla)) {
         return res.status(400).json({ message: 'No se permiten números ni caracteres especiales'});
     }
 
@@ -123,14 +147,31 @@ exports.actulizarTabla = async(req, res) => {
 }
 
 exports.obtenerDatosAdmin = async(req, res) => {
-    const correo = req.correo;
+    const {rol} = req.query;
     const id = req.id;
-    const rol = req.rol;
-    const sqlObtenerDatosAdmin = 'SELECT * FROM admin WHERE id = ?';
-    const sqlObtenerDatosSuperadmin = 'SELECT * FROM super_admin WHERE id = ?';
 
+    const consultasSQL = [
+        'SELECT * FROM admin WHERE id = ?',
+        'SELECT * FROM super_admin WHERE id = ?',
+        'SELECT * FROM cliente WHERE id = ?',
+        'SELECT * FROM profesional WHERE id = ?'
+    ];
+    
+    let consulta = '';
+    if (rol === 'admin') {
+        consulta = consultasSQL[0];
+    } else if (rol === 'super_admin') {
+        consulta = consultasSQL[1];
+    } else if (rol === 'cliente') {
+        consulta = consultasSQL[2];
+    } else if ( rol === 'profesional') {
+        consulta = consultasSQL[3];
+    }
+    
+    // Luego ejecutas la consulta con tu base de datos
+    await dbMysql2.query(consulta, [id]);
+    
     try {
-        const consulta = rol === 'admin' ? sqlObtenerDatosAdmin : sqlObtenerDatosSuperadmin;
         const [results] = await dbMysql2.query(consulta, [id]);
         console.log(results[0]);
         res.status(200).json(results);
@@ -139,43 +180,59 @@ exports.obtenerDatosAdmin = async(req, res) => {
         res.status(500).json({ message: 'Error interno. Por favor, inténtalo más tarde' })
     }
 }
-
 exports.subirImagenAdmin = async (req, res) => {
-    const rol = req.rol;
-    const id = req.id;
+    const rol = req.rol;  // Asumiendo que req.rol es una cadena, no un objeto con rol
+    const id = req.id;    // Asegúrate de que req.id está correctamente definido
     const imagen = req.file ? req.file.path : null;
 
     if (!imagen) {
         return res.status(400).json({ message: 'No se ha proporcionado ninguna imagen.' });
     }
 
-    const updateImagenAdmin = 'UPDATE admin SET imagen = ? WHERE id = ?';
-    const updateImagenSuperadmin = 'UPDATE super_admin SET imagen = ? WHERE id = ?';
+    const consultas = {
+        admin: {
+            actualizar: 'UPDATE admin SET imagen = ? WHERE id = ?',
+            seleccionar: 'SELECT imagen FROM admin WHERE id = ?'
+        },
+        super_admin: {
+            actualizar: 'UPDATE super_admin SET imagen = ? WHERE id = ?',
+            seleccionar: 'SELECT imagen FROM super_admin WHERE id = ?'
+        },
+        cliente: {
+            actualizar: 'UPDATE cliente SET imagen = ? WHERE id = ?',
+            seleccionar: 'SELECT imagen FROM cliente WHERE id = ?'
+        },
+        profesional: {
+            actualizar: 'UPDATE profesional SET imagen = ? WHERE id = ?',
+            seleccionar: 'SELECT imagen FROM profesional WHERE id = ?'
+        }
+    };
 
-    const seleccionarImagenAdmin = 'SELECT imagen FROM admin WHERE id = ?';
-    const seleccionarImagenSuperAdmin = 'SELECT imagen FROM super_admin WHERE id = ?';
+    // Verificar que el rol es válido
+    if (!consultas[rol]) {
+        return res.status(400).json({ message: 'Rol no válido.' });
+    }
 
-    const seleccionarImagen = rol === 'admin' ? seleccionarImagenAdmin : seleccionarImagenSuperAdmin; 
-    const updataImagen = rol === 'admin' ? updateImagenAdmin : updateImagenSuperadmin;
+    const { seleccionar, actualizar } = consultas[rol];
 
     try {
-        // Primero, verificamos si existe un registro con el ID proporcionado
-        const [results] = await dbMysql2.query(seleccionarImagen, [id]);
+        // Verificar si existe un registro con el ID proporcionado
+        const [results] = await dbMysql2.query(seleccionar, [id]);
 
         if (results.length === 0) {
             return res.status(404).json({ message: 'No se encontró el usuario con el ID proporcionado.' });
         }
 
-        // Actualizamos la imagen
-        await dbMysql2.query(updataImagen, [imagen, id]);
+        // Actualizar la imagen
+        await dbMysql2.query(actualizar, [imagen, id]);
 
-        // Volvemos a consultar la imagen actualizada
-        const [resultadoImagen] = await dbMysql2.query(seleccionarImagen, [id]);
-        console.log(resultadoImagen[0].imagen);
-        // Enviamos la respuesta con la imagen actualizada
+        // Consultar la imagen actualizada
+        const [resultadoImagen] = await dbMysql2.query(seleccionar, [id]);
+        
+        // Enviar respuesta con la imagen actualizada
         return res.status(200).json({
             message: 'La imagen se subió exitosamente',
-            imagenActualizada: resultadoImagen[0].imagen, 
+            imagenActualizada: resultadoImagen[0].imagen,
         });
     } catch (error) {
         console.error('Error al subir la imagen:', error);
@@ -189,16 +246,28 @@ exports.subirImagenAdmin = async (req, res) => {
 exports.eliminarImagenAdmin = async(req, res) => {
     const {id} = req.params;
     const rol = req.rol;
-    const actualizarImagenAdmin = 'UPDATE admin SET imagen = ? WHERE id = ?';
-    const actualizarImagenSuperadmin = 'UPDATE super_admin SET imagen = ? WHERE id = ?';
-    const actualizarImagen = rol === 'admin' ? actualizarImagenAdmin : actualizarImagenSuperadmin;
-    const seleccionarImagenAdmin = 'SELECT imagen FROM admin WHERE id = ?';
-    const seleccionarImagenSuperadmin = 'SELECT imagen FROM super_admin WHERE id = ?';
-    const seleccionarImagen = rol === 'admin' ? seleccionarImagenAdmin : seleccionarImagenSuperadmin;
+
+    const consultas = {
+        admin: {
+            actualizar: 'UPDATE admin SET imagen = ? WHERE id = ?',
+            seleccionar: 'SELECT imagen FROM admin WHERE id = ?'
+        },
+        super_admin: {
+            actualizar: 'UPDATE super_admin SET imagen = ? WHERE id = ?',
+            seleccionar: 'SELECT imagen FROM super_admin WHERE id = ?'
+        },
+        cliente: {
+            actualizar: 'UPDATE cliente SET imagen = ? WHERE id = ?',
+            seleccionar: 'SELECT imagen FROM cliente WHERE id = ?'
+        }
+    };
+    
+    const { actualizar, seleccionar } = consultas[rol];
+    
 
     try {
-        await dbMysql2.query(actualizarImagen, [null, id]);
-        const [results] = await dbMysql2.query(seleccionarImagen, [id]);
+        await dbMysql2.query(actualizar, [null, id]);
+        const [results] = await dbMysql2.query(seleccionar, [id]);
         console.log(results[0]);
         return res.status(200).json({ message: 'La imagen se eliminó exitosamente', resultado: results[0]});
     } catch (error) {
@@ -209,13 +278,13 @@ exports.eliminarImagenAdmin = async(req, res) => {
 
 exports.actualizarRegistro = async (req, res) => {
     try {
-        const { id } = req.params; // Supongamos que pasas el ID del registro en la URL
+        const { id } = req.params; // El ID del registro en la URL
         const rol = req.rol;
         const { nombre, apellido, correo, telefono } = req.body;
   
         // Validar que el ID sea válido
-        if (!id) {
-        return res.status(400).json({ mensaje: 'ID inválido.' });
+        if (!id || isNaN(id)) {
+            return res.status(400).json({ mensaje: 'ID inválido.' });
         }
   
         // Crear un objeto con solo los campos que no son undefined
@@ -236,29 +305,37 @@ exports.actualizarRegistro = async (req, res) => {
             .join(', ');
     
         const values = Object.values(camposAActualizar);
-    
-        const sql = `UPDATE admin SET ${setClause} WHERE id = ?`;
-        const sql2 = `UPDATE super_admin SET ${setClause} WHERE id = ?`; 
-        const actualizarRegistro = rol === 'admin' ? sql : sql2;
-
         values.push(id); // Añadir el ID al final de los valores
+
+        // Determinar la tabla correcta según el rol
+        let tabla;
+        if (rol === 'admin') {
+            tabla = 'admin';
+        } else if (rol === 'super_admin') {
+            tabla = 'super_admin';
+        } else if (rol === 'cliente') {
+            tabla = 'cliente';
+        } else if (rol === 'profesional') {
+            tabla = 'profesional';
+        } else {
+            return res.status(400).json({ mensaje: 'Rol no válido.' });
+        }
+
+        // Construir la consulta completa
+        const sql = `UPDATE ${tabla} SET ${setClause} WHERE id = ?`;
     
         // Ejecutar la consulta
-        db.query(actualizarRegistro, values, (error, result) => {
-            if (error) {
-            console.error(error);
-            return res.status(500).json({ mensaje: 'Error al actualizar el registro.' });
-            }
-            return res.status(200).json({ mensaje: 'Registro actualizado correctamente.' });
-        });
+        await dbMysql2.query(sql, values);
+        res.status(200).json({ mensaje: 'Registro actualizado correctamente.' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mensaje: 'Error interno del servidor.' });
     }
-  };
+};
+
 
  
-  exports.agregarAdmin = async (req, res) => {
+exports.agregarAdmin = async (req, res) => {
     const { nombre, apellido, correo } = req.body;
 
     if (!nombre || !apellido || !correo) {
@@ -278,7 +355,7 @@ exports.actualizarRegistro = async (req, res) => {
     }
 
     if (correoValidado) {
-        return res.status(400).json({ message: correoValidado })
+        return res.status(400).json({ message: correoValidado });
     }
 
     const consultarCorreoUsuarios = [
@@ -288,14 +365,13 @@ exports.actualizarRegistro = async (req, res) => {
         'SELECT correo FROM profesional WHERE correo = ?'
     ];
 
-    //generar una contraseña de manera automática
+    // Generar una contraseña de manera automática
     const contrasena = generadorContrasena(12, false);
-    console.log('Contraseña Generada:', contrasena);
+    console.log('Contraseña Generada:', contrasena); // Imprimir contraseña generada
 
     // Encriptar la contraseña
     const sal = bcrypt.genSaltSync(10);
     const contrasenaEncriptada = bcrypt.hashSync(contrasena, sal);
-    console.log('Contraseña Encriptada:', contrasenaEncriptada);
 
     try {
         // Verificar si el correo ya existe en alguna tabla
@@ -310,9 +386,10 @@ exports.actualizarRegistro = async (req, res) => {
         const agregarAdmin = 'INSERT INTO admin(nombre, apellido, correo, contrasena) VALUES(?, ?, ?, ?)';
         const [result] = await dbMysql2.query(agregarAdmin, [nombre, apellido, correo, contrasenaEncriptada]);
 
-        res.status(201).json({ message: 'Se agregó un nuevo administrador', id: result.id });
+        // Enviar respuesta con contraseña generada
+        res.status(201).json({ message: 'Se agregó un nuevo administrador', id: result.insertId, contrasenaGenerada: contrasena });
     } catch (error) {
         console.error('Error interno del servidor:', error);
         res.status(500).json({ message: 'Error interno del servidor. Por favor, inténtalo de nuevo más tarde' });
     }
-}
+};

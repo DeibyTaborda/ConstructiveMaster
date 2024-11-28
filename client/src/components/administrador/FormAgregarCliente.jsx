@@ -3,7 +3,6 @@ import '../../assets/styles/formAgregarCliente.css';
 import { validarNumerosYSimbolos, validarLongitudTexto, validarCorreo2, primeraLetraMayuscula } from '../../utils/utils';
 
 function FormAgregarCliente({ solicitudPOST, onClick }) {
-    // Estado de los datos del formulario
     const [data, setData] = useState({
         nombre: '',
         correo: '',
@@ -12,62 +11,52 @@ function FormAgregarCliente({ solicitudPOST, onClick }) {
         imagen: ''
     });
 
-    // Estado para el manejo de errores
     const [errores, setErrores] = useState({});
 
-    // Controlador de eventos de los campos del formulario
     const handleOnchange = (e) => {
         const { name, value } = e.target;
-
         if (name === 'nombre') {
-            if (validarNumerosYSimbolos(value)) return;
-            if (validarLongitudTexto(value, 30)) return;
-            const primeraletra = primeraLetraMayuscula(value);
-            setData({ ...data, [name]: primeraletra });
-            return;
+            if (value.length > 30) {
+                return;
+            }
         }
-
-        if (name === 'telefono' && value.length > 10) return;
-        if (name === 'correo' && validarLongitudTexto(value, 100)) return;
-        if (name === 'direccion' && validarLongitudTexto(value, 30)) return;
-
+        if (name === 'correo') {
+            if (value.length > 100) {
+                return;
+            }
+        }
+        if (name === 'telefono') {
+            if (value.length > 10 ) {
+                return;
+            }
+        }
         setData({ ...data, [name]: value });
     };
 
-    // Controlador de eventos de los campos tipo file
     const handleFileOnchange = (e) => {
         const { name, files } = e.target;
         setData({ ...data, [name]: files[0] });
     };
 
-
-    //Función para validar que el campo nombre y nombre esten presentes y que el correo tenga un formato válido
     const validacion = () => {
         let mensajesError = {};
-
         if (!data.nombre) mensajesError.nombre = 'El nombre es obligatorio';
         if (!data.correo) {
             mensajesError.correo = 'El correo es obligatorio';
         } else if (!validarCorreo2(data.correo)) {
             mensajesError.correo = 'El formato del correo es incorrecto';
         }
-
         setErrores(mensajesError);
-
         return Object.keys(mensajesError).length === 0;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         if (validacion()) {
             const formData = new FormData();
-            formData.append('nombre', data.nombre);
-            formData.append('correo', data.correo);
-            formData.append('telefono', data.telefono);
-            formData.append('direccion', data.direccion);
-            formData.append('imagen', data.imagen);
-
+            Object.entries(data).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
             solicitudPOST(formData);
         }
     };
@@ -83,9 +72,7 @@ function FormAgregarCliente({ solicitudPOST, onClick }) {
                 onChange={handleOnchange}
                 value={data.nombre}
             />
-            {errores.nombre && (
-                <p className="mensaje-error">{errores.nombre}</p>
-            )}
+            {errores.nombre && <p className="mensaje-error">{errores.nombre}</p>}
 
             <label htmlFor="correo" className="label-form-agregar-cliente">Correo:</label>
             <input
@@ -95,9 +82,7 @@ function FormAgregarCliente({ solicitudPOST, onClick }) {
                 onChange={handleOnchange}
                 value={data.correo}
             />
-            {errores.correo && (
-                <p className="mensaje-error">{errores.correo}</p>
-            )}
+            {errores.correo && <p className="mensaje-error">{errores.correo}</p>}
 
             <label htmlFor="telefono" className="label-form-agregar-cliente">Teléfono:</label>
             <input
@@ -122,15 +107,18 @@ function FormAgregarCliente({ solicitudPOST, onClick }) {
                 type="file"
                 name="imagen"
                 className="input-file-form-agregar-cliente"
+                accept=".jpg, .jpeg, .png, .gif"
                 onChange={handleFileOnchange}
             />
 
+
             <div className="contenedor-botones-form-agregar-cliente">
-            <input 
-                type="submit" 
-                className="boton-form-agregar-cliente" 
-                value={'Añadir'}/>
-            <button className="boton-cancelar-agregar-cliente" onClick={onClick}>Cancelar</button>
+                <input
+                    type="submit"
+                    className="boton-form-agregar-cliente"
+                    value={'Añadir'}
+                />
+                <button className="boton-cancelar-agregar-cliente" onClick={onClick}>Cancelar</button>
             </div>
         </form>
     );

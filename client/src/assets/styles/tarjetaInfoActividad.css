@@ -1,0 +1,59 @@
+.contenedor-info-actividad {
+    width: 95%;
+    background-color: var(--color-secundario);
+    border: 1px solid var(--color-borde);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: var(--parrafos);
+}
+
+.contenedor-info-actividad p {
+    margin: 10px 0;
+    font-size: 1rem;
+    color: var(--color-texto);
+}
+
+.contenedor-info-actividad .titulo-info {
+    color: var(--color-principal);
+    font-weight: bold;
+}
+
+.contenedor-info-actividad button {
+    display: block;
+    background-color: var(--color-principal);
+    color: white;
+    border: none;
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-family: var(--parrafos);
+    font-size: 0.9rem;
+}
+
+.contenedor-info-actividad button:hover {
+    background-color: var(--color-hover);
+}
+
+@media (max-width: 768px) {
+    .contenedor-info-actividad {
+        padding: 15px;
+    }
+
+    .contenedor-info-actividad p {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-info-actividad {
+        padding: 10px;
+    }
+
+    .contenedor-info-actividad p {
+        font-size: 0.85rem;
+    }
+}

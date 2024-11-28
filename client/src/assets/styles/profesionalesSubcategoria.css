@@ -1,0 +1,32 @@
+.titulo-profesionales-subcategoria {
+    color: var(--color-principal);
+    font-size: 1.6rem;
+    font-family: var(--titulos);
+    margin: 20px 0 20px 20px;
+}
+
+.section-profesionales-subcategoria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.contenedor-tarjeta-profesional {
+    width: 45%;
+}
+
+@media (max-width: 480px) {
+    .section-profesionales-subcategoria {
+        flex-direction: column;
+    }
+
+    .contenedor-tarjeta-profesional {
+        width: 90%;
+    }
+
+    .titulo-profesionales-subcategoria {
+        font-size: 1.2rem;
+    }
+}

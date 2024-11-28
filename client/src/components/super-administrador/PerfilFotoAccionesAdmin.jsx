@@ -4,12 +4,15 @@ import usePostRequest from '../../services/usePostRequest';
 import { useParams } from "react-router-dom";
 import { UsuarioContexto } from "../../context/UsuarioContexto";
 import useDelete from '../../services/delete';
+import useAxios from "../../services/api";
 
 function PerfilFotoAccionesAdmin() {
     const [imagen, setImagen] = useState(null);
     const { usuario, actualizarUsuario } = useContext(UsuarioContexto);
     const { loading, error, response, postRequest } = usePostRequest(`http://localhost:3001/admin/imagen`);
     const {response: responseDelete, eliminar} = useDelete(`http://localhost:3001/admin/imagen/${usuario.id}`);
+    const {loading: loadingImagen, response: responseImagen, error: errorImagen, data, fetchData} = useAxios('http://localhost:3001/img/usuario');
+
 
 
     const handleFileChange = (e) => {
@@ -24,22 +27,23 @@ function PerfilFotoAccionesAdmin() {
             if (imagen) {
                 const formData = new FormData();
                 formData.append('imagen', imagen);
-
-                console.log('Enviando imagen...');
-                await postRequest(formData); // Envía la imagen
+                await postRequest(formData); 
+                await fetchData();
+    
+                if (data && data.length > 0) {
+                    actualizarUsuario({ ...usuario, imagen: data[0].imagen });
+                }
             }
         };
-
+    
         actualizarImagen();
-    }, [imagen]);
-
+    }, [imagen, data]);  
+    
     useEffect(() => {
         if (response && response?.imagenActualizada) {
-            // Actualiza el estado y el contexto con la nueva imagen cuando se actualiza `response`
             actualizarUsuario({ ...usuario, imagen: response?.imagenActualizada });
-            console.log('Imagen actualizada en el contexto:', response?.imagenActualizada);
         }
-    }, [response]); // Este efecto se ejecuta cuando `response` cambia
+    }, [response]);
 
     const eliminarImagen = async() => {
         await eliminar();
@@ -47,8 +51,8 @@ function PerfilFotoAccionesAdmin() {
 
     useEffect(() => {
         if (responseDelete) {
-            console.log(responseDelete);
-            actualizarUsuario({...usuario, imagen: responseDelete.resultado.imagen});
+            console.log(responseDelete); 
+            actualizarUsuario({...usuario, imagen: responseDelete.resultado?.imagen});
         }
     }, [responseDelete]);
 
@@ -68,7 +72,7 @@ function PerfilFotoAccionesAdmin() {
                     className="botones-acciones-foto-perfil-admin" 
                     onClick={() => document.getElementById('button-cargar-imagen-super-admin').click()}
                 >
-                    {usuario.imagen ? 'Editar imagen' : 'Subir una imagen'}
+                    {usuario?.imagen ? 'Editar imagen' : 'Subir una imagen'}
                 </button>
                 <button 
                     type="button" 
@@ -77,9 +81,6 @@ function PerfilFotoAccionesAdmin() {
                 >
                     Eliminar la imagen
                 </button>
-                {/* {response && (
-                    <p>{response.message}</p>
-                )} */}
             </form>
         </div>
     );

@@ -1,0 +1,174 @@
+.campos-personalizados-container {
+    max-width: 600px;
+    margin: 0 auto;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .titulo {
+    font-family: var(--titulos);
+    text-align: center;
+    color: var(--color-principal);
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .error-mensaje {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+
+  .campos-lista {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .campo-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+
+  .campo-input-campo-especializado {
+    width: 45%;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 2px solid var(--color-principal); 
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  .campo-input-campo-especializado:focus {
+    outline: none;
+    border-color: #000;
+  }
+  
+  .boton {
+    background-color: var(--color-principal);
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .boton:hover {
+    background-color:  var(--color-hover);
+  }
+  
+  .eliminar-boton {
+    background-color: var(--color-principal);
+  }
+  
+  .eliminar-boton:hover {
+    background-color: var(--color-hover);
+  }
+  
+  .agregar-boton {
+    margin-left: 10px;
+  }
+  
+  .guardar-boton {
+    width: 100%;
+    margin-top: 20px;
+    background-color: var(--color-principal);
+  }
+  
+  .guardar-boton:hover {
+    background-color: var(--color-hover);
+  }
+  
+  .nuevo-campo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 30px;
+  }
+  .contenedor-descripcion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto 0 auto; 
+  }
+
+  .contenedor-descripcion  p{
+    color: green;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  
+  
+  .label-campo-especializado {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    font-family: var(--titulos);
+    color: var(--color-principal);
+    font-weight: 700;
+  }
+  
+  textarea {
+    width: 100%;
+    max-width: 100%;
+    height: 100px;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-principal);
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    resize: vertical;
+    font-family: var(--parrafos);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contenedor-descripcion button {
+    padding: 10px 20px;
+    background-color: var(--color-principal);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer; 
+    font-size: 1rem;
+  }
+  
+  .contenedor-descripcion button:hover {
+    background-color: var(--color-hover);
+  }
+
+  
+  @media (max-width: 768px) {
+    .campo-item, .nuevo-campo {
+      flex-direction: column;
+    }
+  
+    .campo-input-campo-especializado, .boton {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .agregar-boton {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    textarea {
+      height: 80px;
+    }
+  }
+  
+  

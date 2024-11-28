@@ -1,0 +1,118 @@
+.formulario-contratar {
+    background-color: #f9f9f9; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+.titulo-formulario {
+    text-align: center;
+    font-size: 24px;
+    color: var(--color-principal);
+    margin-bottom: 20px;
+}
+
+.etiqueta-formulario {
+    display: block;
+    font-size: 14px;
+    color: #464646; 
+    margin-bottom: 8px;
+}
+
+.select-item-formulario-contratar {
+    margin-bottom: 10px;
+}
+
+
+.nombre-profesional-a-contratar {
+    font-size: 0.9rem;
+}
+
+.especialidad-profesional-a-contratar {
+    font-size: 0.8rem;
+}
+
+.campo-formulario, 
+.campo-formulario-texto {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid var();
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    transition: border 0.3s ease;
+}
+
+.campo-formulario:focus, 
+.campo-formulario-texto:focus {
+    border-color: var(--color-principal);
+    outline: none;
+}
+
+.campo-formulario-texto {
+    resize: vertical;
+    height: 120px;
+}
+
+.contenedor-botones-formulario {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.boton-formulario {
+    background-color: var(--color-principal);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.boton-formulario:hover {
+    background-color: #e07300;
+}
+
+.error-formulario {
+    color: red;
+    width: 200px;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.contenedor-carta2-profesional {
+    width: 100%;
+    margin: 20px 0 30px 0;
+}
+
+.contenedor-carta-especialidad-formulario-contratar {
+    width: 100%;
+    margin: 20px 0 30px 0;
+}
+
+@media (max-width: 768px) {
+    .formulario-contratar {
+        padding: 15px;
+    }
+    .titulo-formulario {
+        font-size: 20px;
+    }
+    .boton-formulario {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .nombre-profesional-a-contratar {
+        font-size: 0.8rem;
+    }
+    
+    .especialidad-profesional-a-contratar {
+        font-size: 0.7rem;
+    }
+    
+}

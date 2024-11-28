@@ -1,18 +1,81 @@
+/* perfil.css */
+
 .container-foto-perfil-admin-super-admin {
     position: relative;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
+    display: inline-block;
 }
 
 .foto-perfil-admin-superadmin {
-    width: 100%;
-    height: 100%;
-    border-radius: 100%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #00d1b2;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.foto-perfil-admin-superadmin:hover{
-    opacity: 0.8;
+.foto-perfil-admin-superadmin:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.gestion-perfil-popup {
+    position: absolute;
+    top: 60px; /* Justo debajo de la imagen de perfil */
+    right: 0;
+    width: 300px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 100;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gestion-perfil-popup.cerrado {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.gestion-perfil-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.gestion-perfil-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.gestion-perfil-body {
+    margin-top: 15px;
+}
+
+.boton-cerrar-popup {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
     cursor: pointer;
+    color: #999;
+}
+
+.boton-cerrar-popup:hover {
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .gestion-perfil-popup {
+        width: 250px;
+        right: -20px;
+    }
+
+    .foto-perfil-admin-superadmin {
+        width: 40px;
+        height: 40px;
+    }
 }

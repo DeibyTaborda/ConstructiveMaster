@@ -1,7 +1,8 @@
 .container-img-grande-datos-basicos {
     position: relative;
-    width: 400px;
-    height: 100px;  
+    max-width: 400px;
+    width: 100%;
+    height: 100px;
 }
 
 .container-img-grande-datos-basicos.none{

@@ -6,5 +6,4 @@ MySQL
 express
 cors
 multer
-
-relizar validaciones del lado del servidor para que el nombre de una categoría o super categoría no sea mayor a 20 caracteres
+bcrypt

@@ -3,7 +3,7 @@ import '../../assets/styles/tablaAdmin.css';
 import { FaFilePdf } from "react-icons/fa6";
 import ButtonEditar from "./ButtonEditar";
 import ButtonEliminar from "./ButtonEliminar";
-import useDelete from "../../services/delete";
+import {mostrarFecha} from '../../utils/utils';
 import SubcategoryContext from "../../context/SubcategoryContext";
 import { MdOutlinePassword } from "react-icons/md";
 import { BsImage } from "react-icons/bs";
@@ -23,7 +23,7 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
   }
 
   const handleSelectedEdit = (id) => {
-    if (['clientes', 'solicitud_profesional', 'profesionales', 'trabajos'].includes(tableId)) {
+    if (['clientes', 'solicitud_profesional', 'profesionales', 'trabajos', 'contratos'].includes(tableId)) {
       return onClickEdit(id);
     }
     onClickEdit();
@@ -47,10 +47,31 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
           <ButtonEliminar onClick={() => handleSelected(id)} description="Cancelar" />
         </>
       );
+    }  else if (tableId === 'categoria' || tableId === 'subcategoria') {
+      return (
+        <>
+          <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(id)} />
+          <ButtonEliminar onClick={() => handleSelected(id)} description="Inactivar" />
+        </>
+      );
     } else if (tableId === 'contratos') {
       return(
         <>
           <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(id)} />
+        </>
+      );
+    }  else if (tableId === 'clientes') {
+      return (
+        <>
+          <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(id)} />
+          <ButtonEliminar onClick={() => handleSelected(id)} description="Deshabilitar" />
+        </>
+      );
+    } else if (tableId === 'profesionales') {
+      return (
+        <>
+            <ButtonEditar descripcion="Editar" onClick={() => handleSelectedEdit(id)} />
+            <ButtonEliminar onClick={() => handleSelected(id)} description="Deshabilitar" />
         </>
       );
     } else {
@@ -62,12 +83,6 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
       );
     }
   };
-
-  useEffect(() => {
-    if (selectedSubcategory){
-      console.log(selectedSubcategory);
-    }
-  }, [selectedSubcategory]); 
 
   if (!data) return <p>loading...</p>
 
@@ -120,7 +135,31 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
                                         {row.id_categoria === 1 ? 'Diseño y planificación' : 'Ejecución'}
                                     </td>
                                 );
-                            } else {
+                            } else if (column === 'created_at') {
+                              return (
+                                  <td key={index}>
+                                      {mostrarFecha(row.created_at)}
+                                  </td>
+                              );
+                            }  else if (column === 'fecha_firma') {
+                              return (
+                                <td key={index}>
+                                    {mostrarFecha(row.fecha_firma)}
+                                </td>
+                              );
+                            }  else if (column === 'fecha_inicio') {
+                              return (
+                                <td key={index}>
+                                  {mostrarFecha(row.fecha_inicio)}
+                                </td>
+                              );
+                            }  else if (column === 'fecha') {
+                              return (
+                                <td key={index}>
+                                  {mostrarFecha(row.fecha)}
+                                </td>
+                              );
+                            }else {
                                 return <td key={index}>{row[column]}</td>;
                             }
                         })}
@@ -128,13 +167,6 @@ function TablaAdmin({ columns, data, title, tableId, onClick, onClickEdit, accio
                 ))}
             </tbody>
         </table>
-        {selectedSubcategory && (
-            <>
-                <p>{selectedSubcategory.tableId}</p>
-                <p>{selectedSubcategory.nameCategory}</p>
-                <p>{selectedSubcategory.categoryId}</p>
-            </>
-        )}
     </div>
     </div>
 );

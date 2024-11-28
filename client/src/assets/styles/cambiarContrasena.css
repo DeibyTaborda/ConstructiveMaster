@@ -1,0 +1,48 @@
+/* Estilos para el contenedor principal */
+.main-cambiar-contrasena {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90vh;
+    padding: 2rem;
+}
+
+
+.main-cambiar-contrasena h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: var(--titulos);
+}
+
+.main-cambiar-contrasena div {
+    position: relative;
+    top: -40px;
+    align-self: flex-start;
+    padding: 5px;
+    transition: color 0.3s ease, background-color 0.4s ease;
+}
+
+.main-cambiar-contrasena div:hover {
+    background-color: var(--color-principal);
+    transform: scale(1.1);
+    border-radius: 10px;
+    color: white;
+}
+
+.icono-home {
+    font-size: 25px;
+}
+
+/* Media query para pantallas pequeñas */
+@media (max-width: 600px) {
+    .main-cambiar-contrasena h2 {
+        font-size: 1.5rem;
+    }
+
+    .main-cambiar-contrasena {
+        padding: 1rem;
+    }
+}

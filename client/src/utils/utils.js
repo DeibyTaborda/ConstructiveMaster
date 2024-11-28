@@ -141,3 +141,42 @@ export const esFechaValida = (fecha) => {
 export const esHoraValida = (hora) => {
     return regexHora.test(hora);
 };
+
+export const longitudMinima = (valor, longitud) => {
+    return valor.length < longitud;
+}
+
+export const longitudMaxima = (cadena, longitud) => {
+    return cadena.length > longitud;
+}
+
+
+export const mostrarFecha = (fechaCadena) => {
+const FORMATO_FECHA = { year: 'numeric', month: '2-digit', day: '2-digit' };
+const SEPARADOR_FECHA = '/';
+const fecha = new Date(fechaCadena);
+const fechaFormateada = fecha.toLocaleDateString('es-ES', FORMATO_FECHA);
+const fechaConSeparador = fechaFormateada.replace(/\//g, SEPARADOR_FECHA);
+
+return fechaConSeparador;
+}
+
+export const transformarEstadoTrabajo = (estado) => {
+    switch (estado) {
+      case 'pendiente':
+        return 'Pendiente';
+      case 'confirmado':
+        return 'Confirmado';
+      case 'en_progreso':
+        return 'En progreso';
+      case 'finalizado':
+        return 'Finalizado';
+      case 'cancelado':
+        return 'Cancelado';
+      case 'rechazado':
+        return 'Rechazado';
+      default:
+        return null;
+    }
+  }
+

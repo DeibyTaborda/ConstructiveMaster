@@ -1,0 +1,65 @@
+.contenedor-tarjeta-subcategoria {
+    width: 250px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: rgb(255, 173, 21); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 15px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.contenedor-tarjeta-subcategoria:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.imagen-tarjeta-subcategoria {
+    width: 80%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.nombreSubcategoria {
+    font-size: 1.2em;
+    color: #FFFFFF;
+}
+
+@media (max-width: 1024px) {
+    .contenedor-tarjeta-subcategoria {
+        width: 200px;
+        height: 250px;
+    }
+
+    .nombreSubcategoria {
+        font-size: 1.1em;
+    }
+}
+
+@media (max-width: 768px) {
+    .contenedor-tarjeta-subcategoria {
+        width: 180px;
+        height: 220px;
+    }
+
+    .nombreSubcategoria {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    .contenedor-tarjeta-subcategoria {
+        width: 150px;
+        height: 200px;
+    }
+
+    .nombreSubcategoria {
+        font-size: 0.9em;
+    }
+}

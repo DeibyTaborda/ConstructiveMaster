@@ -67,6 +67,10 @@ const validarLongitud = (cadena, longitud) => {
     return cadena.length > longitud;
 };
 
+const longitudMaxima = (cadena, longitud) => {
+    return cadena.length > longitud;
+}
+
 const validarNumerosYSimbolos = (texto) => {
     const regexNumerosYSimbolos = /[0-9!@#$%^&*()_+={}\[\]|\\:;"'<>,.?/~`]/;
     return regexNumerosYSimbolos.test(texto);
@@ -89,6 +93,11 @@ const esHoraValida = (hora) => {
     return regexHora.test(hora);
 };
 
+const longitudMinima = (valor, longitud) => {
+    return valor.length < longitud;
+}
+
+
 // Exportación de funciones
 exports.validarNombre = validarNombre;
 exports.validarCorreo = validarCorreo;
@@ -103,3 +112,5 @@ exports.validarNumeroTelefonico = validarNumeroTelefonico;
 exports.esNumerico = esNumerico;
 exports.esFechaValida = esFechaValida;
 exports.esHoraValida = esHoraValida;
+exports.longitudMaxima =  longitudMaxima;
+exports.longitudMinima = longitudMinima;

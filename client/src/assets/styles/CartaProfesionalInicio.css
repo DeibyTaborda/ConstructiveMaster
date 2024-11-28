@@ -1,0 +1,63 @@
+.contenedor-carta-profesional-inicio {
+    width: 300px;
+    padding-bottom: 30px;
+    background-color: rgb(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgb(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.contenedor-carta-profesional-inicio:hover {
+    transform: scale(1.1);
+}
+
+.contenedor-carta-profesional-inicio div {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 75px;
+    background-color: var(--color-principal);
+    justify-content: center;
+    align-items: center;
+}
+
+
+.contenedor-carta-profesional-inicio div div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -25%);
+    border-radius: 100%;
+}
+
+.contenedor-carta-profesional-inicio div div img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.contenedor-carta-profesional-inicio h2 {
+    margin-top: 45px;
+    font-size: 0.8rem;
+}
+
+.contenedor-carta-profesional-inicio h3 {
+    margin-top: 2px;
+    font-size: 0.7rem;
+}
+
+.contenedor-carta-profesional-inicio p {
+    margin-top: 10px;
+    color: green;
+    font-size: 0.7rem;
+    font-weight: 600;
+}

@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-function useAxios(url, params = {}) { // Añadimos params como argumento opcional
+function useAxios(url, params = {}) { 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [errorCode, setErrorCode] = useState(null);
     const [response, setResponse] = useState(null);
 
     const fetchData = async () => {
@@ -13,12 +14,13 @@ function useAxios(url, params = {}) { // Añadimos params como argumento opciona
             const token = localStorage.getItem('token');
             const response = await axios.get(url, {
                 headers: { Authorization: `Bearer ${token}` },
-                params // Agregamos los params a la solicitud
+                params
             });
             setData(response.data);
             setResponse(response);
         } catch (error) {
             setError(error.response?.data?.message || 'Error en la solicitud');
+            setErrorCode(error.response?.status || 'Desconocido');
         } finally {
             setLoading(false);
         }
@@ -26,9 +28,9 @@ function useAxios(url, params = {}) { // Añadimos params como argumento opciona
 
     useEffect(() => {
         fetchData();
-    }, [url]); // Dependencias actualizadas para incluir params
+    }, [url]);
 
-    return { data, loading, error, fetchData, response };
+    return { data, loading, error, errorCode, fetchData, response };
 }
 
 export default useAxios;

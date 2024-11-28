@@ -1,49 +1,116 @@
 .lista-barra-navegacion-admin {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 50px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    list-style-type: none;
-    background-color: var(--white);
-    border-bottom: 2px solid var(--color-principal);
+    background-color: #191919; /* Fondo negro */
+    padding: 10px 20px;
+    border-bottom: 5px solid var(--color-principal); /* Línea inferior naranja */
+    list-style: none;
+}
+
+.item-barra-navegacion-admin {
+    margin: 0 15px;
+    position: relative;
+}
+
+.base-de-datos {
+    color: white;
+    background-color: var(--color-principal);
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+.base-de-datos:hover {
+    background-color: var(--color-hover);
 }
 
 .icon-home-admin {
-    font-size: 20px;
-    cursor: pointer;
-    color: var(--color-principal);
+    font-size: 24px;
+    color: #ffffff; /* Icono blanco */
+    transition: transform 0.2s;
+}
+
+.icon-home-admin:hover {
+    transform: scale(1.2);
+    color: var(--color-principal); /* Cambio a naranja al pasar el ratón */
 }
 
 .boton-admin-acciones {
-    width: 100px;
-    height: 30px;
+    background-color: var(--color-principal); /* Fondo del botón naranja */
     border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--white);
-    background-color: var(--color-principal);
-    cursor: pointer;
-    font-family: var(--parrafos);
+    padding: 8px 16px;
     font-size: 16px;
+    color: #ffffff; /* Texto blanco */
+    border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .boton-admin-acciones:hover {
-    background-color: #D97300;
+    background-color: #e65a00; /* Naranja más oscuro al pasar el ratón */
 }
 
-.input-barra-de-busqueda {
-    height: 30px;
+.boton-admin-acciones:focus {
     outline: none;
-    border: 1px solid rgb(183, 183, 183);
-    padding-left: 10px;
-    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(255, 106, 0, 0.8); /* Sombra naranja */
 }
 
-.lista-barra-navegacion-admin li:nth-child(3) {
-    position: relative;
+.menu-acciones-crear {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff; /* Fondo blanco */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 100;
+    min-width: 200px;
+}
+
+.menu-acciones-crear div {
+    padding: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    transition: background-color 0.3s;
+}
+
+.menu-acciones-crear div:hover {
+    background-color: var(--color-principal); /* Fondo naranja al pasar el ratón */
+    color: white;
+    cursor: pointer;
+}
+
+.menu-acciones-crear div:last-child {
+    border-bottom: none;
+}
+
+.menu-acciones-crear div:focus {
+    background-color: var(--color-principal); /* Naranja más oscuro al hacer clic */
+    color: white;
+}
+
+.perfil-icon {
+    font-size: 24px;
+    color: #ffffff; /* Icono blanco */
+}
+
+.perfil-icon:hover {
+    color: #ff6a00; /* Naranja al pasar el ratón */
+}
+
+@media (max-width: 768px) {
+    .lista-barra-navegacion-admin {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .item-barra-navegacion-admin {
+        margin: 10px 0;
+    }
+
+    .boton-admin-acciones {
+        width: 100%;
+    }
 }

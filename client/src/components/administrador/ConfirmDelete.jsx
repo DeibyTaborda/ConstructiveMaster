@@ -1,7 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react"; 
 import '../../assets/styles/confirmDelete.css';
-import ButtonEliminar from "./ButtonEliminar";
-import ButtonEditar from "./ButtonEditar";
 import { MdDelete } from "react-icons/md";
 import useDelete from "../../services/delete";
 import SubcategoryContext from "../../context/SubcategoryContext";
@@ -12,8 +10,8 @@ function ConfirmDelete({ id, onClick, onClickEdit }) {
 
   const handleDelete = async () => {
     await eliminar();
-    onClickEdit(); // Notify parent to refresh data
-    onClick(); // Close the modal
+    onClickEdit(); 
+    onClick(); 
   };
 
   useEffect(() => {
@@ -27,13 +25,17 @@ function ConfirmDelete({ id, onClick, onClickEdit }) {
 
   return (
     <div className="container-confirm-delete" id={id}>
-      <h2 className="title-delete">Eliminar</h2>
+      <h2 className="title-delete">Deshabilitar</h2>
       <p className="category-delete">{selectedSubcategory.nameCategory}</p>
-      <p className="question-delete">{`¿Quieres eliminar la ${selectedSubcategory.tableId} ${selectedSubcategory.nameCategory}?`}</p>
+      <p className="question-delete">{`¿Quieres deshabilitar la ${selectedSubcategory.tableId} ${selectedSubcategory.nameCategory}?`}</p>
       <MdDelete size={100} className="icon-confirm-delete"/>
       <div className="botons-confirm">
-        <ButtonEditar descripcion={'Eliminar'} onClick={handleDelete} />
-        <ButtonEliminar description={'Cancelar'} onClick={onClick} />
+        <button className="button-confirm delete" onClick={handleDelete}>
+          Deshabilitar
+        </button>
+        <button className="button-confirm cancel" onClick={onClick}>
+          Cancelar
+        </button>
       </div>
     </div>
   );

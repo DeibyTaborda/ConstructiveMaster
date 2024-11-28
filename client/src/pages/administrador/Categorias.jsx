@@ -10,12 +10,13 @@ import ConfirmDelete from '../../components/administrador/ConfirmDelete';
 import useAxios from '../../services/api';
 import FormEditarCategoria from '../../components/administrador/FormEditarCategorias';
 import SubcategoryContext from "../../context/SubcategoryContext";
+import RutaRestringida from '../../components/general/RutaRestringida';
 
 function Categorias() {
   const [datos, setDatos] = useState({ categories: [], subcategories: [] });
   const [isOpenDelete, setIsOpenDelete] = useState(false);
   const [isOpenEdit, setIsOpenEdit] = useState(false);
-  const { loading, error, data, fetchData } = useAxios('http://localhost:3001/categorias');
+  const { loading, error, data, errorCode, fetchData } = useAxios('http://localhost:3001/categorias');
 
   const { setSelectedSubcategory, selectedSubcategory } = useContext(SubcategoryContext);
 
@@ -31,13 +32,12 @@ function Categorias() {
     { label: 'Imagen', name: 'imagenCategoria', tipo: 'file' },
   ];
 
-  const columsCategories = ['id', 'categoria', 'img_categoria', 'created_at', 'Acciones'];
-  const columsSubcategories = ['id', 'id_categoria','subcategoria', 'img_subcategoria', 'created_at', 'Acciones'];
+  const columsCategories = ['id', 'categoria', 'img_categoria', 'estado', 'created_at', 'Acciones'];
+  const columsSubcategories = ['id', 'id_categoria','subcategoria', 'img_subcategoria','estado', 'created_at', 'Acciones'];
 
   useEffect(() => {
     if (data) {
       setDatos(data);
-      console.log(data);
     }
   }, [data]);
 
@@ -73,6 +73,8 @@ function Categorias() {
       nameCategory: selectedCategory,
     });
   }
+
+  if (errorCode === 403 || localStorage.getItem('usuario') === null) return <RutaRestringida/>
 
   return (
     <div className="container-categorias">
@@ -110,7 +112,7 @@ function Categorias() {
             {datos.categories.map((categoria) => (
               <CategoryCard
                 key={categoria.id}
-                img={`http://localhost:3001/${categoria.img_categoria}`}
+                img={categoria.img_categoria ? `http://localhost:3001/${categoria.img_categoria}` : 'iconoImagen.png'}
                 nameCategory={categoria.categoria}
               />
             ))}
@@ -131,7 +133,7 @@ function Categorias() {
             {datos.subcategories.map((subcategoria) => (
               <CategoryCard
                 key={subcategoria.id}
-                img={`http://localhost:3001/${subcategoria.img_subcategoria}`}
+                img={subcategoria.img_subcategoria ? `http://localhost:3001/${subcategoria.img_subcategoria}` : 'iconoImagen.png'}
                 nameCategory={subcategoria.subcategoria}
               />
             ))}

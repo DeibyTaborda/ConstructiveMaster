@@ -1,14 +1,32 @@
 .container-editar-datos-basicos-admin {
-    width: 100%;
-    height: 120vh;
+    width: auto;
+    height: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
     justify-content: center;
     align-items: center;
+    padding: 20px;
+}
+
+.container-editar-datos-basicos-admin .contenedor-icono-home {
+    position: relative;
+    top: 20px;
+    left: 60px;
+    align-self: flex-start;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 25px;
+} 
+
+.container-editar-datos-basicos-admin .contenedor-icono-home:hover {
+    background-color: var(--color-principal);
+    transform: scale(1.1);
+    color: white;
 }
 
 .subcontainer-editar-datos-basicos-admin {
-    width: 400px;
+    max-width: 400px;
+    width: 100%;
 }
 
 .titulo-perfil-super-admin {
@@ -19,7 +37,6 @@
 .subtitulos-perfil-super-admin {
     width: 100%;
     margin: 20px 0 20px 0;
-    /* color: rgb(104, 104, 104); */
     font-family: var(--titulos);
     font-size: 16px;
     font-weight: 600;
@@ -30,23 +47,18 @@
     margin-top: 60px;
 }
 
-
 .parrafo {
     font-family: var(--parrafos2);
     font-size: 14px;
-    
-    /* font-weight: 300; */
 }
 
-/* .titulo-datos-basicos-admin{
-    margin-top: 70px;
-} */
-
 .form-edit-datos-basicos-admin {
-    width: 400px;
+    max-width: 400px;
     padding: 30px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     border: 2px solid  rgb(160, 160, 160, 0.8);
     box-shadow: 0 4px 8px rgb(112, 112, 112);
 }
@@ -59,7 +71,7 @@
 .input-edit-datos-basicos-admin{
     margin-top: 15px;
     padding: 5px 5px 5px 10px;
-    width: 200px;
+    max-width: 100%;
     outline: none;
     border: none;
     border-radius: 8px;

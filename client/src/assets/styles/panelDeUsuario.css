@@ -1,0 +1,70 @@
+.contenedor-panel-de-usuario {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 3fr; 
+    gap: 1rem;
+}
+
+.barra-panel-control {
+    grid-column: 1 / 2; 
+}
+
+.datos-personales-admin {
+    grid-column: 2 / 3; 
+    place-items: center; 
+}
+
+.datos-personales-admin h2 {
+    margin: 20px 0 20px 0;
+    color: var(--color-principal);
+}
+
+.formulario-select {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.etiqueta-select {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.select-actividad {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease;
+    background-color: #fff;
+}
+
+.select-actividad:focus {
+    border-color: var(--color-principal);
+    outline: none;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+    .formulario-select {
+        padding: 15px;
+    }
+
+    .etiqueta-select {
+        font-size: 14px;
+    }
+
+    .select-actividad {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+

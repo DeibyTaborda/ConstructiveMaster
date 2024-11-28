@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import '../../assets/styles/forms.css';
 import {esFechaValida, esHoraValida} from '../../utils/utils';
+import useAxios from "../../services/api";
 
 function FormAgregarTrabajo({solicitudPOST, onClick}) {
     const [errores, setErrores] = useState({});
+    const [numeroProfesionales, setNumeroProfesionalees] = useState('todos');
      const [data, setData] = useState({
         id_cliente: '',
         id_profesional: '',
         fecha: '',
         hora: '',
         direccion: '',
-        valor: '',
+        valor: 4000,
         descripcion: ''
     });
+
+    const {loading, response, error, data: dataProfesionalesDisponibles, fetchData} = useAxios('http://localhost:3001/profesionales/disponibles', {numeroProfesionales});
+    const {data: dataClientesActivos} = useAxios('http://localhost:3001/clientes/activos');
 
     const validacion = (data) => {
                 const erroresCampos = {};
@@ -66,7 +71,6 @@ function FormAgregarTrabajo({solicitudPOST, onClick}) {
 
     const handleOnchange = (e) => {
         const {name, value} = e.target;
-        console.log(value)
         setData({...data, [name] : value});
     }
 
@@ -81,29 +85,26 @@ function FormAgregarTrabajo({solicitudPOST, onClick}) {
         solicitudPOST(data);
     }
 
-
     return(
         <>
             <form className="form" onSubmit={handleSubmit}>
                 <h3 className="titulo-form">Agregar trabajo</h3>
                 <label htmlFor="id_cliente" className="label-form">Cliente:</label>
-                <input 
-                    type="number" 
-                    name="id_cliente" 
-                    className="input-form "
-                    onChange={handleOnchange}
-                    value={data.id_cliente}
-                />
+                <select name="id_cliente" id="id_cliente" onChange={handleOnchange}>
+                    <option value="">Seleccionar</option>
+                    {dataClientesActivos && dataClientesActivos.map(cliente => (
+                        <option value={cliente.id} >{cliente.nombre}</option>
+                    ))}
+                </select>
                 {errores ? (<p>{errores.id_cliente}</p>) : ''}
 
                 <label htmlFor="id_profesional" className="label-form">Profesional:</label>
-                <input 
-                    type="number" 
-                    name="id_profesional" 
-                    className="input-form "
-                    onChange={handleOnchange}
-                    value={data.id_profesional}
-                />
+                <select name="id_profesional" id="id_profesional" onChange={handleOnchange}>
+                    <option value="">Seleccionar</option>
+                    {dataProfesionalesDisponibles && dataProfesionalesDisponibles.map(profesional => (
+                        <option value={profesional.id}>{profesional.nombre}</option>
+                    ))}
+                </select>
                 {errores ? (<p>{errores.id_profesional}</p>) : ''}
 
                 <label htmlFor="fecha" className="label-form">Fecha:</label>

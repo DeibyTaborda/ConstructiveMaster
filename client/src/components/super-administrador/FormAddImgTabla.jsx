@@ -1,29 +1,28 @@
-import React, {useEffect, useState, useContext, act} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import '../../assets/styles/formEditImgTabla.css';
 import usePostRequest from "../../services/usePostRequest";
 import { TablasBdContext } from "../../context/TablasBdContext";
 import useAxios from "../../services/api";
 
-
 function FormAddImgTabla() {
     const [datos, setDatos] = useState({
         tabla: '',
         ruta: '',
-        imagen: '' 
+        imagen: ''
     });
 
-    const {tablasBD, actualizarTablasBD} = useContext(TablasBdContext);
-    const {loading, error, response, postRequest} = usePostRequest('http://localhost:3001/panel_de_control');
+    const { tablasBD, actualizarTablasBD } = useContext(TablasBdContext);
+    const { loading, error, response, postRequest } = usePostRequest('http://localhost:3001/panel_de_control');
     const { data, fetchData } = useAxios("http://localhost:3001/panel_de_control");
 
-    const handleOnchange = (e) => {
-        const {name, value} = e.target;
-        setDatos({...datos, [name] : value});
+    const handleOnChange = (e) => {
+        const { name, value } = e.target;
+        setDatos({ ...datos, [name]: value });
     }
 
-    const handleFileonChange = (e) => {
-        const {name, files} = e.target;
-        setDatos({...datos, [name] : files[0]});
+    const handleFileOnChange = (e) => {
+        const { name, files } = e.target;
+        setDatos({ ...datos, [name]: files[0] });
     }
 
     const handleSubmit = async (e) => {
@@ -44,40 +43,37 @@ function FormAddImgTabla() {
         }
     }, [data]);
 
-    return(
-        <>
-            <form onSubmit={handleSubmit} className="form-edit-img-tabla">
-                <label htmlFor="nombre_tabla" className="label-form-add-imagen-tabla">Tabla:</label>
-                <input 
-                    type="text" 
-                    name="tabla"
-                    className="input-form-edit-img-tabla"
-                    onChange={handleOnchange}
-                    value={datos.tabla}
-                />
-                <label htmlFor="ruta" className="label-form-add-imagen-tabla">Ruta:</label>
-                <input 
-                    type="text" 
-                    name="ruta"
-                    className="input-form-edit-img-tabla"
-                    onChange={handleOnchange}
-                    value={datos.ruta}
-                />
-                <label htmlFor="imagen" className="label-form-add-imagen-tabla">Imagen:</label>
-                <input 
-                    type="file" 
-                    name="imagen"
-                    onChange={handleFileonChange}
-                />
-                <input type="submit" />
-                {response && (
-                    <p>{response.message}</p>
-                )}
-                {error && (
-                    <p>{error}</p>
-                )}
-            </form>
-        </>
+    return (
+        <form onSubmit={handleSubmit} className="form-edit-img-tabla">
+            <label htmlFor="tabla" className="label-form-add-imagen-tabla">Tabla:</label>
+            <input
+                type="text"
+                name="tabla"
+                className="input-form-edit-img-tabla"
+                onChange={handleOnChange}
+                value={datos.tabla}
+                placeholder="Nombre de la tabla"
+            />
+            <label htmlFor="ruta" className="label-form-add-imagen-tabla">Ruta:</label>
+            <input
+                type="text"
+                name="ruta"
+                className="input-form-edit-img-tabla"
+                onChange={handleOnChange}
+                value={datos.ruta}
+                placeholder="Ruta del archivo"
+            />
+            <label htmlFor="imagen" className="label-form-add-imagen-tabla">Imagen:</label>
+            <input
+                type="file"
+                name="imagen"
+                className="input-file-form-edit-img-tabla"
+                onChange={handleFileOnChange}
+            />
+            <button type="submit" className="submit-button-form-edit-img-tabla">Enviar</button>
+            {response && <p className="response-message">{response.message}</p>}
+            {error && <p className="error-message">{error}</p>}
+        </form>
     );
 }
 

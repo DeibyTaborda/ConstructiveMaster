@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
 import '../../assets/styles/formularioCategorias.css';
 import usePostRequest from "../../services/usePostRequest";
-import {primeraLetraMayuscula} from '../../utils/utils';
-import useAxios from "../../services/api";
+import { primeraLetraMayuscula } from '../../utils/utils';
 
-function FormularioCategorias({ campos, title, id, onClick, foreingKeysCategoria}) {
+function FormularioCategorias({ campos, title, id, onClick, foreingKeysCategoria }) {
     const [formData, setFormData] = useState({});
     const [errores, setErrores] = useState('');
     const [erroresImage, setErroresImage] = useState('');
+    const [idCategoria, setIdCategoria] = useState('seleccionar'); // Estado para el select
 
-    const {loading, error, response, postRequest} = usePostRequest('http://localhost:3001/categorias'); 
-    
+    const { loading, error, response, postRequest } = usePostRequest('http://localhost:3001/categorias');
+
     useEffect(() => {
         if (response) {
             setErrores('');
             setErroresImage('');
             onClick();
+            setIdCategoria('seleccionar'); // Restablecer el select al enviar la solicitud
         }
     }, [response]);
 
@@ -23,12 +24,12 @@ function FormularioCategorias({ campos, title, id, onClick, foreingKeysCategoria
         const { name, value } = e.target;
         const regex = /\d|\.|,|[^\w\sáéíóúÁÉÍÓÚüÜñÑ]/;
 
-        if (['categoria', 'subcategoria'].includes(name) && regex.test(value)){
+        if (['categoria', 'subcategoria'].includes(name) && regex.test(value)) {
             setErrores('No se permiten números');
             return;
-        } 
+        }
 
-        if (value.length > 30 ) {
+        if (value.length > 30) {
             setErrores('No se permiten más de 20 caracteres');
             return;
         }
@@ -36,12 +37,12 @@ function FormularioCategorias({ campos, title, id, onClick, foreingKeysCategoria
         const letraMayuscula = primeraLetraMayuscula(value);
 
         setErrores('');
-        
+
         setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: letraMayuscula
         }));
-        console.log(formData)
+        console.log(formData);
     };
 
     const handleFileChange = (e) => {
@@ -54,7 +55,7 @@ function FormularioCategorias({ campos, title, id, onClick, foreingKeysCategoria
             setErroresImage('Archivo no permitido');
             return;
         }
-        
+
         setErroresImage('');
 
         setFormData((prevFormData) => ({
@@ -62,20 +63,21 @@ function FormularioCategorias({ campos, title, id, onClick, foreingKeysCategoria
             [name]: files[0]
         }));
 
-        console.log(formData)
+        console.log(formData);
     };
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData();
-    
+
         // Agrega los datos del formulario a FormData
         Object.keys(formData).forEach(key => {
             data.append(key, formData[key]);
         });
-    
+
         await postRequest(data);
         setFormData({});
+        setIdCategoria('seleccionar'); // Restablecer el select al enviar la solicitud
     }
 
     return (
@@ -91,22 +93,22 @@ function FormularioCategorias({ campos, title, id, onClick, foreingKeysCategoria
                         value={tipo !== 'file' ? formData[name] || '' : undefined}
                         onChange={tipo === 'file' ? handleFileChange : handleChange}
                     />
-                     {name === 'categoria' || name === 'subcategoria' && errores ? <p className="error-form-category">{errores}</p> : <p className="error-form-category"></p> }
-                     {name === 'imagenCategoria' || name === 'imagenSubcategoria' && erroresImage ? <p className="error-form-category">{erroresImage}</p> : <p className="error-form-category"></p> }
+                    {name === 'categoria' || name === 'subcategoria' && errores ? <p className="error-form-category">{errores}</p> : <p className="error-form-category"></p>}
+                    {name === 'imagenCategoria' || name === 'imagenSubcategoria' && erroresImage ? <p className="error-form-category">{erroresImage}</p> : <p className="error-form-category"></p>}
                 </>
             ))}
             {foreingKeysCategoria && (
                 <>
                     <label htmlFor="id_categoria" className="label-categoria">Categoría:</label>
-                    <select autofocus  name="id_categoria" onChange={handleChange}>
-                    <option value="seleccionar">Seleccionar</option>
-                        {foreingKeysCategoria && foreingKeysCategoria.map((categoria) => (
-                    <option value={categoria.id}>{categoria.categoria}</option>
+                    <select name="id_categoria" value={idCategoria} onChange={(e) => { handleChange(e); setIdCategoria(e.target.value); }}>
+                        <option value="seleccionar">Seleccionar</option>
+                        {foreingKeysCategoria.map((categoria) => (
+                            <option key={categoria.id} value={categoria.id}>{categoria.categoria}</option>
                         ))}
-                </select>
+                    </select>
                 </>
-                    )}
-            <input type="submit" className="boton-enviar-categoria"/>
+            )}
+            <input type="submit" className="boton-enviar-categoria" />
             {error && <p className="error-category-exists">{error}</p>}
         </form>
     );

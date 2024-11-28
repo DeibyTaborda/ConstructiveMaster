@@ -1,0 +1,19 @@
+.mensaje-exitoso2 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d0e9c6;
+    border-radius: 4px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .mensaje-exitoso2 p {
+    margin: 0;
+  }
+  

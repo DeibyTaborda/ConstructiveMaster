@@ -1,14 +1,15 @@
 const db = require('../db/db');
 const jwt = require('jsonwebtoken');
 const secret_key = 'my-secret-constructivemaster';
+const { compararContrasena } = require('../validations/generadorContrasena');
 
 const logearUsuario = (req, res) => {
     const { correo, contrasena } = req.body;
     const loginQueries = [
-        'SELECT id, nombre, correo, telefono, direccion, imagen FROM cliente WHERE correo = ? AND contrasena = ?',
-        'SELECT id, nombre, apellido, correo, telefono, imagen FROM admin WHERE correo = ? AND contrasena = ?',
-        'SELECT id, nombre, apellido, especialidad, correo, telefono, curriculum, imagen FROM profesional WHERE correo = ? AND contrasena = ?',
-        'SELECT id, correo, contrasena, nombre FROM super_admin WHERE correo = ? AND contrasena = ?'
+        'SELECT id, nombre, correo, telefono, direccion, imagen, contrasena FROM cliente WHERE correo = ?',
+        'SELECT id, nombre, apellido, correo, telefono, imagen, contrasena FROM admin WHERE correo = ?',
+        'SELECT id, nombre, apellido, especialidad, correo, telefono, curriculum, imagen, contrasena FROM profesional WHERE correo = ?',
+        'SELECT id, correo, contrasena, nombre FROM super_admin WHERE correo = ?'
     ];
 
     if (!correo) {
@@ -26,34 +27,34 @@ const logearUsuario = (req, res) => {
         }
 
         let rol = '';
+        if (queryIndex === 0) rol = 'cliente';
+        else if (queryIndex === 1) rol = 'admin';
+        else if (queryIndex === 2) rol = 'profesional';
+        else if (queryIndex === 3) rol = 'super_admin';
 
-        if (queryIndex === 0) {
-            rol = 'cliente';
-        } else if (queryIndex === 1) {
-            rol = 'admin';
-        } else if (queryIndex === 2) {
-            rol = 'profesional';
-        } else if (queryIndex === 3) {
-            rol = 'super_admin';
-        } 
-
-        db.query(loginQueries[queryIndex], [correo, contrasena], (error, results) => {
+        // Realizamos la consulta sin la contraseña
+        db.query(loginQueries[queryIndex], [correo], (error, results) => {
             if (error) {
-                console.error('Error en la consulta:', error);
                 return res.status(500).json({ message: "Error interno del servidor" });
             }
 
             if (results.length > 0) {
                 const user = results[0];
-    
-                const token = jwt.sign({...user, rol}, secret_key, { expiresIn: '4h' });
-                console.log('Usuario logueado');
-                console.log(token);
-
-                const usuarioFinal = { ...user, token, rol };
-                console.log(usuarioFinal);
                 
-                return res.status(200).json(usuarioFinal);
+                // Comparar la contraseña ingresada con la encriptada
+                const esValida = compararContrasena(contrasena, user.contrasena);
+                
+                if (esValida) {
+                    const token = jwt.sign({ ...user, rol }, secret_key, { expiresIn: '4h' });
+                    console.log('Usuario logueado');
+
+                    const usuarioFinal = { ...user, token, rol };
+                    delete usuarioFinal.contrasena;
+                    return res.status(200).json(usuarioFinal);
+                } else {
+                    console.log('Contraseña incorrecta');
+                    return res.status(401).json({ message: "Contraseña incorrecta" });
+                }
             } else {
                 checkUser(queryIndex + 1);
             }
@@ -63,11 +64,12 @@ const logearUsuario = (req, res) => {
     checkUser(0);
 };
 
+module.exports = logearUsuario;
+
+
 const verificarToken = (req, res, next) => {
     const header = req.header('Authorization') || "";
     const token = header.split(' ')[1];
-
-    console.log(`facha ${token}`)
 
     if (!token) {
         return res.status(401).json({ message: "Token no proporcionado" });
@@ -89,6 +91,7 @@ const verificarRol = (rolesPermitidos) => (req, res, next) => {
     const { rol } = req;
 
     if (rolesPermitidos.includes(rol)) {
+        console.log(rol)
         next();
     } else {
         console.log('Error, el rol no es permitido');
